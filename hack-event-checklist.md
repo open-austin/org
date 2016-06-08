@@ -2,6 +2,7 @@
 
 - [ ] Confirm venue
 - [ ] Confirm food
+- [ ] Confirm speaker(s)
 - [ ] Email announcement
 - [ ] Agenda or slides
 - [ ] Twitters/Facebooks, etc
