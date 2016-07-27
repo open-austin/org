@@ -6,10 +6,26 @@ Often times, you might think that you need to use a paid service to deploy your 
 
 This document will cover some basic instructions on how to get setup with some of the paid resources Code for America provides to Open Austin like AWS and Azure. It will also suggest a few ways to avoid using a paid service.
 
+## Containers
+
+An easy way to package and deploy and application is to use a container, like Docker, to run your application. You need to write a Dockerfile that describes your application's environment, and then you can run it on a container service with minimal effort. Amazon, Azure and Google cloud all have container platforms.
+
 ## Amazon Web Services
+
+AWS has several options for hosting. You can use a more traditional setup, or try using one of their cloud platforms.
+
+You can always provision and manage a cloud sever by yourself. This is a very manual process, and we don't recommend it. The option always exists if you specifically need a server for a project.
+
+For a simple Node or Python application, ElasticBeanstalk might be the best option. It manages server instances, and provides support for databases. In addition, application and deployment is handled by a CLI+configuration files in the project repository, making it easy for multiple people to deploy the project.
+
+Finally, consider using AWS Lambda. Lambda is "Serverless Compute" and allows you to run code without provisioning a server. You can execute code on external triggers. Several OA members have used it in projects. If you have code that runs once a day at a set time, consider using Lambda instead of a cronjob on a server
 
 ## Azure
 
 ## Heroku
 
+Heroku is a Platform as a Service application that will manage an application for you. Heroku only supports several languages, Node, Ruby, Java, PHP, Python, Go, Scala and Clojure. Heroku will also manage a database for you. Deployment is managed by git, so it's a fairly simple process 
+
 ## GitHub Pages
+
+Depending on your application, you might not even need a server! You can host a static site on github, which makes deployment and maintanince very simple. If your application is mostly a front end site, consider hosting it on github pages
