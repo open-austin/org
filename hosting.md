@@ -30,11 +30,20 @@ Heroku is a Platform as a Service application that will manage an application fo
 
 Depending on your application, you might not even need a server! You can host a static site on github, which makes deployment and maintanince very simple. If your application is mostly a front end site, consider hosting it on github pages
 
-# AWS Acccount Setup Instructions
+# AWS Account Setup Instructions
 
 1. Go to AWS
 2. Go to IAM https://console.aws.amazon.com/iam/home?region=us-west-2#home
 3. Create a new user
 4. Note the Username, Access Key ID, and Secret Access Key
+6. Click on the user details
 5. Add the user to the Group `open-austin-members`
+6. Assign the user a password
+  ![image](https://cloud.githubusercontent.com/assets/1275831/17458330/0308f9f2-5bd3-11e6-98d3-a5e176369afe.png)
 
+  ![image](https://cloud.githubusercontent.com/assets/1275831/17458332/1915240a-5bd3-11e6-8c48-06571f90f2b3.png)
+
+  ![image](https://cloud.githubusercontent.com/assets/1275831/17458333/21938fb8-5bd3-11e6-98c3-d884c7ec1a85.png)
+
+6. Edit the users `Security Credentials` and 
+6. Share the credentials and 
