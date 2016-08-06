@@ -45,5 +45,13 @@ Depending on your application, you might not even need a server! You can host a 
 
   ![image](https://cloud.githubusercontent.com/assets/1275831/17458333/21938fb8-5bd3-11e6-98c3-d884c7ec1a85.png)
 
-6. Edit the users `Security Credentials` and 
-6. Share the credentials and 
+6. Finally, email the login information to the user:
+  ```
+  https://open-austin.signin.aws.amazon.com/console
+  
+  User: helloworld
+  Password: $&$(@*U(#*U(*U@)))
+  
+  Access Key ID: AKIAIEIEJF4IE31JF3
+  Secret Access Key: woi323ej81jj3st123r523
+  ```
