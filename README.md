@@ -15,3 +15,5 @@ Open Austin To-Dos!
 [Open Austin Sign-Up Sheet](http://tinyurl.com/oamembership)
 
 [Open Austin Attendance Sheet - (Private to Coreteam)](https://docs.google.com/spreadsheets/d/1e1fc1u9qFC3PDuMNXXgPI4mO2iruXQFX9yHFgkZRoec/edit?usp=drive_web)
+
+[Newsletter Planning Doc](https://docs.google.com/document/d/1E1QGjLEWObfBsTN6IXt1eNu6Dggmm_4W6emLbhllAFQ/edit?usp=sharing)
