@@ -2,8 +2,10 @@
 
 Open Austin To-Dos!
 
-## Admin
+
 Sign up to help us out [at our next event.](https://docs.google.com/spreadsheets/d/1gllUNFMW73nLcl13vZLQtiLX9hpwIJMON0LY6Qjp1SQ/edit#gid=0)
+
+## Admin
 
 Express interest in [joining our leadership team.](https://openaustin.typeform.com/to/zyE0a4)
 
