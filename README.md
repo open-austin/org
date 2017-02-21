@@ -3,7 +3,7 @@
 Open Austin To-Dos!
 
 
-Sign up to help us out [at our next event.](https://docs.google.com/spreadsheets/d/1gllUNFMW73nLcl13vZLQtiLX9hpwIJMON0LY6Qjp1SQ/edit#gid=0)
+### Sign up to help us out [at our next event.](https://docs.google.com/spreadsheets/d/1gllUNFMW73nLcl13vZLQtiLX9hpwIJMON0LY6Qjp1SQ/edit#gid=0)
 
 ## Admin
 
