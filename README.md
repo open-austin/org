@@ -24,7 +24,7 @@ Add an announcement to our [Newsletter Planning Doc](https://docs.google.com/doc
 
 ## Resources
 
-We're an open book, take a look at our [Budget](https://docs.google.com/spreadsheets/d/1r09ttR56hAUi_h5tZOxKQONG4D_WTcEaYHLLA2PCaMA/edit?usp=sharing)
+We're an open book, take a look at our [expenses so far in 2017](https://github.com/open-austin/iced-coffee/blob/master/resources/2017_Expenses.csv)
 
 Look at how we use our resources compared to other Code for America brigades in [2017](https://docs.google.com/spreadsheets/d/1ORwvp9rPOidH-bhTAfzSmUGWpi7AHOKyhrgCKZmkGKQ/edit#gid=0) & [2016](https://docs.google.com/spreadsheets/d/1aHEs3iBPbdb2SAT70dmhuy4Z5LnjC9njXLrKr-H6aDo/edit#gid=0).
 
