@@ -1,4 +1,9 @@
 ﻿Timestamp,Merchant,Amount,Comment,"Original Currency","Original Amount",Receipt
+"2017-06-16 12:00:00",Meetup,89.94,"Meetup subscription 6-mo",USD,89.94,https://www.expensify.com/verifyReceipt?action=verifyreceipt&transactionID=15024839278461062&amount=-8994&created=2017-06-16
+"2017-06-13 12:00:00",Walgreens,41.95,"Civic Hack Night Drinks and Snacks",USD,41.95,https://www.expensify.com/verifyReceipt?action=verifyreceipt&transactionID=15024839278461057&amount=-4195&created=2017-06-13
+"2017-06-13 12:00:00","Chipotle Mexican Grill",201.35,"Civic Hack Night Food",USD,201.35,https://www.expensify.com/verifyReceipt?action=verifyreceipt&transactionID=15024839278461058&amount=-20135&created=2017-06-13
+"2017-06-07 12:00:00",Cvs/pharmacy,31.83,"Civic Hack Night Drinks and Snacks",USD,31.83,https://www.expensify.com/verifyReceipt?action=verifyreceipt&transactionID=15024839278461059&amount=-3183&created=2017-06-07
+"2017-06-07 12:00:00","Chipotle Mexican Grill",200.26,"Civic Hack Night Food",USD,200.26,https://www.expensify.com/verifyReceipt?action=verifyreceipt&transactionID=15024839278461064&amount=-20026&created=2017-06-29
 "2017-05-18 12:00:00",Stickermule,162.50,"Project Marketing [Budget Party]",USD,162.50,https://www.expensify.com/verifyReceipt?action=verifyreceipt&transactionID=15024839278461051&amount=-16250&created=2017-05-18
 "2017-05-10 12:00:00","Chipotle Mexican Grill",114.75,"Hack Night Food",USD,114.75,https://www.expensify.com/verifyReceipt?action=verifyreceipt&transactionID=15024839278461052&amount=-11475&created=2017-05-10
 "2017-04-26 12:00:00","Chipotle Mexican Grill",114.75,"Hack Night Food",USD,114.75,https://www.expensify.com/verifyReceipt?action=verifyreceipt&transactionID=15024839278461053&amount=-11475&created=2017-04-26
