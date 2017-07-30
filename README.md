@@ -4,14 +4,11 @@ This is where we keep track of our brigade managemant activities.
 
 ### Check out our To-Do's on our [Waffle.io Issue Board.](https://waffle.io/open-austin/iced-coffee)
 
-### Sign up to help us out [at our next event.](https://docs.google.com/spreadsheets/d/1gllUNFMW73nLcl13vZLQtiLX9hpwIJMON0LY6Qjp1SQ/edit#gid=0)
+### 📝 Sign up to help us out [at our next event.](https://github.com/open-austin/iced-coffee/wiki/Open-Austin-Event-Volunteers)
 
 ### Express interest in [joining our leadership team.](https://openaustin.typeform.com/to/zyE0a4)
 
 ## Admin
-
-See our vision in the [Strategic Plan for 2016]
-(https://docs.google.com/document/d/12EGMSZL2wGKpxwcxCFCTMoeRfx95h4eF493Bh5kdkkA/edit#)
 
 Learn about brigades from the [Code for America Brigade Playbook v.1](http://www.codeforamerica.org/brigade/static/playbook_v1_nov2015.pdf)
 
