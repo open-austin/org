@@ -20,17 +20,7 @@ For a simple Node or Python application, ElasticBeanstalk might be the best opti
 
 Finally, consider using AWS Lambda. Lambda is "Serverless Compute" and allows you to run code without provisioning a server. You can execute code on external triggers. Several OA members have used it in projects. If you have code that runs once a day at a set time, consider using Lambda instead of a cronjob on a server
 
-## Azure
-
-## Heroku
-
-Heroku is a Platform as a Service application that will manage an application for you. Heroku only supports several languages, Node, Ruby, Java, PHP, Python, Go, Scala and Clojure. Heroku will also manage a database for you. Deployment is managed by git, so it's a fairly simple process 
-
-## GitHub Pages
-
-Depending on your application, you might not even need a server! You can host a static site on github, which makes deployment and maintanince very simple. If your application is mostly a front end site, consider hosting it on github pages
-
-# AWS Account Setup Instructions
+### AWS Account Setup Instructions
 
 1. Go to AWS
 2. Go to IAM https://console.aws.amazon.com/iam/home?region=us-west-2#home
@@ -55,3 +45,29 @@ Depending on your application, you might not even need a server! You can host a 
   Access Key ID: AKIAIEIEJF4IE31JF3
   Secret Access Key: woi323ej81jj3st123r523
   ```
+
+## Azure
+
+## Heroku
+
+Heroku is a Platform as a Service application that will manage an application for you. Heroku only supports several languages, Node, Ruby, Java, PHP, Python, Go, Scala and Clojure. Heroku will also manage a database for you. Deployment is managed by git, so it's a fairly simple process 
+
+## GitHub
+
+Depending on your application, you might not even need a server! You can host a static site on github, which makes deployment and maintanince very simple. If your application is mostly a front end site, consider hosting it on [github pages](https://pages.github.com/).
+
+A database is also a lot of work to setup, is not open, and is not easy to access.
+
+A simpler and more open solution is to do what we did with the [construction-permits](https://github.com/open-austin/construction-permits) project:
+- A script runs once a day
+- The script calls http://www.jims.hctx.net/jimshome/jimsreports/jims1058.txt and converts it to CSV
+- The script stores the CSV file on GitHub: https://github.com/open-austin/construction-permits/blob/master/permits/github.py
+
+The data is searchable: https://github.com/open-austin/construction-permits/search?utf8=%E2%9C%93&q=7east
+
+The data is browsable: https://github.com/open-austin/construction-permits/tree/master/data
+
+Because the data is in CSV format:
+- its easy load into ElasticSearch or some other database if we need fancier searching. 
+- its easy to use in with [pandas](http://pandas.pydata.org/), [d3](https://d3js.org/), andother tools
+
