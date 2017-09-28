@@ -16,8 +16,14 @@ Learn about brigades from the [Code for America Brigade Playbook v.1](http://www
 
 Sign up to [become an Open Austin member](http://tinyurl.com/oamembership)
 
-## Comms
-Add an announcement to our [Newsletter Planning Doc](https://docs.google.com/document/d/1E1QGjLEWObfBsTN6IXt1eNu6Dggmm_4W6emLbhllAFQ/edit?usp=sharing)
+## Communication 
+The Communication team handles the Open Austin Newsettes, social presense and more. 
+- View issues we need help with | [Github issues tagged "comms"](https://github.com/open-austin/iced-coffee/issues?q=is%3Aopen+is%3Aissue+label%3Acomms)
+- Suggest something to our newsletter | [Newsletter planning doc](https://docs.google.com/document/d/1E1QGjLEWObfBsTN6IXt1eNu6Dggmm_4W6emLbhllAFQ/edit?usp=sharing)
+- Join us in slack | [#comms-Team](https://open-austin.slack.com/messages/C069VT41W/team/U4CS67DPA/) [Slack Invite](https://slack.open-austin.org/)
+
+View full [communications team documentation](https://github.com/open-austin/iced-coffee/wiki/Communications).
+
 
 ## Resources
 
