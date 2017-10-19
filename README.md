@@ -14,7 +14,10 @@ Learn about brigades from the [Code for America Brigade Playbook v.1](http://www
 
 ## Membership
 
-Sign up to [become an Open Austin member](http://tinyurl.com/oamembership)
+Sign in to an event [become an Open Austin member](http://tinyurl.com/oamembership)
+Read our [Code of Conduct](https://www.open-austin.org/about/#code-of-conduct)
+[Give us feedback](https://goo.gl/forms/H2k1ILqEDsJKnRxm2) 
+
 
 ## Communication 
 The Communication team handles the Open Austin Newsettes, social presense and more. 
