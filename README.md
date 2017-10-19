@@ -14,9 +14,9 @@ Learn about brigades from the [Code for America Brigade Playbook v.1](http://www
 
 ## Membership
 
-Sign in to an event [become an Open Austin member](http://tinyurl.com/oamembership)
-Read our [Code of Conduct](https://www.open-austin.org/about/#code-of-conduct)
-[Give us feedback](https://goo.gl/forms/H2k1ILqEDsJKnRxm2) 
+- Sign in to an event [become an Open Austin member](http://tinyurl.com/oamembership)
+- Read our [Code of Conduct](https://www.open-austin.org/about/#code-of-conduct)
+- [Give us feedback](https://goo.gl/forms/H2k1ILqEDsJKnRxm2) 
 
 
 ## Communication 
