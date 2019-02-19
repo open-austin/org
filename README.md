@@ -35,6 +35,5 @@ We're an open book, take a look at our expenses so far in [Google Sheet](https:/
 Look at how we use our resources compared to other Code for America brigades in [2017](https://docs.google.com/spreadsheets/d/1ORwvp9rPOidH-bhTAfzSmUGWpi7AHOKyhrgCKZmkGKQ/edit#gid=0), [2016](https://docs.google.com/spreadsheets/d/1aHEs3iBPbdb2SAT70dmhuy4Z5LnjC9njXLrKr-H6aDo/edit#gid=0), & [2018](https://docs.google.com/spreadsheets/d/1H4-cLKeBFBxoOTO35dXsi_hxvOzfnIfUoS-qVDq4vig/edit?usp=sharing).
 
 
-
-
-
+## Non Profit Governance
+Here's a [link to our website](https://www.open-austin.org/about/#our-nonprofit-governance) with info about our bylaws and leadership minutes.
