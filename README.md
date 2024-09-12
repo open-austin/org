@@ -1,4 +1,4 @@
-# Iced Coffee
+# General
 
 This is where we keep track of our brigade managemant activities.
 
@@ -9,7 +9,7 @@ This is where we keep track of our brigade managemant activities.
 
 
 ## Communication 
-The Communication team handles the Open Austin Newsettes, social presense and more. 
+The Communication team handles the Open Austin newsetters, social presence and more. 
 
 View full [communications team documentation](https://github.com/open-austin/iced-coffee/wiki/Communications).
 
