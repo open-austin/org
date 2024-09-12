@@ -1,6 +1,6 @@
 # General
 
-This is where we keep track of our brigade managemant activities.
+This is where we keep track of our org operation activities. 
 
 ## Membership
 
