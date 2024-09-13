@@ -5,11 +5,19 @@ labels: [ ]
 assignees:
   - octocat
 body:
+  - type: markdown
+    attributes:
+      value: |
+        1. Do this.
+        2. Then do that.
+        3. Then do the other.
+        - [ ] Do this
+        - [ ] checklist
   - type: textarea
     id: checklist
     attributes:
       label: Onboarding Checklist
-      description: "Leave this blank, this will just be your starting checklist to use to follow along with for onboarding."
+      description: "Leave this as is, this will just be your starting checklist to use to follow along with for onboarding."
       value: |
         1. Do this.
         2. Then do that.
