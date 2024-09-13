@@ -5,11 +5,6 @@ labels: [ ]
 assignees:
   - octocat
 body:
-  - type: markdown
-    attributes:
-    value: |
-      # Welcome to Open Austin Onboarding
-      Welcome text here
   - type: textarea
     id: checklist
     attributes:
