@@ -1,0 +1,33 @@
+name: Onboarding to Open Austin
+description: Use this template when joining the Design community of practice to get a checklist of tasks to self-onboard.
+title:  "{Name}: Onboarding Tasks "
+labels: [ ]
+assignees:
+  - octocat
+body:
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Onboarding Checklist
+      description: "How do you trigger this bug?"
+      value: |
+        1. Do this.
+        2. Then do that.
+        3. Then do the other.
+        - [ ] Do this
+        - [ ] checklist
+    validations:
+      required: false
+  - type: textarea
+  - type: markdown
+    id: checklist check
+    value: |
+      ## Welcome!
+      This type of entry can be used to communicate with the user
+      without asking for any input.
+      - [ ] Do this
+        - [ ] checklist
+        - [ ] Do this
+        - [ ] checklist
+    validations:
+      required: false

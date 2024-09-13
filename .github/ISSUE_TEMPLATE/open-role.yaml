@@ -1,0 +1,52 @@
+name: Post open role for project
+description: Use this template when you need to fill an open role in a project.
+title:  "Open Role:{Role name/brief-description}"
+labels: ["open role"]
+assignees:
+  - octocat
+body:
+  - type: textarea
+    id: project-description
+    attributes:
+      label: Description of project
+      description: Brief description of the project.
+      placeholder:
+      value:
+    validations:
+      required: true
+  - type: textarea
+    id: role-description
+    attributes:
+      label: Description of role
+      description: Brief description of the role.
+      placeholder:
+      value:
+    validations:
+      required: true
+  - type: textarea
+    id: timeframe
+    attributes:
+      label: Timeframe
+      description: How soon do you need this role filled? How long do you expect it to be needed?
+      placeholder:
+      value:
+    validations:
+      required: true
+  - type: textarea
+    id: docs
+    attributes:
+      label: Project docs
+      description: Link to project docs
+      placeholder:
+      value:
+    validations:
+      required: true
+  - type: textarea
+    id: contact
+    attributes:
+      label: Who to contact?
+      description: Who should be contacted to begin work on this project? Can include slack channel, emails, etc (NOTE! This is a public repo)
+      placeholder:
+      value:
+    validations:
+      required: true
