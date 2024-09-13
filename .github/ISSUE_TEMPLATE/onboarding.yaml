@@ -9,7 +9,7 @@ body:
     id: checklist
     attributes:
       label: Onboarding Checklist
-      description: "How do you trigger this bug?"
+      description: "Leave this blank, this will just be your starting checklist to use to follow along with for onboarding."
       value: |
         1. Do this.
         2. Then do that.
@@ -17,17 +17,4 @@ body:
         - [ ] Do this
         - [ ] checklist
     validations:
-      required: false
-  - type: textarea
-  - type: markdown
-    id: checklist check
-    value: |
-      ## Welcome!
-      This type of entry can be used to communicate with the user
-      without asking for any input.
-      - [ ] Do this
-        - [ ] checklist
-        - [ ] Do this
-        - [ ] checklist
-    validations:
-      required: false
+      required: true
