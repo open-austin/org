@@ -7,22 +7,18 @@ assignees:
 body:
   - type: markdown
     attributes:
-      value: |
-        1. Do this.
-        2. Then do that.
-        3. Then do the other.
-        - [ ] Do this
-        - [ ] checklist
+    value: |
+      # Welcome to Open Austin Onboarding
+      Welcome text here
   - type: textarea
     id: checklist
     attributes:
       label: Onboarding Checklist
       description: "Leave this as is, this will just be your starting checklist to use to follow along with for onboarding."
       value: |
-        1. Do this.
-        2. Then do that.
-        3. Then do the other.
-        - [ ] Do this
-        - [ ] checklist
+        - [ ] example task
+        - [ ] example task
+        - [ ] example task
+        - [ ] example task
     validations:
       required: true
