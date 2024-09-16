@@ -16,17 +16,21 @@ body:
       label: Onboarding Checklist
       description: "Leave this as is, this will just be your starting checklist to use to follow along with for onboarding."
       value: |
-        # NEED A HEADER: Join Open Austin communication and collaboration tools
-        - [ ] Create an Open Austin Slack account - <a href="https://join.slack.com/t/open-austin/shared_invite/zt-1xrl6n1fo-5E7~JqTv1bdq5liqLuEXnQ">invite link</a>
+        # Join Open Austin communication and collaboration tools
+        - [ ] Create an Open Austin Slack account - [invite link](https://join.slack.com/t/open-austin/shared_invite/zt-1xrl6n1fo-5E7~JqTv1bdq5liqLuEXnQ)
         - [ ] Introduce yourself in #general on Slack
         - [ ] Turn on notifications for #general
         - [ ] Add yourself to the volunteer roster by sending a message to #oa-admin. I’m a new YOUR ROLE and I attended DATE org intro.  My email address is EMAIL ADDRESS.
-        - [ ] Follow Open Austin on <a href="https://www.linkedin.com/company/open-austin/">LinkedIn</a>
-        - [ ] Follow Open Austin on <a href="https://www.instagram.com/open_austin/">Instagram</a>
-        # NEED A HEADER: Join your community of practice
-        - [ ] Join your practice channel (list)
-        - [ ] Create your contributor profile
-        # NEED A HEADER: Join a team 
-        - [ ] Mark that you are available to join an Open Austin initiative
+        - [ ] Follow Open Austin on [LinkedIn](https://www.linkedin.com/company/open-austin/)
+        - [ ] Follow Open Austin on [Instagram](https://www.instagram.com/open_austin)<
+        # Join your community of practice
+        - [ ] Join your practice channel
+          - #practice-designers
+          - #practice-data-nerds
+          - #practice-product-mgrs
+          - #practice-devs
+        - [ ] Create your contributor profile in the practice repo
+          - [Designers](https://github.com/open-austin/practice-designers/issues/new?assignees=jcklpe&labels=design%2Ccontributor+profile&projects=&template=design-contributor-profile.yaml&title=%7BYour+Name%7D%3A+Design+Contributor+Profile)
+        - [ ] [Explore open roles](https://github.com/orgs/open-austin/projects/6)
     validations:
       required: true
