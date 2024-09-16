@@ -9,7 +9,7 @@ body:
     attributes:
       value: |
         # Welcome to Open Austin onboarding
-        Welcome message here
+        Welcome to Open Austin's onboarding! You don't need to change anything in the below field, just submit to set yourself up with a checklist of tasks to onboard with.
   - type: textarea
     id: checklist
     attributes:
