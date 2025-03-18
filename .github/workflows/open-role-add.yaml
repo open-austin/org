@@ -1,0 +1,16 @@
+name: Add to project
+on:
+  issues:
+    types:
+      - labeled
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add issue to project
+        if: github.event.label.name == 'open role'
+        uses: actions/add-to-project@v0.5.0
+        with:
+          project-url: https://github.com/orgs/open-austin/projects/6
+          github-token: ${{ secrets.ACTIONS_TOKEN }}
