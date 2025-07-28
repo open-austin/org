@@ -5,13 +5,13 @@ At Open Austin, **openness is in our name and at the core of our values.** This 
 
 ## 1. Everything We Build is Openly Licensed
 - **All projects created for or with Open Austin must be released under an open license.**
-  - We do not work on closed-source projects.
+  - We do not work on closed-source projects. If you choose to work on a closed-source project, you're welcome to be part of our community, but we won't advertise it with our members, partners, and broader audience. 
   - Contributors may choose a license that ensures the work remains accessible to the community and aligned with our values. Acceptable licenses include:
     - **Standard OSI-approved licenses** (e.g., MIT, Apache 2.0, GPL).
     - **Copy-left and values-based licenses** that may go beyond OSI approval, such as:
       - Creative Commons licenses (e.g., CC BY, CC BY-NC, CC BY-SA).
       - Ethical or purpose-based licenses that restrict use (e.g. non-commercial clauses), as long as the project remains openly accessible.
-  - Projects do **not** have to be hosted under the Open Austin GitHub organization, but they must be public and clearly licensed.
+  - Projects do **not** have to be hosted under the Open Austin GitHub organization, but they must be public and clearly licensed.  If hosted under your own GitHub account, Open Austin will fork the project.
 
 > **Why?** Openness ensures our work can be used, built upon, and trusted by the community we serve.
 
@@ -23,7 +23,7 @@ At Open Austin, **openness is in our name and at the core of our values.** This 
 - **Research artifacts:**
   - Primary data that may violate privacy (e.g., raw interview recordings, participant-identifiable notes) do **not** need to be shared.
   - However, anonymized findings, summaries, and insights **should** be made public when possible.
-- We recognize that not all design and research outputs can be fully open, but our bias is towards transparency.
+- We recognize that not all design and research outputs can be fully open, but our bias is towards transparency. If you have a question about a specific piece of work, reach out and we'll discuss.
 
 ------
 
@@ -34,7 +34,7 @@ We believe in **clear and generous attribution**:
 - Contributions from outside partners should be described accurately, if a project originated with a community partner, they will be listed as such.
 - Open Austin may promote, present, or demo projects publicly. When doing so, we will include proper credit to contributors.
 
-> **Tip:** If you feel credit was missed, tell us right away, we want to fix it!
+> **Tip:** If you feel credit was missed, tell us right away. We want to fix it!
 
 ------
 
@@ -48,8 +48,7 @@ We believe in **clear and generous attribution**:
 ------
 
 ## 5. Questions?
-We want this policy to be clear, fair, and aligned with our values. If you have questions about how it applies to your project or contribution, please reach out to the Open Austin board at **info@open-austin.org**.
-
+We want this policy to be clear, fair, and aligned with our values. If you have questions about how it applies to your project or contribution, please reach out to the Open Austin board at info@open-austin.org or the oa-admin channel in Slack.
 ------
 
 **Summary:**
