@@ -23,9 +23,13 @@ body:
         - [ ] (optional) Follow Open Austin on [LinkedIn](https://www.linkedin.com/company/open-austin/) and/or [Instagram](https://www.instagram.com/open_austin). We don't have a newsletter.
 
         # Tell us about yourself
-        - [ ] Create your contributor profile: [designers](https://github.com/open-austin/practice-designers/issues/new?assignees=jcklpe&labels=design%2Ccontributor+profile&projects=&template=design-contributor-profile.yaml&title=%7BYour+Name%7D%3A+Design+Contributor+Profile), [developers](https://github.com/open-austin/practice-devs/issues/new?template=contributor-profile.yaml), [data scientist](https://github.com/open-austin/practice-data-nerds/issues/new?template=contributor-profile.yaml), or [product/project manager](https://github.com/open-austin/practice-product/issues/new?template=contributor-profile.yaml)
-        - [ ] Introduce yourself in #general on Slack.  Optionally, include your contributor profile.
-        - [ ] Add yourself to the volunteer roster by sending a message to #oa-admin. I’m a new YOUR ROLE and I attended DATE org intro.  My email address is EMAIL ADDRESS.
+        - [ ] Choose and create your contributor profile: 
+          - [Designers](https://github.com/open-austin/practice-designers/issues/new?assignees=jcklpe&labels=design%2Ccontributor+profile&projects=&template=design-contributor-profile.yaml&title=%7BYour+Name%7D%3A+Design+Contributor+Profile)
+          - [Developers](https://github.com/open-austin/practice-devs/issues/new?template=contributor-profile.yaml)
+          - [Data scientist](https://github.com/open-austin/practice-data-nerds/issues/new?template=contributor-profile.yaml)
+          - [Product/project manager](https://github.com/open-austin/practice-product/issues/new?template=contributor-profile.yaml)
+        - [ ] Introduce yourself in #general on Slack.  You can include your contributor profile if you want.
+        - [ ] Join the volunteer roster by sending a message to #oa-admin: _I’m a new YOUR ROLE and I attended DATE org intro.  My email address is EMAIL ADDRESS._
 
         # Get started building tech for good!
         - [ ] Join your Community of Practice channel and turn on notifications - [instructions](https://slack.com/help/articles/360056534254-Manage-notifications-for-specific-channels-and-direct-messages)
