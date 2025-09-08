@@ -1,8 +1,8 @@
 ---
-name: Open Guide
-about: Use this template when a practice needs a guide written.
+name: Post open guide for CoP
+about: Use this template when a CoP needs a guide written.
 title: 'Open Guide: [CoP] - [name of guide]'
-labels: 'documentation'
+labels: 'docs'
 assignees: ''
 
 ---
