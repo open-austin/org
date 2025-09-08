@@ -2,7 +2,7 @@
 name: Post open guide for CoP
 about: Use this template when a CoP needs a guide written.
 title: 'Open Guide: [CoP] - [name of guide]'
-labels: 'docs'
+labels: 'open guide'
 assignees: ''
 
 ---
