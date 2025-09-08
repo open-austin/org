@@ -1,6 +1,6 @@
 --- 
 name: Onboarding to Open Austin 
-description: Self-onboarding checklist
+about: Self-onboarding checklist
 title: "{Name}: Onboarding Tasks" 
 labels: ""
 assignees: "" 
