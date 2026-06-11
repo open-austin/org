@@ -1,0 +1,74 @@
+name: Close issue when role is filled
+
+on:
+  projects_v2_item:
+    types:
+      - edited
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  OPEN_ROLES_PROJECT_ID: PVT_kwDOAA7NZM4AmdbW
+  FILLED_OPTION_ID: "47fc9ee4"
+
+jobs:
+  close-filled-role:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Close issue if role moved to Filled
+        run: |
+          PROJECT_ID="${{ github.event.projects_v2_item.project_node_id }}"
+          ITEM_ID="${{ github.event.projects_v2_item.node_id }}"
+
+          # Only act on the Open Roles board
+          if [ "$PROJECT_ID" != "$OPEN_ROLES_PROJECT_ID" ]; then
+            echo "Not the Open Roles board — skipping."
+            exit 0
+          fi
+
+          # Get current status and linked issue
+          RESULT=$(gh api graphql -f query='
+            query($item: ID!) {
+              node(id: $item) {
+                ... on ProjectV2Item {
+                  fieldValueByName(name: "Status") {
+                    ... on ProjectV2ItemFieldSingleSelectValue {
+                      optionId
+                    }
+                  }
+                  content {
+                    ... on Issue {
+                      number
+                      repository { nameWithOwner }
+                    }
+                  }
+                }
+              }
+            }' -f item="$ITEM_ID")
+
+          OPTION_ID=$(echo "$RESULT" | jq -r '.data.node.fieldValueByName.optionId // ""')
+          ISSUE_NUMBER=$(echo "$RESULT" | jq -r '.data.node.content.number // ""')
+          REPO=$(echo "$RESULT" | jq -r '.data.node.content.repository.nameWithOwner // ""')
+
+          if [ "$OPTION_ID" != "$FILLED_OPTION_ID" ]; then
+            echo "Status is not 'Filled' — skipping."
+            exit 0
+          fi
+
+          if [ -z "$ISSUE_NUMBER" ] || [ -z "$REPO" ]; then
+            echo "No linked issue found — skipping."
+            exit 0
+          fi
+
+          # Guard: skip if issue is already closed
+          ISSUE_STATE=$(gh issue view "$ISSUE_NUMBER" --repo "$REPO" --json state --jq '.state')
+          if [ "$ISSUE_STATE" == "CLOSED" ]; then
+            echo "Issue already closed — skipping."
+            exit 0
+          fi
+
+          echo "Role filled — closing issue #$ISSUE_NUMBER in $REPO..."
+          gh issue close "$ISSUE_NUMBER" \
+            --repo "$REPO" \
+            --comment "This role has been filled. Closing issue."
+          echo "Done."

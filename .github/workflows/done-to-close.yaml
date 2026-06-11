@@ -1,0 +1,65 @@
+name: Close issue when moved to Done on Org Kanban
+
+on:
+  projects_v2_item:
+    types:
+      - edited
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  ORG_KANBAN_PROJECT_ID: PVT_kwDOAA7NZM4AqQF8
+  DONE_OPTION_ID: "98236657"
+
+jobs:
+  done-to-close:
+    if: github.event.projects_v2_item.project_node_id == 'PVT_kwDOAA7NZM4AqQF8'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Close issue if item moved to Done
+        run: |
+          ITEM_ID="${{ github.event.projects_v2_item.node_id }}"
+
+          # Get current status and linked issue state
+          RESULT=$(gh api graphql -f query='
+            query($item: ID!) {
+              node(id: $item) {
+                ... on ProjectV2Item {
+                  fieldValueByName(name: "Status") {
+                    ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                  }
+                  content {
+                    ... on Issue {
+                      number
+                      state
+                      repository { nameWithOwner }
+                    }
+                  }
+                }
+              }
+            }' -f item="$ITEM_ID")
+
+          OPTION_ID=$(echo "$RESULT" | jq -r '.data.node.fieldValueByName.optionId // ""')
+          ISSUE_NUMBER=$(echo "$RESULT" | jq -r '.data.node.content.number // ""')
+          ISSUE_STATE=$(echo "$RESULT" | jq -r '.data.node.content.state // ""')
+          REPO=$(echo "$RESULT" | jq -r '.data.node.content.repository.nameWithOwner // ""')
+
+          if [ "$OPTION_ID" != "$DONE_OPTION_ID" ]; then
+            echo "Status is not 'Done' — skipping."
+            exit 0
+          fi
+
+          if [ -z "$ISSUE_NUMBER" ] || [ -z "$REPO" ]; then
+            echo "No linked issue — nothing to close."
+            exit 0
+          fi
+
+          # Guard: skip if already closed (prevents loop with close-to-done)
+          if [ "$ISSUE_STATE" == "CLOSED" ]; then
+            echo "Issue #$ISSUE_NUMBER already closed — skipping."
+            exit 0
+          fi
+
+          echo "Item moved to Done — closing issue #$ISSUE_NUMBER in $REPO..."
+          gh issue close "$ISSUE_NUMBER" --repo "$REPO"
+          echo "Done."

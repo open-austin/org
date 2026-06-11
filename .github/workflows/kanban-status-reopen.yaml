@@ -1,0 +1,67 @@
+name: Reopen issue when moved out of Done on Org Kanban
+
+on:
+  projects_v2_item:
+    types:
+      - edited
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  ORG_KANBAN_PROJECT_ID: PVT_kwDOAA7NZM4AqQF8
+  TODO_OPTION_ID: f75ad846
+  IN_PROGRESS_OPTION_ID: "47fc9ee4"
+
+jobs:
+  kanban-status-reopen:
+    if: github.event.projects_v2_item.project_node_id == 'PVT_kwDOAA7NZM4AqQF8'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Reopen issue if moved to To Do or In Progress while closed
+        run: |
+          ITEM_ID="${{ github.event.projects_v2_item.node_id }}"
+
+          # Get current status and linked issue state
+          RESULT=$(gh api graphql -f query='
+            query($item: ID!) {
+              node(id: $item) {
+                ... on ProjectV2Item {
+                  fieldValueByName(name: "Status") {
+                    ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                  }
+                  content {
+                    ... on Issue {
+                      number
+                      state
+                      repository { nameWithOwner }
+                    }
+                  }
+                }
+              }
+            }' -f item="$ITEM_ID")
+
+          OPTION_ID=$(echo "$RESULT" | jq -r '.data.node.fieldValueByName.optionId // ""')
+          ISSUE_NUMBER=$(echo "$RESULT" | jq -r '.data.node.content.number // ""')
+          ISSUE_STATE=$(echo "$RESULT" | jq -r '.data.node.content.state // ""')
+          REPO=$(echo "$RESULT" | jq -r '.data.node.content.repository.nameWithOwner // ""')
+
+          # Only act on To Do or In Progress
+          if [ "$OPTION_ID" != "$TODO_OPTION_ID" ] && [ "$OPTION_ID" != "$IN_PROGRESS_OPTION_ID" ]; then
+            echo "Status is not 'To Do' or 'In Progress' — skipping."
+            exit 0
+          fi
+
+          if [ -z "$ISSUE_NUMBER" ] || [ -z "$REPO" ]; then
+            echo "No linked issue — nothing to reopen."
+            exit 0
+          fi
+
+          # Guard: only reopen if the issue is actually closed
+          if [ "$ISSUE_STATE" != "CLOSED" ]; then
+            echo "Issue #$ISSUE_NUMBER is already open — skipping."
+            exit 0
+          fi
+
+          echo "Item moved to $OPTION_ID — reopening issue #$ISSUE_NUMBER in $REPO..."
+          gh issue reopen "$ISSUE_NUMBER" --repo "$REPO"
+          echo "Done."

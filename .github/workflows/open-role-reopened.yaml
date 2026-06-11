@@ -1,0 +1,73 @@
+name: Move Open Roles item back to Open when issue is reopened
+
+on:
+  issues:
+    types:
+      - reopened
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  OPEN_ROLES_PROJECT_ID: PVT_kwDOAA7NZM4AmdbW
+  STATUS_FIELD_ID: PVTSSF_lADOAA7NZM4AmdbWzgeWrcw
+  OPEN_OPTION_ID: f75ad846
+
+jobs:
+  open-role-reopened:
+    # Only act on open role issues
+    if: contains(github.event.issue.labels.*.name, 'open role')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set Open Roles item back to Open
+        run: |
+          ISSUE_NODE_ID="${{ github.event.issue.node_id }}"
+
+          # Find the item on Open Roles board
+          RESULT=$(gh api graphql -f query='
+            query($project: ID!) {
+              node(id: $project) {
+                ... on ProjectV2 {
+                  items(first: 100) {
+                    nodes {
+                      id
+                      fieldValueByName(name: "Status") {
+                        ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                      }
+                      content { ... on Issue { id } }
+                    }
+                  }
+                }
+              }
+            }' -f project="$OPEN_ROLES_PROJECT_ID")
+
+          ITEM_ID=$(echo "$RESULT" | jq -r ".data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .id")
+          CURRENT=$(echo "$RESULT" | jq -r ".data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .fieldValueByName.optionId // \"\"")
+
+          if [ -z "$ITEM_ID" ]; then
+            echo "Issue not on Open Roles board — nothing to update."
+            exit 0
+          fi
+
+          # Guard: skip if already Open (prevents loop with open-roles-reopen)
+          if [ "$CURRENT" == "$OPEN_OPTION_ID" ]; then
+            echo "Already 'Open' — skipping."
+            exit 0
+          fi
+
+          echo "Issue reopened — setting Open Roles item back to 'Open'..."
+          gh api graphql -f query='
+            mutation($project: ID!, $item: ID!, $field: ID!, $option: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $project,
+                itemId: $item,
+                fieldId: $field,
+                value: { singleSelectOptionId: $option }
+              }) {
+                projectV2Item { id }
+              }
+            }' \
+            -f project="$OPEN_ROLES_PROJECT_ID" \
+            -f item="$ITEM_ID" \
+            -f field="$STATUS_FIELD_ID" \
+            -f option="$OPEN_OPTION_ID"
+          echo "Done."

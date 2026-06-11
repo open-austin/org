@@ -1,0 +1,79 @@
+name: Move closed issue to Done on Org Kanban
+
+on:
+  issues:
+    types:
+      - closed
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  ORG_KANBAN_PROJECT_ID: PVT_kwDOAA7NZM4AqQF8
+  STATUS_FIELD_ID: PVTSSF_lADOAA7NZM4AqQF8zghh1hc
+  DONE_OPTION_ID: "98236657"
+
+jobs:
+  move-to-done:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Move to Done on Org Kanban
+        run: |
+          ISSUE_NODE_ID="${{ github.event.issue.node_id }}"
+
+          # Find the item on Org Kanban
+          ITEM_ID=$(gh api graphql -f query='
+            query($project: ID!) {
+              node(id: $project) {
+                ... on ProjectV2 {
+                  items(first: 100) {
+                    nodes {
+                      id
+                      content { ... on Issue { id } }
+                    }
+                  }
+                }
+              }
+            }' -f project="$ORG_KANBAN_PROJECT_ID" \
+            --jq ".data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .id")
+
+          if [ -z "$ITEM_ID" ]; then
+            echo "Issue not on Org Kanban — nothing to update."
+            exit 0
+          fi
+
+          # Guard: check current status — skip if already Done
+          CURRENT=$(gh api graphql -f query='
+            query($item: ID!) {
+              node(id: $item) {
+                ... on ProjectV2Item {
+                  fieldValueByName(name: "Status") {
+                    ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                  }
+                }
+              }
+            }' -f item="$ITEM_ID" --jq '.data.node.fieldValueByName.optionId // ""')
+
+          if [ "$CURRENT" == "$DONE_OPTION_ID" ]; then
+            echo "Already in Done — skipping."
+            exit 0
+          fi
+
+          echo "Found item $ITEM_ID — setting status to 'Done'..."
+
+          gh api graphql -f query='
+            mutation($project: ID!, $item: ID!, $field: ID!, $option: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $project,
+                itemId: $item,
+                fieldId: $field,
+                value: { singleSelectOptionId: $option }
+              }) {
+                projectV2Item { id }
+              }
+            }' \
+            -f project="$ORG_KANBAN_PROJECT_ID" \
+            -f item="$ITEM_ID" \
+            -f field="$STATUS_FIELD_ID" \
+            -f option="$DONE_OPTION_ID"
+
+          echo "Done."
