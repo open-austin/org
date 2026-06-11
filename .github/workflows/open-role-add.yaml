@@ -1,16 +1,56 @@
-name: Add to project
+name: Route open role issues
+
 on:
   issues:
     types:
       - labeled
 
 jobs:
-  add-to-project:
+  route-open-role:
+    if: github.event.label.name == 'open role'
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+      OPEN_ROLES_PROJECT_ID: PVT_kwDOAA7NZM4AmdbW
+      ORG_KANBAN_PROJECT_ID: PVT_kwDOAA7NZM4AqQF8
+
     steps:
-      - name: Add issue to project
-        if: github.event.label.name == 'open role'
-        uses: actions/add-to-project@v0.5.0
+      - name: Add to Open Roles board
+        uses: actions/add-to-project@v1.0.2
         with:
           project-url: https://github.com/orgs/open-austin/projects/6
           github-token: ${{ secrets.ACTIONS_TOKEN }}
+
+      - name: Remove from Org Kanban
+        run: |
+          ISSUE_NODE_ID="${{ github.event.issue.node_id }}"
+
+          # Find the item ID on the Org Kanban for this issue
+          ITEM_ID=$(gh api graphql -f query='
+            query($project: ID!, $cursor: String) {
+              node(id: $project) {
+                ... on ProjectV2 {
+                  items(first: 100, after: $cursor) {
+                    nodes {
+                      id
+                      content { ... on Issue { id } }
+                    }
+                    pageInfo { hasNextPage endCursor }
+                  }
+                }
+              }
+            }' -f project="$ORG_KANBAN_PROJECT_ID" \
+            --jq ".data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .id")
+
+          if [ -n "$ITEM_ID" ]; then
+            echo "Removing item $ITEM_ID from Org Kanban..."
+            gh api graphql -f query='
+              mutation($project: ID!, $item: ID!) {
+                deleteProjectV2Item(input: { projectId: $project, itemId: $item }) {
+                  deletedItemId
+                }
+              }' -f project="$ORG_KANBAN_PROJECT_ID" -f item="$ITEM_ID"
+            echo "Removed."
+          else
+            echo "Issue not found on Org Kanban — nothing to remove."
+          fi

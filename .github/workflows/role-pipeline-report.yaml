@@ -1,0 +1,128 @@
+name: Post open role pipeline report to Slack
+
+on:
+  schedule:
+    # First Monday of the month at 10am UTC
+    - cron: '0 10 1-7 * 1'
+  workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  OPEN_ROLES_PROJECT_ID: PVT_kwDOAA7NZM4AmdbW
+  FILLED_OPTION_ID: "47fc9ee4"
+  IN_PROGRESS_OPTION_ID: "561a5d37"
+  OPEN_OPTION_ID: f75ad846
+
+jobs:
+  role-pipeline-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build and post role pipeline report
+        env:
+          SLACK_WEBHOOK_ENGAGEMENT: ${{ secrets.SLACK_WEBHOOK_ENGAGEMENT }}
+        run: |
+          NOW=$(date +%s)
+
+          # Fetch all Open Roles items
+          ITEMS=$(gh api graphql -f query='
+            query($project: ID!) {
+              node(id: $project) {
+                ... on ProjectV2 {
+                  items(first: 100) {
+                    nodes {
+                      updatedAt
+                      fieldValueByName(name: "Status") {
+                        ... on ProjectV2ItemFieldSingleSelectValue {
+                          optionId
+                          name
+                        }
+                      }
+                      content {
+                        ... on Issue {
+                          number
+                          title
+                          url
+                          labels(first: 10) {
+                            nodes { name }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f project="$OPEN_ROLES_PROJECT_ID" \
+            --jq '.data.node.items.nodes[]')
+
+          # Categorize roles
+          OPEN_FRESH=""    # Open, updated < 30 days ago
+          OPEN_AGING=""    # Open, 30–90 days
+          OPEN_STALE=""    # Open, > 90 days
+          IN_PROGRESS=""   # In Progress
+          FILLED_RECENT="" # Filled in the last 30 days
+
+          THIRTY_DAYS=$(( NOW - 30 * 86400 ))
+          NINETY_DAYS=$(( NOW - 90 * 86400 ))
+
+          while IFS= read -r item; do
+            OPTION_ID=$(echo "$item" | jq -r '.fieldValueByName.optionId // ""')
+            STATUS_NAME=$(echo "$item" | jq -r '.fieldValueByName.name // "Unknown"')
+            UPDATED_AT=$(echo "$item" | jq -r '.updatedAt')
+            TITLE=$(echo "$item" | jq -r '.content.title // "(no title)"')
+            NUMBER=$(echo "$item" | jq -r '.content.number // ""')
+            URL=$(echo "$item" | jq -r '.content.url // ""')
+
+            [ -z "$NUMBER" ] && continue
+
+            UPDATED_TS=$(date -d "$UPDATED_AT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$UPDATED_AT" +%s)
+            DAYS=$(( ( NOW - UPDATED_TS ) / 86400 ))
+            LINE="• <$URL|#$NUMBER $TITLE> (${DAYS}d)"
+
+            if [ "$OPTION_ID" == "$IN_PROGRESS_OPTION_ID" ]; then
+              IN_PROGRESS="$IN_PROGRESS\n$LINE"
+            elif [ "$OPTION_ID" == "$FILLED_OPTION_ID" ]; then
+              [ "$UPDATED_TS" -gt "$THIRTY_DAYS" ] && FILLED_RECENT="$FILLED_RECENT\n$LINE"
+            elif [ "$OPTION_ID" == "$OPEN_OPTION_ID" ]; then
+              if [ "$UPDATED_TS" -gt "$THIRTY_DAYS" ]; then
+                OPEN_FRESH="$OPEN_FRESH\n$LINE"
+              elif [ "$UPDATED_TS" -gt "$NINETY_DAYS" ]; then
+                OPEN_AGING="$OPEN_AGING\n$LINE"
+              else
+                OPEN_STALE="$OPEN_STALE\n$LINE"
+              fi
+            fi
+          done < <(echo "$ITEMS")
+
+          # Build Slack message blocks
+          build_section() {
+            local header="$1"
+            local items="$2"
+            if [ -n "$items" ]; then
+              printf '{"type":"section","text":{"type":"mrkdwn","text":"*%s*\n%s"}},' "$header" "$(echo -e "$items" | sed '/^$/d')"
+            fi
+          }
+
+          BLOCKS='[{"type":"header","text":{"type":"plain_text","text":"Open Austin — Open Roles Pipeline 📋","emoji":true}},'
+          BLOCKS+='{"type":"section","text":{"type":"mrkdwn","text":"Monthly snapshot of the <https://github.com/orgs/open-austin/projects/6|Open Roles board>."}},'
+          BLOCKS+='{"type":"divider"},'
+
+          [ -n "$IN_PROGRESS" ] && BLOCKS+=$(build_section "🔄 In Progress" "$IN_PROGRESS")
+          [ -n "$OPEN_FRESH" ] && BLOCKS+=$(build_section "🟢 Open — Active (< 30d)" "$OPEN_FRESH")
+          [ -n "$OPEN_AGING" ] && BLOCKS+=$(build_section "🟡 Open — Aging (30–90d)" "$OPEN_AGING")
+          [ -n "$OPEN_STALE" ] && BLOCKS+=$(build_section "🔴 Open — Stale (> 90d)" "$OPEN_STALE")
+          [ -n "$FILLED_RECENT" ] && BLOCKS+=$(build_section "✅ Filled This Month" "$FILLED_RECENT")
+
+          # Remove trailing comma and close array
+          BLOCKS="${BLOCKS%,}]"
+
+          # Check for empty report
+          if [ "$BLOCKS" == '[{"type":"header","text":{"type":"plain_text","text":"Open Austin — Open Roles Pipeline 📋","emoji":true}},{"type":"section","text":{"type":"mrkdwn","text":"Monthly snapshot of the <https://github.com/orgs/open-austin/projects/6|Open Roles board>."}},{"type":"divider"}]' ]; then
+            BLOCKS='[{"type":"section","text":{"type":"mrkdwn","text":"No active open roles found."}}]'
+          fi
+
+          echo "Posting to Slack..."
+          curl -s -X POST "$SLACK_WEBHOOK_ENGAGEMENT" \
+            -H 'Content-type: application/json' \
+            --data "{\"blocks\": $BLOCKS}"
+          echo "Done."

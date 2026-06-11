@@ -1,0 +1,73 @@
+name: Move reopened issue back to To Do on Org Kanban
+
+on:
+  issues:
+    types:
+      - reopened
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  ORG_KANBAN_PROJECT_ID: PVT_kwDOAA7NZM4AqQF8
+  STATUS_FIELD_ID: PVTSSF_lADOAA7NZM4AqQF8zghh1hc
+  TODO_OPTION_ID: f75ad846
+
+jobs:
+  reopened-to-todo:
+    # Skip open role issues — those belong on the Open Roles board
+    if: "!contains(github.event.issue.labels.*.name, 'open role')"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set issue back to To Do on Org Kanban
+        run: |
+          ISSUE_NODE_ID="${{ github.event.issue.node_id }}"
+
+          # Find the item on Org Kanban
+          RESULT=$(gh api graphql -f query='
+            query($project: ID!) {
+              node(id: $project) {
+                ... on ProjectV2 {
+                  items(first: 100) {
+                    nodes {
+                      id
+                      fieldValueByName(name: "Status") {
+                        ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                      }
+                      content { ... on Issue { id } }
+                    }
+                  }
+                }
+              }
+            }' -f project="$ORG_KANBAN_PROJECT_ID")
+
+          ITEM_ID=$(echo "$RESULT" | jq -r ".data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .id")
+          CURRENT=$(echo "$RESULT" | jq -r ".data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .fieldValueByName.optionId // \"\"")
+
+          if [ -z "$ITEM_ID" ]; then
+            echo "Issue not on Org Kanban — nothing to update."
+            exit 0
+          fi
+
+          # Guard: skip if already To Do (prevents loop with kanban-status-reopen)
+          if [ "$CURRENT" == "$TODO_OPTION_ID" ]; then
+            echo "Already in 'To Do' — skipping."
+            exit 0
+          fi
+
+          echo "Issue reopened — setting to 'To Do' on Org Kanban..."
+          gh api graphql -f query='
+            mutation($project: ID!, $item: ID!, $field: ID!, $option: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $project,
+                itemId: $item,
+                fieldId: $field,
+                value: { singleSelectOptionId: $option }
+              }) {
+                projectV2Item { id }
+              }
+            }' \
+            -f project="$ORG_KANBAN_PROJECT_ID" \
+            -f item="$ITEM_ID" \
+            -f field="$STATUS_FIELD_ID" \
+            -f option="$TODO_OPTION_ID"
+          echo "Done."

@@ -1,0 +1,48 @@
+name: Apply labels from open role issue form
+
+on:
+  issues:
+    types:
+      - opened
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+
+jobs:
+  apply-role-labels:
+    if: contains(github.event.issue.labels.*.name, 'open role')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Parse form body and apply team + product team labels
+        run: |
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          BODY=$(cat << 'BODYEOF'
+          ${{ github.event.issue.body }}
+          BODYEOF
+          )
+
+          # Extract the "team" dropdown value from the issue body
+          # GitHub issue forms render as: "### What kind of role...\n\nValue"
+          TEAM=$(echo "$BODY" | grep -A2 "What kind of role is this" | tail -1 | xargs)
+
+          # Map dropdown value to label(s)
+          # Product Team → both product team + engagement labels (product teams live under engagement)
+          # Engagement alone → just engagement
+          case "$TEAM" in
+            "Product Team")
+              echo "Product Team role — applying 'product team' and 'engagement' labels"
+              gh issue edit "$ISSUE_NUMBER" --repo "${{ github.repository }}" --add-label "product team,engagement"
+              ;;
+            "Engagement")
+              # engagement label already applied by the issue template — nothing to add
+              echo "Engagement standing team role — labels already set."
+              ;;
+            "Communications") gh issue edit "$ISSUE_NUMBER" --repo "${{ github.repository }}" --add-label communications ;;
+            "Education")      gh issue edit "$ISSUE_NUMBER" --repo "${{ github.repository }}" --add-label education ;;
+            "Finance")        gh issue edit "$ISSUE_NUMBER" --repo "${{ github.repository }}" --add-label finance ;;
+            "Fundraising")    gh issue edit "$ISSUE_NUMBER" --repo "${{ github.repository }}" --add-label fundraising ;;
+            "Infrastructure") gh issue edit "$ISSUE_NUMBER" --repo "${{ github.repository }}" --add-label infrastructure ;;
+            "Board")          gh issue edit "$ISSUE_NUMBER" --repo "${{ github.repository }}" --add-label board ;;
+            *) echo "Could not determine team from: '$TEAM' — skipping team label." ;;
+          esac

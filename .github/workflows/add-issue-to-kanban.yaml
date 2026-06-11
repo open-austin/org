@@ -1,0 +1,63 @@
+name: Add new issue to Org Kanban
+
+on:
+  issues:
+    types:
+      - opened
+      - labeled
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  ORG_KANBAN_PROJECT_ID: PVT_kwDOAA7NZM4AqQF8
+  STATUS_FIELD_ID: PVTSSF_lADOAA7NZM4AqQF8zghh1hc
+  TODO_OPTION_ID: f75ad846
+
+jobs:
+  add-to-kanban:
+    # Skip pull requests, skip open role issues (they go to Open Roles board instead)
+    if: |
+      github.event.issue != null &&
+      !contains(github.event.issue.labels.*.name, 'open role')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Add issue to Org Kanban under "To Do"
+        run: |
+          ISSUE_NODE_ID="${{ github.event.issue.node_id }}"
+
+          # Add the issue to the project (returns item ID)
+          ITEM_ID=$(gh api graphql -f query='
+            mutation($project: ID!, $content: ID!) {
+              addProjectV2ItemById(input: { projectId: $project, contentId: $content }) {
+                item { id }
+              }
+            }' \
+            -f project="$ORG_KANBAN_PROJECT_ID" \
+            -f content="$ISSUE_NODE_ID" \
+            --jq '.data.addProjectV2ItemById.item.id')
+
+          if [ -z "$ITEM_ID" ]; then
+            echo "Issue already on board or could not be added — skipping status set."
+            exit 0
+          fi
+
+          echo "Added item $ITEM_ID — setting status to 'To Do'..."
+
+          # Set status to "To Do"
+          gh api graphql -f query='
+            mutation($project: ID!, $item: ID!, $field: ID!, $option: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $project,
+                itemId: $item,
+                fieldId: $field,
+                value: { singleSelectOptionId: $option }
+              }) {
+                projectV2Item { id }
+              }
+            }' \
+            -f project="$ORG_KANBAN_PROJECT_ID" \
+            -f item="$ITEM_ID" \
+            -f field="$STATUS_FIELD_ID" \
+            -f option="$TODO_OPTION_ID"
+
+          echo "Done — issue is now on Org Kanban in 'To Do'."

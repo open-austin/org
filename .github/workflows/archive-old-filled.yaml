@@ -1,0 +1,127 @@
+name: Archive old Filled items from Open Roles board
+
+on:
+  schedule:
+    # Every Monday at 9am UTC (same as archive-old-done)
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (log without archiving)'
+        required: false
+        default: 'true'
+        type: boolean
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  OPEN_ROLES_PROJECT_ID: PVT_kwDOAA7NZM4AmdbW
+  FILLED_OPTION_ID: "47fc9ee4"
+  # Filled roles are archived after 1 year (longer than Done tasks on Kanban)
+  STALE_DAYS: "365"
+
+jobs:
+  archive-old-filled:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Archive Filled items older than 1 year
+        run: |
+          DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+          CUTOFF=$(date -d "-${STALE_DAYS} days" +%s 2>/dev/null || date -v "-${STALE_DAYS}d" +%s)
+
+          echo "Fetching Filled items from Open Roles board..."
+          echo "Cutoff: items not updated since $(date -d @$CUTOFF 2>/dev/null || date -r $CUTOFF)"
+          echo "Dry run: $DRY_RUN"
+          echo "---"
+
+          ARCHIVED=0
+          CURSOR=""
+
+          while true; do
+            if [ -n "$CURSOR" ]; then
+              RESULT=$(gh api graphql -f query='
+                query($project: ID!, $cursor: String!) {
+                  node(id: $project) {
+                    ... on ProjectV2 {
+                      items(first: 100, after: $cursor) {
+                        nodes {
+                          id
+                          updatedAt
+                          fieldValueByName(name: "Status") {
+                            ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                          }
+                          content {
+                            ... on Issue { number title }
+                            ... on DraftIssue { title }
+                          }
+                        }
+                        pageInfo { hasNextPage endCursor }
+                      }
+                    }
+                  }
+                }' -f project="$OPEN_ROLES_PROJECT_ID" -f cursor="$CURSOR")
+            else
+              RESULT=$(gh api graphql -f query='
+                query($project: ID!) {
+                  node(id: $project) {
+                    ... on ProjectV2 {
+                      items(first: 100) {
+                        nodes {
+                          id
+                          updatedAt
+                          fieldValueByName(name: "Status") {
+                            ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                          }
+                          content {
+                            ... on Issue { number title }
+                            ... on DraftIssue { title }
+                          }
+                        }
+                        pageInfo { hasNextPage endCursor }
+                      }
+                    }
+                  }
+                }' -f project="$OPEN_ROLES_PROJECT_ID")
+            fi
+
+            HAS_NEXT=$(echo "$RESULT" | jq -r '.data.node.items.pageInfo.hasNextPage')
+            CURSOR=$(echo "$RESULT" | jq -r '.data.node.items.pageInfo.endCursor')
+
+            while IFS= read -r item; do
+              ITEM_ID=$(echo "$item" | jq -r '.id')
+              OPTION_ID=$(echo "$item" | jq -r '.fieldValueByName.optionId // ""')
+              UPDATED_AT=$(echo "$item" | jq -r '.updatedAt')
+              TITLE=$(echo "$item" | jq -r '.content.title // "(no title)"')
+              ISSUE_NUM=$(echo "$item" | jq -r '.content.number // ""')
+
+              [ "$OPTION_ID" != "$FILLED_OPTION_ID" ] && continue
+
+              UPDATED_TS=$(date -d "$UPDATED_AT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$UPDATED_AT" +%s)
+              [ "$UPDATED_TS" -gt "$CUTOFF" ] && continue
+
+              LABEL=""
+              [ -n "$ISSUE_NUM" ] && LABEL="#$ISSUE_NUM: "
+              echo "Would archive: ${LABEL}${TITLE} (last updated: $UPDATED_AT)"
+
+              if [ "$DRY_RUN" != "true" ]; then
+                gh api graphql -f query='
+                  mutation($project: ID!, $item: ID!) {
+                    archiveProjectV2Item(input: { projectId: $project, itemId: $item }) {
+                      item { id }
+                    }
+                  }' -f project="$OPEN_ROLES_PROJECT_ID" -f item="$ITEM_ID" > /dev/null
+                echo "  → Archived."
+                ARCHIVED=$((ARCHIVED + 1))
+              fi
+
+            done < <(echo "$RESULT" | jq -c '.data.node.items.nodes[]')
+
+            [ "$HAS_NEXT" != "true" ] && break
+          done
+
+          echo "---"
+          if [ "$DRY_RUN" == "true" ]; then
+            echo "Dry run complete. Run with dry_run=false to apply."
+          else
+            echo "Archived $ARCHIVED item(s)."
+          fi

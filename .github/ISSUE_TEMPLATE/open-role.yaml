@@ -1,52 +1,89 @@
 name: Post open role for project
-description: Use this template when you need to fill an open role in a project.
-title:  "Open Role:{Role name/brief-description}"
-labels: ["open role"]
-assignees:
-  - octocat
+description: Use this template when you need to fill an open role in a project or team.
+title: "Open Role: [Role name]"
+labels: ["open role", "engagement"]
 body:
+  - type: dropdown
+    id: team
+    attributes:
+      label: What kind of role is this?
+      description: Select the best fit. Product Team roles are for specific civic tech projects; Engagement is for standing org-level engagement work.
+      options:
+        - Product Team
+        - Engagement
+        - Communications
+        - Education
+        - Finance
+        - Fundraising
+        - Infrastructure
+        - Board
+    validations:
+      required: true
+
   - type: textarea
     id: project-description
     attributes:
-      label: Description of project
-      description: Brief description of the project.
-      placeholder:
-      value:
+      label: Description of project or team
+      description: Brief description of the project or standing team this role supports.
+      placeholder: What does this project/team do and why does it matter?
     validations:
       required: true
+
   - type: textarea
     id: role-description
     attributes:
       label: Description of role
-      description: Brief description of the role.
-      placeholder:
-      value:
+      description: What will this person actually do? What does success look like?
+      placeholder: Specific responsibilities, expected outputs, who they'll work with.
     validations:
       required: true
+
+  - type: dropdown
+    id: commitment
+    attributes:
+      label: Estimated commitment
+      description: Approximate hours per week.
+      options:
+        - "1-2 hrs/week"
+        - "3-5 hrs/week"
+        - "5-10 hrs/week"
+        - "10+ hrs/week"
+        - Flexible / project-based
+    validations:
+      required: true
+
+  - type: textarea
+    id: skills
+    attributes:
+      label: Skills or experience needed
+      description: List the key skills, tools, or experience this role requires. Distinguish must-have from nice-to-have if possible.
+      placeholder: |
+        Must have:
+        - ...
+        Nice to have:
+        - ...
+    validations:
+      required: true
+
   - type: textarea
     id: timeframe
     attributes:
       label: Timeframe
       description: How soon do you need this role filled? How long do you expect it to be needed?
-      placeholder:
-      value:
     validations:
       required: true
+
   - type: textarea
     id: docs
     attributes:
-      label: Project docs
-      description: Link to project docs
-      placeholder:
-      value:
-    validations:
-      required: true
+      label: Project or team docs
+      description: Link to any relevant docs, planning sheets, or resources.
+
   - type: textarea
     id: contact
     attributes:
       label: Who to contact?
-      description: Who should be contacted to begin work on this project? Can include slack channel, emails, etc (NOTE! This is a public repo)
-      placeholder:
-      value:
+      description: Who should a prospective volunteer reach out to? Slack channel, GitHub username, email — whatever works.
+      placeholder: "@githubhandle or #slack-channel"
     validations:
       required: true

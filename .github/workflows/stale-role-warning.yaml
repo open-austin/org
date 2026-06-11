@@ -1,0 +1,122 @@
+name: Warn on stale open roles
+
+on:
+  schedule:
+    # Every Monday at 9am UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  OPEN_ROLES_PROJECT_ID: PVT_kwDOAA7NZM4AmdbW
+  FILLED_OPTION_ID: "47fc9ee4"
+  STALE_DAYS: "90"
+  # Marker string used to detect if we've already warned on this issue
+  WARNING_MARKER: "<!-- stale-role-warning -->"
+
+jobs:
+  warn-stale-roles:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Comment on open roles stale for 90+ days
+        run: |
+          CUTOFF=$(date -d "-${STALE_DAYS} days" +%s 2>/dev/null || date -v "-${STALE_DAYS}d" +%s)
+
+          echo "Checking for roles not updated since $(date -d @$CUTOFF 2>/dev/null || date -r $CUTOFF)..."
+
+          CURSOR=""
+          while true; do
+            if [ -n "$CURSOR" ]; then
+              RESULT=$(gh api graphql -f query='
+                query($project: ID!, $cursor: String!) {
+                  node(id: $project) {
+                    ... on ProjectV2 {
+                      items(first: 100, after: $cursor) {
+                        nodes {
+                          updatedAt
+                          fieldValueByName(name: "Status") {
+                            ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                          }
+                          content {
+                            ... on Issue {
+                              number
+                              repository { nameWithOwner }
+                            }
+                          }
+                        }
+                        pageInfo { hasNextPage endCursor }
+                      }
+                    }
+                  }
+                }' -f project="$OPEN_ROLES_PROJECT_ID" -f cursor="$CURSOR")
+            else
+              RESULT=$(gh api graphql -f query='
+                query($project: ID!) {
+                  node(id: $project) {
+                    ... on ProjectV2 {
+                      items(first: 100) {
+                        nodes {
+                          updatedAt
+                          fieldValueByName(name: "Status") {
+                            ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                          }
+                          content {
+                            ... on Issue {
+                              number
+                              repository { nameWithOwner }
+                            }
+                          }
+                        }
+                        pageInfo { hasNextPage endCursor }
+                      }
+                    }
+                  }
+                }' -f project="$OPEN_ROLES_PROJECT_ID")
+            fi
+
+            HAS_NEXT=$(echo "$RESULT" | jq -r '.data.node.items.pageInfo.hasNextPage')
+            CURSOR=$(echo "$RESULT" | jq -r '.data.node.items.pageInfo.endCursor')
+
+            while IFS= read -r item; do
+              OPTION_ID=$(echo "$item" | jq -r '.fieldValueByName.optionId // ""')
+              UPDATED_AT=$(echo "$item" | jq -r '.updatedAt')
+              ISSUE_NUMBER=$(echo "$item" | jq -r '.content.number // ""')
+              REPO=$(echo "$item" | jq -r '.content.repository.nameWithOwner // ""')
+
+              # Skip Filled roles
+              [ "$OPTION_ID" == "$FILLED_OPTION_ID" ] && continue
+              [ -z "$ISSUE_NUMBER" ] || [ -z "$REPO" ] && continue
+
+              # Check staleness
+              UPDATED_TS=$(date -d "$UPDATED_AT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$UPDATED_AT" +%s)
+              [ "$UPDATED_TS" -gt "$CUTOFF" ] && continue
+
+              # Check if we've already posted a stale warning
+              ALREADY_WARNED=$(gh api "/repos/$REPO/issues/$ISSUE_NUMBER/comments" \
+                --jq "[.[] | select(.body | contains(\"$WARNING_MARKER\"))] | length")
+
+              if [ "$ALREADY_WARNED" -gt 0 ]; then
+                echo "Already warned on #$ISSUE_NUMBER — skipping."
+                continue
+              fi
+
+              DAYS_STALE=$(( ( $(date +%s) - UPDATED_TS ) / 86400 ))
+              echo "Posting stale warning on #$ISSUE_NUMBER ($DAYS_STALE days since last update)..."
+
+              gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body "<!-- stale-role-warning -->
+**Stale role check** — this role hasn't been updated in ${DAYS_STALE} days.
+
+Is this role still active? A few options:
+- **Still open:** Update the description or leave a comment so others know it's current
+- **No longer needed:** Close this issue
+- **Role filled:** Move it to Filled on the [Open Roles board](https://github.com/orgs/open-austin/projects/6)
+
+No action needed if everything is already up to date — this is just a periodic check-in."
+
+            done < <(echo "$RESULT" | jq -c '.data.node.items.nodes[]')
+
+            [ "$HAS_NEXT" != "true" ] && break
+          done
+
+          echo "Stale role check complete."

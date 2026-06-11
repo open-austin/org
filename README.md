@@ -1,22 +1,59 @@
-# THIS README IS A WORK-IN-PROGRESS
+# Open Austin Org Tooling
 
-----
+This repo contains tools, documentation, and automation for managing the [Open Austin](https://www.open-austin.org/) GitHub organization.
 
-# General
+**Purpose:** Keep our issue tracker, project boards, labels, and documentation in sync with the org's current structure and priorities.
 
-This is where we keep track of our org operation activities.
+---
 
-## Membership
+## Quick Start
 
-- Read our [Code of Conduct](https://github.com/open-austin/open-austin.github.io/blob/main/about/index.md#code-of-conduct)
-- [Give us feedback](https://goo.gl/forms/H2k1ILqEDsJKnRxm2)
+### For Contributors
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup instructions (GitHub CLI, auth, spike workflow).
 
-## Communication
-The Communication team handles the Open Austin newsletters, social presence and more.
+### For Agents
 
-View full [communications team documentation](https://github.com/open-austin/iced-coffee/wiki/Communications).
+See [AGENTS.md](AGENTS.md) or [CLAUDE.md](CLAUDE.md) for rules, boundaries, and write safety requirements.
 
+---
 
-## Non Profit Governance
-Here's a [link to our website](https://www.open-austin.org/about/) with info about our bylaws and leadership minutes.
+## Sync Tools
+
+The sync tools pull current org state into local markdown snapshots. This gives you (or an agent) full context without repeated API calls.
+
+**Run the sync:**
+
+```bash
+tools/sync/run.sh
+```
+
+**Output:**
+
+- `snapshot/issues.md` — all open issues grouped by team label
+- `snapshot/labels.md` — current label taxonomy
+- `snapshot/board-org-kanban.md` — Org Kanban project board
+- `snapshot/board-open-roles.md` — Open Roles project board
+
+**Snapshots are gitignored** — always regenerate them at the start of a work session.
+
+---
+
+## Write Tools
+
+Write tools for guarded mutations (label changes, issue closes, board moves) are in active development. See `docs/github-tooling.todo.md` for status.
+
+All write operations require `--dry-run` by default and explicit approval before execution.
+
+---
+
+## Documentation
+
+- **Active spikes:** `docs/*.md` — current work with accompanying `.todo.md` files
+- **Decisions:** `docs/decisions/` — settled architectural choices
+- **Scratch:** `docs/scratch/` — exploratory drafts
+- **Archive:** `docs/archive/` — historical context
+
+See [docs/how-to-spike.md](docs/how-to-spike.md) for the full workflow.
+
+---
