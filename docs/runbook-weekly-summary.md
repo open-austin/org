@@ -9,7 +9,7 @@ This runbook describes how to produce the weekly Open Austin org summary. Run it
 A short, human-readable summary of current org state:
 - Active issues by team
 - Board health (items in each column)
-- Anything flagged as `priority`
+- Actionable flags, including priority-labeled items only when they need attention
 - A brief summary on what's moving and what's stuck
 
 The draft is written to `snapshot/weekly-summary.md` so review and Slack posting use the same text. `snapshot/` is gitignored, so this file is temporary working output.
@@ -45,23 +45,31 @@ Always summarize from the fresh snapshot. The archive is useful context, not sou
 
 ### 3. Produce the summary draft
 
-Write the summary to `snapshot/weekly-summary.md`, following `docs/templates/weekly-summary-template.md`. Use Slack-friendly markdown: short headings, bullets, and plain text. Avoid tables and avoid composing the Slack message inline in a shell command. When naming issues, use human-readable issue titles with Slack links (`<https://github.com/open-austin/org/issues/123|Issue title>`) instead of bare issue numbers.
+Write the summary to `snapshot/weekly-summary.md`, following `docs/templates/weekly-summary-template.md`. Use Slack-friendly `mrkdwn`: short headings, manual bullets, and plain text. Avoid tables and avoid composing the Slack message inline in a shell command.
+
+When naming issues, link only the issue number and put the title in plain text after it:
+
+```text
+<https://github.com/open-austin/org/issues/123|#123> Issue title
+```
+
+Do not use full-title links or standard Markdown links such as `[Issue title](https://...)`; Slack renders incoming webhook text more predictably with angle-bracket links.
 
 The summary should cover:
 
 **Teams with active issues:**
-List each team that has open issues. For each: number of issues, any with `priority` label, any assigned.
+List each team that has open issues. Use one parent bullet per team and one indented child bullet per issue. Add assignment details inline only when useful, such as `(assigned: lianilychee)`. Omit `Assigned: none`.
 
 **Board state:**
-Org Kanban column counts. Flag anything that's been In Progress for a long time without update.
+Org Kanban column counts. Put counts and issue lists on separate nested bullets so the Slack post does not become a dense paragraph. Flag anything that's been In Progress for a long time without update.
 
 **Blockers or flags:**
-Anything that looks stuck, unduly stale, or needs a human decision. Keep this section brief and signal-dense.
+Anything that looks stuck, unduly stale, or needs a human decision. Use a `Needs Attention` section. Do not include routine `Priority: none` lines; only mention priority-labeled issues if they are actionable.
 
 **Summary (2–3 sentences):**
 Plain language summary of where the org is at and what's most worth attention this week.
 
-Keep the whole summary skimmable. Bullet points over paragraphs. Concrete numbers.
+Keep the whole summary skimmable. Use bullet points over paragraphs, one issue per line, and concrete numbers. Avoid semicolon-separated chains of issues.
 
 Do not include Open Roles or recruiting tickets unless the user explicitly asks for them. Do not include internal repo TODOs or tooling status unless they directly affect the org-facing work being summarized.
 
