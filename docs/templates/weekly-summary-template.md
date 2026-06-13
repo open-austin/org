@@ -6,22 +6,43 @@ Use this template when drafting `snapshot/weekly-summary.md` for the weekly org 
 *Weekly Org Summary - {Month D, YYYY}*
 
 *Active Issues by Team*
-- *Finance* ({count}): <https://github.com/open-austin/org/issues/{number}|{Issue title}>; <https://github.com/open-austin/org/issues/{number}|{Issue title}>. Priority: {none or linked priority issue}. Assigned: {names or none}.
-- *Fundraising* ({count}): <https://github.com/open-austin/org/issues/{number}|{Issue title}>; <https://github.com/open-austin/org/issues/{number}|{Issue title}>. Priority: {none or linked priority issue}. Assigned: {names or none}.
-- *Communications* ({count}): <https://github.com/open-austin/org/issues/{number}|{Issue title}>. Priority: {none or linked priority issue}. Assigned: {names or none}.
-- *Engagement* ({count}): <https://github.com/open-austin/org/issues/{number}|{Issue title}>. Priority: {none or linked priority issue}. Assigned: {names or none}.
-- *Education* ({count}): <https://github.com/open-austin/org/issues/{number}|{Issue title}>; <https://github.com/open-austin/org/issues/{number}|{Issue title}>. Priority: {none or linked priority issue}. Assigned: {names or none}.
-- *Infrastructure* ({count}): <https://github.com/open-austin/org/issues/{number}|{Issue title}>; <https://github.com/open-austin/org/issues/{number}|{Issue title}>. Priority: {none or linked priority issue}. Assigned: {names or none}.
-- *Community* ({count}): <https://github.com/open-austin/org/issues/{number}|{Issue title}>. Priority: {none or linked priority issue}. Assigned: {names or none}.
-- *Board* ({count}): <https://github.com/open-austin/org/issues/{number}|{Issue title}>; <https://github.com/open-austin/org/issues/{number}|{Issue title}>. Priority: {none or linked priority issue}. Assigned: {names or none}.
+- *Finance* ({count}):
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names})
+- *Fundraising* ({count}):
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names})
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+- *Communications* ({count}):
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+- *Engagement* ({count}):
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names})
+- *Education* ({count}):
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+- *Infrastructure* ({count}):
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names})
+- *Community* ({count}):
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+- *Board* ({count}):
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names})
 
 *Board Health*
-- Org Kanban: {done_count} Done, {in_progress_count} In Progress, {todo_count} To Do.
-- In Progress: <https://github.com/open-austin/org/issues/{number}|{Issue title}> ({assignee}, stale {days}d); <https://github.com/open-austin/org/issues/{number}|{Issue title}> ({assignee}, stale {days}d).
-- Notable To Do: <https://github.com/open-austin/org/issues/{number}|{Issue title}>; <https://github.com/open-austin/org/issues/{number}|{Issue title}>.
+- Org Kanban:
+  - {done_count} Done
+  - {in_progress_count} In Progress
+  - {todo_count} To Do
+- In Progress:
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names}; stale {days}d)
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names}; stale {days}d)
+- Notable To Do:
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
 
-*Priority / Flags*
-- <https://github.com/open-austin/org/issues/{number}|{Issue title}>: {why it matters or what decision is needed}.
+*Needs Attention*
+- <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}: {why it matters or what decision is needed}.
 - {Brief blocker/staleness note, only if it needs human attention.}
 
 *Summary*
@@ -30,11 +51,15 @@ Use this template when drafting `snapshot/weekly-summary.md` for the weekly org 
 
 ## Style Rules
 
-- Use human-readable issue titles with Slack links; avoid bare issue numbers.
+- Use Slack `mrkdwn` links, not standard Markdown links: `<https://github.com/open-austin/org/issues/123|#123> Issue title`.
+- Link only the issue number. Keep the issue title as plain text after the link.
 - Omit teams with no active in-scope issues.
+- Use nested bullets so each issue gets its own line. Do not pack multiple issue links into one semicolon-separated sentence.
+- Keep issue metadata short and inline: `(assigned: name)` or `(assigned: name; stale 123d)`.
+- Omit empty/default metadata such as `Priority: none` and `Assigned: none`.
 - Do not include Open Roles or recruiting tickets unless the user explicitly asks for them.
 - Do not include internal repo TODOs or tooling status unless they directly affect the org-facing work being summarized.
 - Keep Slack formatting simple: bold section headers, bullets, no tables.
 - Avoid emojis by default. If the user wants them, use at most one section-level emoji per heading.
 - Prefer `Summary` over `Narrative`.
-- Keep `Priority / Flags` actionable; do not list observations that are merely true.
+- Prefer `Needs Attention` over `Priority / Flags`. Only mention priority-labeled items when they require a human decision or action; otherwise focus on blockers, stale lanes, and concrete follow-up.
