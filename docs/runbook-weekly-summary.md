@@ -14,6 +14,8 @@ A short, human-readable summary of current org state:
 
 The draft is written to `snapshot/weekly-summary.md` so review and Slack posting use the same text. `snapshot/` is gitignored, so this file is temporary working output.
 
+For Slack posting, render that draft to `snapshot/weekly-summary.blocks.json` with Block Kit `rich_text_list` blocks so Slack shows real bullets instead of plain hyphen text.
+
 Use `docs/templates/weekly-summary-template.md` for the message shape. Final approved summaries are archived in `docs/weekly-review-archive/` so future summaries can reference recent context.
 
 Optionally posted to Slack. Always shown in the conversation first for review.
@@ -45,12 +47,14 @@ Always summarize from the fresh snapshot. The archive is useful context, not sou
 
 ### 3. Produce the summary draft
 
-Write the summary to `snapshot/weekly-summary.md`, following `docs/templates/weekly-summary-template.md`. Use Slack-friendly `mrkdwn`: short headings, manual bullets, and plain text. Avoid tables and avoid composing the Slack message inline in a shell command.
+Write the summary to `snapshot/weekly-summary.md`, following `docs/templates/weekly-summary-template.md`. This markdown file is the human-review draft, the input to the Block Kit renderer, and the plain-text fallback. Use Slack-friendly `mrkdwn`: short headings, `-` markers with line breaks for list structure, and plain text. Avoid tables and avoid composing the Slack message inline in a shell command. Do not use `*` as a bullet marker in this text fallback; in Slack `mrkdwn`, `*text*` means bold.
 
-When naming issues, link only the issue number and put the title in plain text after it:
+For true Slack bullet rendering, render and post a Block Kit payload with `rich_text` / `rich_text_list` blocks. Incoming webhooks support `blocks`, and `tools/notify/post.sh` can send a rendered payload with `--payload`.
+
+When naming issues, put the issue title first, then link only the issue number:
 
 ```text
-<https://github.com/open-austin/org/issues/123|#123> Issue title
+Issue title | <https://github.com/open-austin/org/issues/123|#123>
 ```
 
 Do not use full-title links or standard Markdown links such as `[Issue title](https://...)`; Slack renders incoming webhook text more predictably with angle-bracket links.
@@ -58,7 +62,7 @@ Do not use full-title links or standard Markdown links such as `[Issue title](ht
 The summary should cover:
 
 **Teams with active issues:**
-List each team that has open issues. Use one parent bullet per team and one indented child bullet per issue. Add assignment details inline only when useful, such as `(assigned: lianilychee)`. Omit `Assigned: none`.
+List each team that has open issues. Use one parent bullet per team and one indented child bullet per issue. Include assignment status on every issue because unowned work is useful signal: `(assigned: none)` or `(assigned: lianilychee)`.
 
 **Board state:**
 Org Kanban column counts. Put counts and issue lists on separate nested bullets so the Slack post does not become a dense paragraph. Flag anything that's been In Progress for a long time without update.
@@ -81,14 +85,34 @@ Show the contents of `snapshot/weekly-summary.md` in the conversation. Ask:
 
 ### 5. Post to Slack (if confirmed)
 
+Render the reviewed markdown draft into a Slack Block Kit payload:
+
+```bash
+tools/notify/render_weekly_summary_blocks.py snapshot/weekly-summary.md --output snapshot/weekly-summary.blocks.json
+```
+
+Preview the payload without posting:
+
+```bash
+tools/notify/post.sh SLACK_WEBHOOK_ORG --payload snapshot/weekly-summary.blocks.json --dry-run
+```
+
+Then post the payload after approval:
+
 ```bash
 set -a
 source .env
 set +a
-tools/notify/post.sh SLACK_WEBHOOK_ORG < snapshot/weekly-summary.md
+tools/notify/post.sh SLACK_WEBHOOK_ORG --payload snapshot/weekly-summary.blocks.json
 ```
 
 For a general all-org channel, use the appropriate webhook variable from `.env`.
+
+If Block Kit rendering fails, fall back to the plain-text message:
+
+```bash
+tools/notify/post.sh SLACK_WEBHOOK_ORG < snapshot/weekly-summary.md
+```
 
 If no Slack webhook is configured yet, just deliver the summary in the conversation.
 
@@ -124,6 +148,7 @@ This is manually triggered — no cron. Run it when the user asks. Once a week i
 
 - `tools/sync/run.sh` — sync command
 - `tools/notify/post.sh` — Slack post command
+- `tools/notify/render_weekly_summary_blocks.py` — renders weekly summary markdown to Slack Block Kit JSON
 - `docs/templates/weekly-summary-template.md` — weekly summary template
 - `docs/weekly-review-archive/` — final weekly summary archive
 - `AGENTS.md` — agent rules and write safety
