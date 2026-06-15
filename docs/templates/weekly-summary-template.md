@@ -7,27 +7,27 @@ Use this template when drafting `snapshot/weekly-summary.md` for the weekly org 
 
 *Active Issues by Team*
 - *Finance* ({count}):
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names})
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: none)
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: {names})
 - *Fundraising* ({count}):
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names})
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: {names})
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: none)
 - *Communications* ({count}):
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: none)
 - *Engagement* ({count}):
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names})
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: {names})
 - *Education* ({count}):
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: none)
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: none)
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: none)
 - *Infrastructure* ({count}):
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names})
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: none)
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: {names})
 - *Community* ({count}):
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: none)
 - *Board* ({count}):
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names})
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: none)
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: {names})
 
 *Board Health*
 - Org Kanban:
@@ -35,14 +35,14 @@ Use this template when drafting `snapshot/weekly-summary.md` for the weekly org 
   - {in_progress_count} In Progress
   - {todo_count} To Do
 - In Progress:
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names}; stale {days}d)
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title} (assigned: {names}; stale {days}d)
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: {names}; stale {days}d)
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: {names}; stale {days}d)
 - Notable To Do:
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
-  - <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: {names or none})
+  - {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}> (assigned: {names or none})
 
 *Needs Attention*
-- <https://github.com/open-austin/org/issues/{number}|#{number}> {Issue title}: {why it matters or what decision is needed}.
+- {Issue title} | <https://github.com/open-austin/org/issues/{number}|#{number}>: {why it matters or what decision is needed}.
 - {Brief blocker/staleness note, only if it needs human attention.}
 
 *Summary*
@@ -51,12 +51,15 @@ Use this template when drafting `snapshot/weekly-summary.md` for the weekly org 
 
 ## Style Rules
 
-- Use Slack `mrkdwn` links, not standard Markdown links: `<https://github.com/open-austin/org/issues/123|#123> Issue title`.
-- Link only the issue number. Keep the issue title as plain text after the link.
+- Use Slack `mrkdwn` links, not standard Markdown links: `Issue title | <https://github.com/open-austin/org/issues/123|#123>`.
+- Put the issue title first as plain text, then link only the issue number.
 - Omit teams with no active in-scope issues.
+- This markdown is both the human-review draft and the input format for `tools/notify/render_weekly_summary_blocks.py`. Use `-` markers and two-space indentation consistently so the renderer can create Block Kit `rich_text_list` blocks.
+- In the plain-text fallback path, `-` markers plus line breaks mimic lists. Do not use `*` as bullets because `*text*` is Slack bold formatting.
+- For true Slack bullet rendering, post the rendered Block Kit payload with `tools/notify/post.sh SLACK_WEBHOOK_ORG --payload snapshot/weekly-summary.blocks.json`.
 - Use nested bullets so each issue gets its own line. Do not pack multiple issue links into one semicolon-separated sentence.
-- Keep issue metadata short and inline: `(assigned: name)` or `(assigned: name; stale 123d)`.
-- Omit empty/default metadata such as `Priority: none` and `Assigned: none`.
+- Keep assignment status on each issue because unowned work is useful signal: `(assigned: none)`, `(assigned: name)`, or `(assigned: name; stale 123d)`.
+- Omit empty/default priority metadata such as `Priority: none`.
 - Do not include Open Roles or recruiting tickets unless the user explicitly asks for them.
 - Do not include internal repo TODOs or tooling status unless they directly affect the org-facing work being summarized.
 - Keep Slack formatting simple: bold section headers, bullets, no tables.
