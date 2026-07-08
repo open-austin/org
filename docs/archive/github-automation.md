@@ -1,7 +1,7 @@
 # GitHub Automation
-Continues in: docs/active-spikes/board-sync-redesign.md
+Continues in: docs/archive/board-sync-redesign.md
 
-The board↔issue sync layer is being re-architected under `docs/active-spikes/board-sync-redesign.md` (native `Auto-close` exception + code-first + one reopen poller). This spike remains the home for the routing, reporting, archive, and form-labeling workflows.
+Archived 2026-07-08. The board↔issue sync layer was re-architected under `docs/archive/board-sync-redesign.md` (native `Auto-close` exception + code-first + one reopen poller). This spike covered the routing, reporting, archive, and form-labeling workflows. Durable outcomes live in `README.md` (Board Automation) and decision records `0004`/`0005`.
 
 ## Goal
 

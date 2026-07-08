@@ -1,5 +1,7 @@
 # Board ↔ Issue Sync Redesign
-Continues from: docs/active-spikes/github-automation.md
+Continues from: docs/archive/github-automation.md
+
+Archived 2026-07-08 — complete and QA-confirmed live. Durable outcomes live in `README.md` (Board Automation) and decision records `0004`/`0005`.
 
 ## Goal
 Re-architect the board↔issue sync layer so it is (in priority order): auditable and version-controlled in this repo, immediate wherever the platform allows, and minimal in surface area — one system doing the work, not custom Actions and native Projects workflows fighting each other.

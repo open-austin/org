@@ -2,6 +2,15 @@
 This is the coordination map for active work in this repo. See `skills/run-project-spike/SKILL.md` for the full process.
 
 ## Done
+### Board ↔ Issue Sync Redesign *(archived: `docs/archive/board-sync-redesign.md`)*
+Re-architected board↔issue sync: native `Auto-close issue` is the single non-code exception (card→close), everything else is code, one `board-reopen-reconcile` poller (~5 min) handles card→reopen, all other native Projects workflows off. Confirmed working live 2026-07-08. Durable outcomes in `README.md` (Board Automation) and decisions `0004`/`0005`. Note: GitHub scheduled runs can be badly delayed (first reopen took ~25+ min).
+
+### GitHub Automation *(archived: `docs/archive/github-automation.md`)*
+Built the full board/issue automation set — routing, issue↔board status sync, scheduled archive, Slack reporting, form labeling. Two incidents fixed en route: `role-pipeline-report` cron firing daily instead of monthly, and the `projects_v2_item` trigger being invalid so board→issue sync never fired (decision `0004`, which spawned the Board Sync Redesign). Also hardened `label-open-role-from-form` (script-injection) and `stale-role-warning` (YAML block-scalar bug that had kept it from ever running).
+
+### Backlog Triage *(archived: `docs/archive/backlog-triage.md`)*
+Restructured label taxonomy to match Refactor 2026 Teams structure. Labeled all issues, closed dead issues, retired old labels. Done column cleanup and "To Do" column review deferred to automation spike and human triage.
+
 ### Weekly Summary Per-Team Channels *(archived: `docs/archive/weekly-summary-channels.md`)*
 Broke the weekly org summary into per-team Slack channels (`#oa-board`, `#t-infrastructure`, `#t-finance`, `#t-fundraising`, `#t-communications`, `#t-education`, `#pg-data-fellowship`, plus existing `#t-engagement`); `#oa-org` is now priority-only. First real run posted successfully 2026-07-07. See the archived to-do doc for two editorial points that weren't explicitly re-confirmed before closing (multi-label cross-posting, open-role issues in non-engagement channels).
 
@@ -30,44 +39,21 @@ Getting the repo into a state where agents can work effectively and the methodol
 - [x] Update `README.md` to document tooling and workflow
 
 ## Active Spikes
-### Board ↔ Issue Sync Redesign
-**Status:** Planned, not yet implemented
-**Spike:** `docs/active-spikes/board-sync-redesign.md`
-**Todo:** `docs/active-spikes/board-sync-redesign.todo.md`
+None currently active.
 
-Re-architecting board↔issue sync: native `Auto-close issue` for card→close (the one non-code exception), everything else in code, one 5-minute reopen poller, all other native Projects workflows off. Continues from the GitHub Automation spike. Plan is written; implementation pending (starts with native UI config + a one-time baseline cleanup).
+## Automation — residual QA / watch
+Low-priority follow-ups left after archiving the automation spikes (2026-07-08). None block anything; the automation is live and working.
 
-### Backlog Triage *(archived: `docs/archive/backlog-triage.md`)*
-Restructured label taxonomy to match Refactor 2026 Teams structure. Labeled all issues, closed dead issues, retired old labels. Done column cleanup and "To Do" column review deferred to automation spike and human triage.
+- **`role-pipeline-report` next first-Monday** — the cron fix (skip unless day-of-month ≤ 7) hasn't been observed on a real first Monday yet. Confirm it posts once, not daily.
+- **`archive-old-done` / `archive-old-filled`** — implemented with dry-run defaults but never exercised. Run each once via the Actions UI with `dry_run=true` to eyeball the output when convenient.
+- **`stale-role-warning` dry-run** — YAML parse bug fixed and logic proven locally; a `dry_run` input was added (commit pending). After committing, dispatch once with `dry_run=true` to confirm end-to-end.
+- **Two board-sync edge paths** — blank-issue-then-`open role` routing, and the fresh-close guard, are verified by reading but not exercised live.
 
-### GitHub Automation
-**Status:** Active
-**Spike:** `docs/active-spikes/github-automation.md`
-**Todo:** `docs/active-spikes/github-automation.todo.md`
-
-GitHub Actions to keep boards and issue state in sync. Fixes the root cause of board noise. `ACTIONS_TOKEN` secret and project IDs are confirmed.
-
-**Incident (2026-07-07):** `role-pipeline-report.yaml`'s cron mixed day-of-month and day-of-week fields, which cron evaluates as OR — it fired daily instead of monthly and spammed `#t-engagement`. Fix applied as a plain working-tree change (not yet committed) rather than a PR — see the to-do doc.
-
-**Incident (2026-07-08):** the board→issue direction of both bidirectional syncs (Filled→close, Open/In Progress→reopen) was silently dead — `on: projects_v2_item` isn't a valid repo-level Actions trigger and never fired. See `docs/decisions/0004-projects-v2-automation-triggers.md`. `filled-to-close.yaml`/`done-to-close.yaml` deleted (superseded by Projects v2's native "Auto-close issue" workflow); `open-roles-reopen.yaml`/`kanban-status-reopen.yaml` rewritten as 15-minute scheduled reconciliation jobs. Also uncommitted working-tree changes.
-
-- [x] Automation 1: Enhance open role routing (remove from Org Kanban when `open role` labeled)
-- [x] Automation 2: New issue → Org Kanban "To Do"
-- [x] Automation 3: Issue closed → move to Done on Org Kanban
-- [x] Automation 4: Open Roles "Filled" → auto-close issue
-- [x] Automation 5: Done > 6 months → auto-archive (scheduled)
-- [x] Automation 6: Done → close issue (bidirectional Kanban)
-- [x] Automation 7: To Do/In Progress → reopen issue (bidirectional Kanban)
-- [x] Automation 8: Issue reopened → Kanban "To Do"
-- [x] Automation 9: Issue closed (open role) → Open Roles "Filled"
-- [x] Automation 10: Open Roles Open/In Progress → reopen issue
-- [x] Automation 11: Issue reopened (open role) → Open Roles "Open"
-- [x] Automation 12: Open Roles Filled > 1 year → auto-archive (scheduled)
-- [ ] Human QA: test all workflows in live GitHub environment
-
+## Later / Ideas
 - **Google Drive agent access** — once the GitHub layer is stable, giving agents GDrive read access would allow them to use org docs, meeting notes, and wiki exports as context without needing everything committed to the repo
 - **Staleness surfacing** — periodic snapshot-based digest of stale issues for agent-assisted triage sessions
 - **Board resolution tracking** — low priority for now; decision-making is highly human/interpersonal
 - **Board onboarding doc** — carried over from the wiki migration (`docs/archive/wiki-migration.md`); unconfirmed whether existing material exists or still needs creating (closed #393 noted onboarding should be handled here)
+- **Contributor Profile board** — handled in the CoP repos, not here; the org-repo automation doesn't touch it (user to log a ticket)
 
 *(Completed spikes and tasks are archived here or moved to `docs/archive/`.)*

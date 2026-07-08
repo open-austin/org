@@ -22,5 +22,5 @@ Separately, active spike docs lived flat under `docs/` (e.g. `docs/github-automa
 - `skills/run-project-spike/SKILL.md`
 - `skills/triage-project-misc/SKILL.md`
 - `skills/weekly-org-summary/SKILL.md`
-- `docs/active-spikes/github-automation.md`, `docs/active-spikes/wiki-migration.md`
+- `docs/archive/github-automation.md`, `docs/archive/wiki-migration.md` (both since archived)
 - `AGENTS.md` — Authority Ladder and Skills sections

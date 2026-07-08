@@ -21,6 +21,6 @@ Separately: GitHub Projects v2 ships built-in, no-code workflows (visible via Gr
 - Before building new project-board-reactive automation, check `workflows(first: 20) { nodes { name enabled } }` on the relevant `ProjectV2` node first — the native option may already cover the need.
 
 ## Related
-- `docs/active-spikes/github-automation.md`, `docs/active-spikes/github-automation.todo.md`
+- `docs/archive/github-automation.md`, `docs/archive/github-automation.todo.md` (since archived)
 - `.github/workflows/open-roles-reopen.yaml`, `.github/workflows/kanban-status-reopen.yaml`
 - `AGENTS.md` — write-safety rules, no-hosting preference

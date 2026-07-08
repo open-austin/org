@@ -27,52 +27,41 @@ tools/sync/run.sh
 
 **Snapshots are gitignored** — always regenerate them at the start of a work session.
 
-## Write Tools
-Write tools for guarded mutations (label changes, issue closes, board moves) are in active development. See `docs/github-tooling.todo.md` for status.
+## Write Operations
+Guarded writes (label changes, issue closes, board moves) happen two ways: the **board-automation workflows** described below, and the **`gh` CLI** directly for ad-hoc changes — see [AGENTS.md](AGENTS.md) for the command patterns and safety rules. There is no separate Python write-tool layer; the early plan for one (now at `docs/archive/github-tooling.todo.md`) was set aside in favor of workflows + `gh`.
 
-All write operations require `--dry-run` by default and explicit approval before execution.
+All write operations follow the write-safety rules: dry-run first where supported, and explicit approval before anything that mutates shared org state.
 
 ## Board Automation
 GitHub Actions in [`.github/workflows/`](.github/workflows/) keep issue state and the two project boards (Org Kanban, Open Roles) in sync, so closing/reopening an issue and moving a board card stay consistent without manual bookkeeping. **Almost everything is custom Actions in this repo** — with exactly **one deliberate exception**: the native Projects "Auto-close issue" workflow (see below). All other native Projects workflows are intentionally turned **off**, so code is the single source of truth.
 
-Issue events (`opened`, `closed`, `reopened`, `labeled`) are real repository events and drive the board **immediately** in code. The reverse direction — a board card move driving the issue — is **not** available as a repo-level trigger (`projects_v2_item` is an org-level event that never reaches a repo workflow; see [`docs/decisions/0004-projects-v2-automation-triggers.md`](docs/decisions/0004-projects-v2-automation-triggers.md)). That direction splits in two:
-- **Card → close** (Done/Filled): the native **`Auto-close issue`** workflow, configured in each Project's Workflows UI. Instant. **This is the one piece of board logic not in the repo** — it has no workflow file. Documented in [`docs/decisions/0005-board-sync-architecture.md`](docs/decisions/0005-board-sync-architecture.md).
-- **Card → reopen**: has no native equivalent and no immediate path, so it is the single scheduled reconciliation job (`board-reopen-reconcile`, every ~5 min).
+A tracked issue has one continuous lifecycle: it's **opened**, routed once (by whether it carries the `open role` label) to one board, and then cycles between an open state and a closed state on that board. Each cycle transition can be driven from **either side** — act on the issue, or move the card — and they stay in sync.
 
 ```mermaid
-flowchart LR
-    NEW([Issue opened]):::evt
-    CLOSE([Issue closed]):::evt
-    REOPEN([Issue reopened]):::evt
+flowchart TD
+    OPENED([Issue opened]) --> Q{Open role?}
 
     subgraph KANBAN["Org Kanban board"]
-        K_TODO["To Do"]:::col
-        K_DONE["Done"]:::col
+        K_TODO["To Do<br/>(issue open)"]
+        K_DONE["Done<br/>(issue closed)"]
+        K_TODO -->|"close issue → close-to-done<br/>· or drag card to Done → native Auto-close"| K_DONE
+        K_DONE -->|"reopen issue → reopened-to-todo<br/>· or drag card off Done → reconcile poll ~5m"| K_TODO
     end
+
     subgraph ROLES["Open Roles board"]
-        R_OPEN["Open"]:::col
-        R_FILLED["Filled"]:::col
+        R_OPEN["Open<br/>(issue open)"]
+        R_FILLED["Filled<br/>(issue closed)"]
+        R_OPEN -->|"close issue → closed-to-filled<br/>· or drag card to Filled → native Auto-close"| R_FILLED
+        R_FILLED -->|"reopen issue → open-role-reopened<br/>· or drag card off Filled → reconcile poll ~5m"| R_OPEN
     end
 
-    %% Issue -> board (event-driven code, immediate)
-    NEW -->|"not open-role<br/>add-issue-to-kanban"| K_TODO
-    NEW -->|"open-role label<br/>open-role-add (also removes from Kanban)"| R_OPEN
-    CLOSE -->|"close-to-done"| K_DONE
-    CLOSE -->|"open-role<br/>closed-to-filled"| R_FILLED
-    REOPEN -->|"not open-role<br/>reopened-to-todo"| K_TODO
-    REOPEN -->|"open-role<br/>open-role-reopened"| R_OPEN
-
-    %% Board -> issue (native close = solid, scheduled reopen = dotted)
-    K_DONE -->|"NATIVE: Auto-close issue"| CLOSE
-    R_FILLED -->|"NATIVE: Auto-close issue"| CLOSE
-    K_TODO -.->|"board-reopen-reconcile<br/>scheduled ~5m"| REOPEN
-    R_OPEN -.->|"board-reopen-reconcile<br/>scheduled ~5m"| REOPEN
-
-    classDef evt fill:#dbeafe,stroke:#3b82f6,color:#1e3a5f;
-    classDef col fill:#f3f4f6,stroke:#9ca3af,color:#111827;
+    Q -->|no · add-issue-to-kanban| K_TODO
+    Q -->|yes · open-role-add| R_OPEN
 ```
 
-Solid arrows are immediate (event-driven code, or the one native close); the **dotted arrow is the single ~5-minute polling job**, so reopening via a board move can lag a few minutes (reopening the issue directly is immediate). Two more custom Actions run on labels: `label-open-role-from-form` reads the open-role issue-form dropdown and applies the team label(s), and `open-role-add` routes newly-labeled open roles and sets their initial status. A one-time `baseline-terminal-cleanup` job (manual) is run once before the reopen reconciler's schedule is enabled, so the reconciler never resurrects issues closed before this automation existed.
+Everything on the issue side (open / close / reopen) and the native card→close is **immediate**. The one lagging path is **card → reopen** (dragging a card out of Done/Filled): it's the single scheduled job (`board-reopen-reconcile`), and **GitHub's scheduled runs are best-effort, often delayed 10–30+ minutes** (the first run after enabling is slowest) — so reopening the *issue* directly is the instant option. That reconciler is the one exception to "immediate"; the one exception to "in the repo" is the native `Auto-close issue` workflow (card→close), which is configured in the Projects UI and has no workflow file. A fresh-close guard keeps the reconciler from resurrecting issues closed before this automation existed (it skips anything closed in the last 10 minutes; a one-time cleanup tool used during rollout confirmed the boards were already consistent and has since been removed).
+
+**Routing is right-the-first-time — no board is wastefully double-touched.** An open-role issue created via the form goes straight to Open Roles and never lands on the Kanban. The *only* time anything is removed from a board is **reclassification**: a plain issue that landed on the Kanban is *later* labeled `open role`, so `open-role-add` moves it to Open Roles and clears the now-stale Kanban card. Separately, `label-open-role-from-form` reads the open-role form's team dropdown and applies the team label(s).
 
 **Scheduled maintenance & reporting** (separate from the sync loop above):
 

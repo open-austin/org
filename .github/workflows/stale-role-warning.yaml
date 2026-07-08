@@ -5,6 +5,12 @@ on:
     # Every Monday at 9am UTC
     - cron: '0 9 * * 1'
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (log which roles would be warned, without commenting)'
+        required: false
+        default: 'true'
+        type: boolean
 
 env:
   GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
@@ -21,8 +27,10 @@ jobs:
     steps:
       - name: Comment on open roles stale for 90+ days
         run: |
+          DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
           CUTOFF=$(date -d "-${STALE_DAYS} days" +%s 2>/dev/null || date -v "-${STALE_DAYS}d" +%s)
 
+          echo "Dry run: $DRY_RUN"
           echo "Checking for roles not updated since $(date -d @$CUTOFF 2>/dev/null || date -r $CUTOFF)..."
 
           CURSOR=""
@@ -102,6 +110,12 @@ jobs:
               fi
 
               DAYS_STALE=$(( ( $(date +%s) - UPDATED_TS ) / 86400 ))
+
+              if [ "$DRY_RUN" == "true" ]; then
+                echo "Would warn on #$ISSUE_NUMBER ($DAYS_STALE days since last update)."
+                continue
+              fi
+
               echo "Posting stale warning on #$ISSUE_NUMBER ($DAYS_STALE days since last update)..."
 
               # Build the body with printf so every line stays indented inside
