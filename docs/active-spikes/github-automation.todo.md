@@ -4,7 +4,7 @@
 
 Build GitHub Actions to keep boards and issue state in sync automatically, eliminating the manual triage overhead that accumulates when GitHub's default behavior (adding every new issue to every board as "No Status") is left unmanaged.
 
-Related: `docs/github-automation.md` (conceptual doc)
+Related: `docs/active-spikes/github-automation.md` (conceptual doc)
 
 ---
 
@@ -76,6 +76,7 @@ Secret in use: `ACTIONS_TOKEN` (has `project` scope for org-level board mutation
 - [x] `SLACK_WEBHOOK_ENGAGEMENT` secret added to GitHub Actions repo secrets
 - [x] `tools/notify/post.sh` — manual Slack post helper for agent-produced summaries
 - [x] `docs/runbook-weekly-summary.md` — runbook for agent-assisted weekly org summary
+- [x] **Incident fix (2026-07-07):** `role-pipeline-report.yaml`'s cron `'0 10 1-7 * 1'` mixed day-of-month and day-of-week fields, which cron evaluates as OR — it fired daily (confirmed via run history: July 1-7 daily, plus June 15/22/29) instead of monthly, spamming `#t-engagement`. Fixed in [PR #485](https://github.com/open-austin/org/pull/485): plain weekly `0 10 * * 1` cron with a job-level guard that skips unless day-of-month ≤ 7.
 
 ### Issue template + form labeling
 
@@ -98,6 +99,7 @@ All workflows need testing in the live GitHub environment. Suggested test order:
 10. **`open-role-reopened.yaml`** — Reopen a closed open role issue → Open Roles board should show Open
 11. **`archive-old-done.yaml`** — Trigger via Actions UI with `dry_run=true` → verify log output
 12. **`archive-old-filled.yaml`** — Trigger via Actions UI with `dry_run=true` → verify log output
+13. **`role-pipeline-report.yaml` fix** — merge [PR #485](https://github.com/open-austin/org/pull/485), confirm the workflow is enabled in Actions (it showed `active` as of 2026-07-07 despite the spam), and watch the next Monday: it should only post on the one that falls on day-of-month 1-7
 
 ---
 

@@ -6,6 +6,29 @@ snapshot/
 
 # Local environment — never commit real tokens
 .env
+.env.*
+!.env.example
+!.env.example.*
+*.local
+*.local.json
+
+# Tokens, credentials, and private config
+*.token
+*.token.*
+!*.token.example
+!*.token.example.*
+*token*.json
+!*token*.example.json
+*credentials*.json
+!*credentials*.example.json
+*client_secret*.json
+!*client_secret*.example.json
+
+# Optional secrets folders: ignore contents by default, but allow examples.
+secrets/*
+!secrets/.gitignore
+!secrets/*.example
+!secrets/*.example.*
 
 # Logs
 logs
