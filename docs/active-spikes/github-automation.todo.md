@@ -60,7 +60,7 @@ Secret in use: `ACTIONS_TOKEN` (has `project` scope for org-level board mutation
 ### Board routing
 
 - [x] `open-role-add.yaml` — `open role` label added → add to Open Roles board, remove from Org Kanban
-- [x] `add-issue-to-kanban.yaml` — new issue (non-open-role) → Org Kanban "To Do"
+- [x] `add-issue-to-kanban.yaml` — new issue (non-open-role) → Org Kanban "To Do". **Fixed (2026-07-08):** was also triggered on `labeled`, so every label change re-ran it and force-reset the item's status to "To Do", clobbering manual board moves — this is what made "move to Done → auto-close" flaky (the item bounced back to To Do mid-move, so the native Auto-close never saw a stable Done). Now triggers on `opened` only; the "blank issue later labeled `open role`" case is still handled by `open-role-add.yaml` removing the item from the Kanban. Also corrected the misleading "already on board" guard comment (`addProjectV2ItemById` returns the existing item ID, never empty).
 
 ### Scheduled cleanup
 
@@ -91,7 +91,8 @@ All workflows need testing in the live GitHub environment. Suggested test order:
 1. **`add-issue-to-kanban.yaml`** — Open a new plain issue → should appear in Org Kanban "To Do"
 2. **`open-role-add.yaml`** — Open a new issue, add `open role` label → should land on Open Roles, absent from Org Kanban
 3. **`close-to-done.yaml`** — Close an issue on the Org Kanban → should move to Done
-4. **Org Kanban native "Auto-close issue"** — confirm it's configured for "Done" in the Project's Workflows UI, then move a Kanban item to Done manually → linked issue should close
+4. **Org Kanban native "Auto-close issue"** — confirm it's configured for "Done" in the Project's Workflows UI, then move a Kanban item to Done manually → linked issue should close (verified working 2026-07-08 on #490, once the `add-issue-to-kanban` re-fire race was removed)
+4a. **`add-issue-to-kanban.yaml` relabel fix** — add a non-open-role label (e.g. `education`) to an issue already on the Kanban in Done → status should stay Done, NOT reset to To Do
 5. **`kanban-status-reopen.yaml`** (rewritten) — trigger via Actions UI with `dry_run=true` first, then `dry_run=false` → move a Done/closed item back to To Do, issue should reopen within 15 minutes
 6. **`reopened-to-todo.yaml`** — Reopen a closed non-open-role issue → Kanban status should go to To Do
 7. **Open Roles native "Auto-close issue"** — after the user enables it configured for "Filled": move an Open Roles item to Filled → issue should close
@@ -102,6 +103,7 @@ All workflows need testing in the live GitHub environment. Suggested test order:
 12. **`archive-old-filled.yaml`** — Trigger via Actions UI with `dry_run=true` → verify log output
 13. **`role-pipeline-report.yaml` fix** — commit and push the fix, confirm the workflow is enabled in Actions (it showed `active` as of 2026-07-07 despite the spam), and watch the next Monday: it should only post on the one that falls on day-of-month 1-7
 14. **Commit and push** the deletions and rewrites from the 2026-07-08 incident once the user is ready
+15. **Native "Auto-add to project" interaction** — Org Kanban's built-in "Auto-add to project" workflow is enabled; its filter isn't readable via API. Confirm in the UI whether it adds *all* opened issues (including `open role`, which would land them on the Kanban as "No Status" until `open-role-add.yaml` removes them) or is filtered. Not currently causing a known problem, but worth knowing since it partially overlaps `add-issue-to-kanban.yaml`.
 
 ---
 

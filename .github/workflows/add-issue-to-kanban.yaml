@@ -4,7 +4,12 @@ on:
   issues:
     types:
       - opened
-      - labeled
+      # Deliberately NOT triggered on `labeled`. Re-running on every label
+      # change re-set the item's status to "To Do", which clobbered manual
+      # board moves (e.g. an item moved to Done would bounce back to To Do
+      # the next time any label was added, breaking the native Auto-close).
+      # The "blank issue later labeled `open role`" case is handled by
+      # open-role-add.yaml, which removes the item from this board itself.
 
 env:
   GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
@@ -36,8 +41,11 @@ jobs:
             -f content="$ISSUE_NODE_ID" \
             --jq '.data.addProjectV2ItemById.item.id')
 
+          # addProjectV2ItemById is idempotent: it returns the existing item
+          # ID if the issue is already on the board, so a non-empty ID here is
+          # normal. An empty ID means the add genuinely failed.
           if [ -z "$ITEM_ID" ]; then
-            echo "Issue already on board or could not be added — skipping status set."
+            echo "Could not add issue to board — skipping status set."
             exit 0
           fi
 
