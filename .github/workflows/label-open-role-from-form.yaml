@@ -15,12 +15,15 @@ jobs:
 
     steps:
       - name: Parse form body and apply team + product team labels
+        # Pass untrusted issue content through the environment, never inlined
+        # into the script. Interpolating ${{ github.event.issue.body }} directly
+        # into the shell is a script-injection vector (a crafted issue body
+        # could run arbitrary commands as the ACTIONS_TOKEN bot).
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          ISSUE_NUMBER="${{ github.event.issue.number }}"
-          BODY=$(cat << 'BODYEOF'
-          ${{ github.event.issue.body }}
-          BODYEOF
-          )
+          BODY="$ISSUE_BODY"
 
           # Extract the "team" dropdown value from the issue body
           # GitHub issue forms render as: "### What kind of role...\n\nValue"

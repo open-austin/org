@@ -30,6 +30,13 @@ Getting the repo into a state where agents can work effectively and the methodol
 - [x] Update `README.md` to document tooling and workflow
 
 ## Active Spikes
+### Board ↔ Issue Sync Redesign
+**Status:** Planned, not yet implemented
+**Spike:** `docs/active-spikes/board-sync-redesign.md`
+**Todo:** `docs/active-spikes/board-sync-redesign.todo.md`
+
+Re-architecting board↔issue sync: native `Auto-close issue` for card→close (the one non-code exception), everything else in code, one 5-minute reopen poller, all other native Projects workflows off. Continues from the GitHub Automation spike. Plan is written; implementation pending (starts with native UI config + a one-time baseline cleanup).
+
 ### Backlog Triage *(archived: `docs/archive/backlog-triage.md`)*
 Restructured label taxonomy to match Refactor 2026 Teams structure. Labeled all issues, closed dead issues, retired old labels. Done column cleanup and "To Do" column review deferred to automation spike and human triage.
 

@@ -104,15 +104,22 @@ jobs:
               DAYS_STALE=$(( ( $(date +%s) - UPDATED_TS ) / 86400 ))
               echo "Posting stale warning on #$ISSUE_NUMBER ($DAYS_STALE days since last update)..."
 
-              gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body "<!-- stale-role-warning -->
-**Stale role check** — this role hasn't been updated in ${DAYS_STALE} days.
+              # Build the body with printf so every line stays indented inside
+              # this YAML block scalar. A bare multi-line double-quoted string
+              # with lines at column 1 silently breaks YAML parsing (the whole
+              # workflow fails to load), which is why this never ran before.
+              BODY=$(printf '%s\n' \
+                "$WARNING_MARKER" \
+                "**Stale role check** — this role hasn't been updated in ${DAYS_STALE} days." \
+                "" \
+                "Is this role still active? A few options:" \
+                "- **Still open:** Update the description or leave a comment so others know it's current" \
+                "- **No longer needed:** Close this issue" \
+                "- **Role filled:** Move it to Filled on the [Open Roles board](https://github.com/orgs/open-austin/projects/6)" \
+                "" \
+                "No action needed if everything is already up to date — this is just a periodic check-in.")
 
-Is this role still active? A few options:
-- **Still open:** Update the description or leave a comment so others know it's current
-- **No longer needed:** Close this issue
-- **Role filled:** Move it to Filled on the [Open Roles board](https://github.com/orgs/open-austin/projects/6)
-
-No action needed if everything is already up to date — this is just a periodic check-in."
+              gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body "$BODY"
 
             done < <(echo "$RESULT" | jq -c '.data.node.items.nodes[]')
 
