@@ -2,8 +2,12 @@ name: Post open role pipeline report to Slack
 
 on:
   schedule:
-    # First Monday of the month at 10am UTC
-    - cron: '0 10 1-7 * 1'
+    # Every Monday at 10am UTC — the job itself skips all but the first Monday
+    # of the month. Cron can't express "first Monday" directly: mixing a
+    # day-of-month restriction (1-7) with a day-of-week restriction (1) is
+    # evaluated as OR, not AND, so '0 10 1-7 * 1' fires on every day 1-7 of
+    # the month AND every Monday — this is what caused the daily spam.
+    - cron: '0 10 * * 1'
   workflow_dispatch:
 
 env:
@@ -18,7 +22,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Skip unless first Monday of the month
+        run: |
+          DAY=$(date +%d)
+          if [ "$((10#$DAY))" -gt 7 ]; then
+            echo "Day of month is $DAY — not the first Monday. Skipping."
+            echo "SKIP=true" >> "$GITHUB_ENV"
+          fi
+
       - name: Build and post role pipeline report
+        if: env.SKIP != 'true'
         env:
           SLACK_WEBHOOK_ENGAGEMENT: ${{ secrets.SLACK_WEBHOOK_ENGAGEMENT }}
         run: |
