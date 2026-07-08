@@ -5,13 +5,12 @@ name: Reopen issues moved out of a terminal column (reconciliation)
 # "auto-reopen" (native only ships Auto-close). So this reconciles on a timer.
 # See docs/decisions/0004 and docs/active-spikes/board-sync-redesign.md.
 on:
-  # IMPORTANT: the schedule is intentionally left commented out until the
-  # one-time baseline-terminal-cleanup has been run. Before that, this would
-  # mass-reopen legacy issues closed before the automation existed. Run this
-  # via "Run workflow" (dry_run) first, confirm it wouldn't touch legacy
-  # issues, then uncomment the cron. See board-sync-redesign.todo.md.
-  # schedule:
-  #   - cron: '*/5 * * * *'
+  # Baseline confirmed clean on 2026-07-08 (dry-run found no closed issues in
+  # non-terminal columns on either board), and a dry-run of this reconciler
+  # found nothing to reopen — so the schedule is enabled. If you ever need to
+  # re-baseline, run baseline-terminal-cleanup first. See board-sync-redesign.
+  schedule:
+    - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
       dry_run:

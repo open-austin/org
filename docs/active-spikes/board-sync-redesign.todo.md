@@ -3,7 +3,7 @@
 Execute the redesign described in `docs/active-spikes/board-sync-redesign.md`: native `Auto-close issue` for card→close (the one exception), all other board logic in code, one 5-minute reopen poller, all other native Projects workflows off. Continues the sync-layer work from `docs/active-spikes/github-automation.md`.
 
 ## Current State Overview
-Code + docs implemented (2026-07-08), all uncommitted. Native config done by the user. Remaining before this is live: run the baseline cleanup, uncomment the reconciler schedule, commit/push, then human QA. All new/changed workflows pass YAML + `bash -n` checks.
+Code + docs implemented and the workflow changes committed/pushed (2026-07-08). Native config done by the user (only `Auto-close issue` on). Dry-runs of both `baseline-terminal-cleanup` and `board-reopen-reconcile` came back clean — all 28 closed issues across both boards were already in their terminal columns (Kanban Done / Open Roles Filled), so the baseline had nothing to move and the reconciler nothing to reopen. The reconciler `schedule:` has been uncommented (edit uncommitted). Remaining: commit/push the schedule enable, then human QA of the live behavior.
 
 ## Native Config Changes (user, in the Projects Workflows UI — not code)
 User reported (2026-07-08): **only `Auto-close issue` is ON; every other native workflow is OFF** on both boards. This matches the plan. One detail to confirm when convenient:
@@ -18,11 +18,12 @@ User reported (2026-07-08): **only `Auto-close issue` is ON; every other native 
 - [x] `baseline-terminal-cleanup.yaml` created: `workflow_dispatch`, dry-run default true, moves closed issues in non-terminal columns → Done/Filled on both boards.
 
 ## Remaining To Do (ordered — mostly user-run, needs live org)
-- [ ] Commit/push the workflow changes so `baseline-terminal-cleanup` + `board-reopen-reconcile` appear in the Actions UI (schedule still commented, so nothing auto-runs yet).
-- [ ] Run `baseline-terminal-cleanup` via "Run workflow" with `dry_run=true`; review the list of closed issues it would move.
-- [ ] Re-run with `dry_run=false` to apply the baseline.
-- [ ] Run `board-reopen-reconcile` with `dry_run=true`; confirm it would reopen **nothing** legacy (only deliberate drags).
-- [ ] Uncomment the `schedule:` block in `board-reopen-reconcile.yaml` and push to activate the 5-min cadence.
+- [x] Commit/push the workflow changes so `baseline-terminal-cleanup` + `board-reopen-reconcile` appear in the Actions UI (schedule still commented, so nothing auto-runs yet).
+- [x] Run `baseline-terminal-cleanup` with `dry_run=true` (run 28973381242) — **clean, nothing to move**. Verified via GraphQL: all 28 closed board issues already in Done/Filled.
+- [x] Baseline `dry_run=false` — **skipped, unnecessary** (nothing to move).
+- [x] Run `board-reopen-reconcile` with `dry_run=true` (run 28973517799) — **clean, nothing to reopen**.
+- [x] Uncomment the `schedule:` block in `board-reopen-reconcile.yaml` (edit made, commit/push pending).
+- [ ] Commit/push the schedule enable to activate the 5-min cadence.
 
 ## Docs — done
 - [x] Decision record `docs/decisions/0005-board-sync-architecture.md`.
