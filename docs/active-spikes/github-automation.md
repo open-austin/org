@@ -137,6 +137,10 @@ Current webhooks:
 
 `ACTIONS_TOKEN` — already configured on the repo. Needed for GraphQL mutations (board operations require a token with `project` scope, which `GITHUB_TOKEN` doesn't cover for org-level projects).
 
+### Constraint: Projects v2 field changes can't trigger repo-level Actions
+
+`on: projects_v2_item: types: [edited]` looks like a valid trigger and passes YAML/workflow validation, but it never actually fires for a repo workflow — Projects v2 field-change events are organization-level, not repository-level, and repo `on:` blocks can't subscribe to them. Confirmed empirically 2026-07-08 (see `docs/decisions/0004-projects-v2-automation-triggers.md`) after four workflows built this way silently never ran. Any "board status change → do something to the issue" automation needs to be either a Projects v2 native built-in workflow (check `workflows(first: 20) { nodes { name enabled } }` on the project first) or a scheduled polling job — never this trigger.
+
 ---
 
 ## Open Questions

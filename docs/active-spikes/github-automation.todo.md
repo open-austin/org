@@ -46,15 +46,15 @@ Secret in use: `ACTIONS_TOKEN` (has `project` scope for org-level board mutation
 ### Org Kanban ↔ Issue state (bidirectional)
 
 - [x] `close-to-done.yaml` — issue closed → board Done (+ added guard: skip if already Done)
-- [x] `done-to-close.yaml` — board moved to Done → close issue (guard: skip if already closed)
-- [x] `kanban-status-reopen.yaml` — board moved to To Do/In Progress (issue closed) → reopen issue
+- [x] ~~`done-to-close.yaml`~~ — **deleted (2026-07-08)**, was dead code. Never fired (see incident below); superseded by Org Kanban's native "Auto-close issue" built-in workflow, already enabled — user to confirm it's configured for "Done".
+- [x] `kanban-status-reopen.yaml` — **rewritten (2026-07-08)** from a broken `projects_v2_item`-triggered workflow to a 15-minute scheduled reconciliation job: polls Org Kanban, reopens any issue whose item is To Do/In Progress but issue is closed
 - [x] `reopened-to-todo.yaml` — issue reopened (non-open-role) → board To Do
 
 ### Open Roles ↔ Issue state (bidirectional)
 
-- [x] `filled-to-close.yaml` — board moved to Filled → close issue (+ added guard: skip if already closed)
+- [x] ~~`filled-to-close.yaml`~~ — **deleted (2026-07-08)**, was dead code. Never fired (see incident below); superseded by Open Roles' native "Auto-close issue" built-in workflow — user is enabling it, configured for "Filled".
 - [x] `closed-to-filled.yaml` — issue closed (open role) → board Filled (guard: skip if already Filled)
-- [x] `open-roles-reopen.yaml` — board moved to Open/In Progress (issue closed) → reopen issue
+- [x] `open-roles-reopen.yaml` — **rewritten (2026-07-08)** from a broken `projects_v2_item`-triggered workflow to a 15-minute scheduled reconciliation job: polls Open Roles, reopens any issue whose item is Open/In Progress but issue is closed
 - [x] `open-role-reopened.yaml` — issue reopened (open role) → board Open
 
 ### Board routing
@@ -76,7 +76,8 @@ Secret in use: `ACTIONS_TOKEN` (has `project` scope for org-level board mutation
 - [x] `SLACK_WEBHOOK_ENGAGEMENT` secret added to GitHub Actions repo secrets
 - [x] `tools/notify/post.sh` — manual Slack post helper for agent-produced summaries
 - [x] `docs/runbook-weekly-summary.md` — runbook for agent-assisted weekly org summary
-- [x] **Incident fix (2026-07-07):** `role-pipeline-report.yaml`'s cron `'0 10 1-7 * 1'` mixed day-of-month and day-of-week fields, which cron evaluates as OR — it fired daily (confirmed via run history: July 1-7 daily, plus June 15/22/29) instead of monthly, spamming `#t-engagement`. Fixed in [PR #485](https://github.com/open-austin/org/pull/485): plain weekly `0 10 * * 1` cron with a job-level guard that skips unless day-of-month ≤ 7.
+- [x] **Incident fix (2026-07-07):** `role-pipeline-report.yaml`'s cron `'0 10 1-7 * 1'` mixed day-of-month and day-of-week fields, which cron evaluates as OR — it fired daily (confirmed via run history: July 1-7 daily, plus June 15/22/29) instead of monthly, spamming `#t-engagement`. Fix (plain weekly `0 10 * * 1` cron with a job-level guard that skips unless day-of-month ≤ 7) applied as an uncommitted working-tree change on `main` — the user prefers to commit/push this themselves rather than via a PR (an earlier PR #485 for this was closed at their request).
+- [x] **Incident fix (2026-07-08):** User created test issue #489 and found the board→issue direction of both bidirectional syncs silently broken: Filled didn't auto-close, and moving back to Open/In Progress didn't reopen. Root cause: `on: projects_v2_item: types: [edited]` is not a valid repo-level Actions trigger (Projects v2 field changes are org-level events only) — confirmed empirically across this repo's entire run history, that event type has never fired a single run. Full writeup in `docs/decisions/0004-projects-v2-automation-triggers.md`. Fix: deleted `filled-to-close.yaml`/`done-to-close.yaml` (superseded by Projects v2's native "Auto-close issue" built-in workflow) and rewrote `open-roles-reopen.yaml`/`kanban-status-reopen.yaml` as 15-minute scheduled reconciliation jobs, since there's no native built-in equivalent for the reopen direction. All applied as uncommitted working-tree changes on `main`, per the user's git-workflow preference.
 
 ### Issue template + form labeling
 
@@ -90,16 +91,17 @@ All workflows need testing in the live GitHub environment. Suggested test order:
 1. **`add-issue-to-kanban.yaml`** — Open a new plain issue → should appear in Org Kanban "To Do"
 2. **`open-role-add.yaml`** — Open a new issue, add `open role` label → should land on Open Roles, absent from Org Kanban
 3. **`close-to-done.yaml`** — Close an issue on the Org Kanban → should move to Done
-4. **`done-to-close.yaml`** — Move a Kanban item to Done manually → linked issue should close
-5. **`kanban-status-reopen.yaml`** — Move a Done/closed item back to To Do → issue should reopen
+4. **Org Kanban native "Auto-close issue"** — confirm it's configured for "Done" in the Project's Workflows UI, then move a Kanban item to Done manually → linked issue should close
+5. **`kanban-status-reopen.yaml`** (rewritten) — trigger via Actions UI with `dry_run=true` first, then `dry_run=false` → move a Done/closed item back to To Do, issue should reopen within 15 minutes
 6. **`reopened-to-todo.yaml`** — Reopen a closed non-open-role issue → Kanban status should go to To Do
-7. **`filled-to-close.yaml`** — Move Open Roles item to Filled → issue should close
+7. **Open Roles native "Auto-close issue"** — after the user enables it configured for "Filled": move an Open Roles item to Filled → issue should close
 8. **`closed-to-filled.yaml`** — Close an open role issue directly → Open Roles board should show Filled
-9. **`open-roles-reopen.yaml`** — Move a Filled role back to Open → issue should reopen
+9. **`open-roles-reopen.yaml`** (rewritten) — trigger via Actions UI with `dry_run=true` first, then `dry_run=false` → move a Filled role back to Open, issue should reopen within 15 minutes
 10. **`open-role-reopened.yaml`** — Reopen a closed open role issue → Open Roles board should show Open
 11. **`archive-old-done.yaml`** — Trigger via Actions UI with `dry_run=true` → verify log output
 12. **`archive-old-filled.yaml`** — Trigger via Actions UI with `dry_run=true` → verify log output
-13. **`role-pipeline-report.yaml` fix** — merge [PR #485](https://github.com/open-austin/org/pull/485), confirm the workflow is enabled in Actions (it showed `active` as of 2026-07-07 despite the spam), and watch the next Monday: it should only post on the one that falls on day-of-month 1-7
+13. **`role-pipeline-report.yaml` fix** — commit and push the fix, confirm the workflow is enabled in Actions (it showed `active` as of 2026-07-07 despite the spam), and watch the next Monday: it should only post on the one that falls on day-of-month 1-7
+14. **Commit and push** the deletions and rewrites from the 2026-07-08 incident once the user is ready
 
 ---
 

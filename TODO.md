@@ -2,6 +2,9 @@
 This is the coordination map for active work in this repo. See `skills/run-project-spike/SKILL.md` for the full process.
 
 ## Done
+### Weekly Summary Per-Team Channels *(archived: `docs/archive/weekly-summary-channels.md`)*
+Broke the weekly org summary into per-team Slack channels (`#oa-board`, `#t-infrastructure`, `#t-finance`, `#t-fundraising`, `#t-communications`, `#t-education`, `#pg-data-fellowship`, plus existing `#t-engagement`); `#oa-org` is now priority-only. First real run posted successfully 2026-07-07. See the archived to-do doc for two editorial points that weren't explicitly re-confirmed before closing (multi-label cross-posting, open-role issues in non-engagement channels).
+
 ### Wiki Migration *(archived: `docs/archive/wiki-migration.md`)*
 Migrated GitHub wiki content to Google Drive: cloned the wiki, moved content over, left a forwarding note, formally retired the wiki. See the archived to-do doc for what wasn't explicitly confirmed (board onboarding doc gap, no settled norm on where future org docs should live).
 
@@ -27,13 +30,6 @@ Getting the repo into a state where agents can work effectively and the methodol
 - [x] Update `README.md` to document tooling and workflow
 
 ## Active Spikes
-### Weekly Summary Per-Team Channels
-**Status:** Blocked on human setup
-**Spike:** `docs/active-spikes/weekly-summary-channels.md`
-**Todo:** `docs/active-spikes/weekly-summary-channels.todo.md`
-
-Breaks the weekly org summary into per-team Slack channels; `#oa-org` becomes priority-only. Skill/template/env are ready — blocked on the user creating 7 new Slack Incoming Webhooks.
-
 ### Backlog Triage *(archived: `docs/archive/backlog-triage.md`)*
 Restructured label taxonomy to match Refactor 2026 Teams structure. Labeled all issues, closed dead issues, retired old labels. Done column cleanup and "To Do" column review deferred to automation spike and human triage.
 
@@ -44,7 +40,9 @@ Restructured label taxonomy to match Refactor 2026 Teams structure. Labeled all 
 
 GitHub Actions to keep boards and issue state in sync. Fixes the root cause of board noise. `ACTIONS_TOKEN` secret and project IDs are confirmed.
 
-**Incident (2026-07-07):** `role-pipeline-report.yaml`'s cron mixed day-of-month and day-of-week fields, which cron evaluates as OR — it fired daily instead of monthly and spammed `#t-engagement`. Fix is up in [PR #485](https://github.com/open-austin/org/pull/485), pending merge.
+**Incident (2026-07-07):** `role-pipeline-report.yaml`'s cron mixed day-of-month and day-of-week fields, which cron evaluates as OR — it fired daily instead of monthly and spammed `#t-engagement`. Fix applied as a plain working-tree change (not yet committed) rather than a PR — see the to-do doc.
+
+**Incident (2026-07-08):** the board→issue direction of both bidirectional syncs (Filled→close, Open/In Progress→reopen) was silently dead — `on: projects_v2_item` isn't a valid repo-level Actions trigger and never fired. See `docs/decisions/0004-projects-v2-automation-triggers.md`. `filled-to-close.yaml`/`done-to-close.yaml` deleted (superseded by Projects v2's native "Auto-close issue" workflow); `open-roles-reopen.yaml`/`kanban-status-reopen.yaml` rewritten as 15-minute scheduled reconciliation jobs. Also uncommitted working-tree changes.
 
 - [x] Automation 1: Enhance open role routing (remove from Org Kanban when `open role` labeled)
 - [x] Automation 2: New issue → Org Kanban "To Do"

@@ -1,9 +1,19 @@
 name: Reopen issue when Open Roles item moved out of Filled
 
 on:
-  projects_v2_item:
-    types:
-      - edited
+  schedule:
+    # Every 15 minutes. projects_v2_item is not a valid repo-level Actions
+    # trigger — Projects v2 field changes are org-level events only, and
+    # this workflow's original event-based trigger never fired a single
+    # run in this repo's history. Reconciling on a schedule instead.
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (log without reopening)'
+        required: false
+        default: 'true'
+        type: boolean
 
 env:
   GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
@@ -13,55 +23,103 @@ env:
 
 jobs:
   open-roles-reopen:
-    if: github.event.projects_v2_item.project_node_id == 'PVT_kwDOAA7NZM4AmdbW'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Reopen issue if moved to Open or In Progress while closed
+      - name: Reopen issues whose item is Open/In Progress but issue is closed
         run: |
-          ITEM_ID="${{ github.event.projects_v2_item.node_id }}"
+          DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+          echo "Dry run: $DRY_RUN"
+          echo "---"
 
-          # Get current status and linked issue state
-          RESULT=$(gh api graphql -f query='
-            query($item: ID!) {
-              node(id: $item) {
-                ... on ProjectV2Item {
-                  fieldValueByName(name: "Status") {
-                    ... on ProjectV2ItemFieldSingleSelectValue { optionId }
-                  }
-                  content {
-                    ... on Issue {
-                      number
-                      state
-                      repository { nameWithOwner }
+          REOPENED=0
+          CURSOR=""
+
+          while true; do
+            if [ -n "$CURSOR" ]; then
+              RESULT=$(gh api graphql -f query='
+                query($project: ID!, $cursor: String!) {
+                  node(id: $project) {
+                    ... on ProjectV2 {
+                      items(first: 100, after: $cursor) {
+                        nodes {
+                          fieldValueByName(name: "Status") {
+                            ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                          }
+                          content {
+                            ... on Issue {
+                              number
+                              state
+                              repository { nameWithOwner }
+                            }
+                          }
+                        }
+                        pageInfo { hasNextPage endCursor }
+                      }
                     }
                   }
-                }
-              }
-            }' -f item="$ITEM_ID")
+                }' -f project="$OPEN_ROLES_PROJECT_ID" -f cursor="$CURSOR")
+            else
+              RESULT=$(gh api graphql -f query='
+                query($project: ID!) {
+                  node(id: $project) {
+                    ... on ProjectV2 {
+                      items(first: 100) {
+                        nodes {
+                          fieldValueByName(name: "Status") {
+                            ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                          }
+                          content {
+                            ... on Issue {
+                              number
+                              state
+                              repository { nameWithOwner }
+                            }
+                          }
+                        }
+                        pageInfo { hasNextPage endCursor }
+                      }
+                    }
+                  }
+                }' -f project="$OPEN_ROLES_PROJECT_ID")
+            fi
 
-          OPTION_ID=$(echo "$RESULT" | jq -r '.data.node.fieldValueByName.optionId // ""')
-          ISSUE_NUMBER=$(echo "$RESULT" | jq -r '.data.node.content.number // ""')
-          ISSUE_STATE=$(echo "$RESULT" | jq -r '.data.node.content.state // ""')
-          REPO=$(echo "$RESULT" | jq -r '.data.node.content.repository.nameWithOwner // ""')
+            HAS_NEXT=$(echo "$RESULT" | jq -r '.data.node.items.pageInfo.hasNextPage')
+            CURSOR=$(echo "$RESULT" | jq -r '.data.node.items.pageInfo.endCursor')
 
-          # Only act on Open or In Progress
-          if [ "$OPTION_ID" != "$OPEN_OPTION_ID" ] && [ "$OPTION_ID" != "$IN_PROGRESS_OPTION_ID" ]; then
-            echo "Status is not 'Open' or 'In Progress' — skipping."
-            exit 0
+            while IFS= read -r item; do
+              OPTION_ID=$(echo "$item" | jq -r '.fieldValueByName.optionId // ""')
+              ISSUE_NUMBER=$(echo "$item" | jq -r '.content.number // ""')
+              ISSUE_STATE=$(echo "$item" | jq -r '.content.state // ""')
+              REPO=$(echo "$item" | jq -r '.content.repository.nameWithOwner // ""')
+
+              if [ "$OPTION_ID" != "$OPEN_OPTION_ID" ] && [ "$OPTION_ID" != "$IN_PROGRESS_OPTION_ID" ]; then
+                continue
+              fi
+
+              if [ -z "$ISSUE_NUMBER" ] || [ -z "$REPO" ]; then
+                continue
+              fi
+
+              if [ "$ISSUE_STATE" != "CLOSED" ]; then
+                continue
+              fi
+
+              echo "Would reopen: #$ISSUE_NUMBER in $REPO (item is Open/In Progress but issue is closed)"
+
+              if [ "$DRY_RUN" != "true" ]; then
+                gh issue reopen "$ISSUE_NUMBER" --repo "$REPO"
+                echo "  → Reopened."
+                REOPENED=$((REOPENED + 1))
+              fi
+            done < <(echo "$RESULT" | jq -c '.data.node.items.nodes[]')
+
+            [ "$HAS_NEXT" != "true" ] && break
+          done
+
+          echo "---"
+          if [ "$DRY_RUN" == "true" ]; then
+            echo "Dry run complete. Run with dry_run=false to apply."
+          else
+            echo "Reopened $REOPENED issue(s)."
           fi
-
-          if [ -z "$ISSUE_NUMBER" ] || [ -z "$REPO" ]; then
-            echo "No linked issue — nothing to reopen."
-            exit 0
-          fi
-
-          # Guard: only reopen if the issue is actually closed
-          if [ "$ISSUE_STATE" != "CLOSED" ]; then
-            echo "Issue #$ISSUE_NUMBER is already open — skipping."
-            exit 0
-          fi
-
-          echo "Role moved to Open/In Progress — reopening issue #$ISSUE_NUMBER in $REPO..."
-          gh issue reopen "$ISSUE_NUMBER" --repo "$REPO"
-          echo "Done."
