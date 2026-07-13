@@ -39,7 +39,7 @@ Getting the repo into a state where agents can work effectively and the methodol
 - [x] Update `README.md` to document tooling and workflow
 
 ## Active Spikes
-None currently active.
+None currently active. (Docs Taxonomy Refresh closed and archived 2026-07-13 — see `docs/archive/docs-taxonomy-refresh.md`.)
 
 ## Automation — residual QA / watch
 Low-priority follow-ups left after archiving the automation spikes (2026-07-08). None block anything; the automation is live and working.
@@ -55,5 +55,7 @@ Low-priority follow-ups left after archiving the automation spikes (2026-07-08).
 - **Board resolution tracking** — low priority for now; decision-making is highly human/interpersonal
 - **Board onboarding doc** — carried over from the wiki migration (`docs/archive/wiki-migration.md`); unconfirmed whether existing material exists or still needs creating (closed #393 noted onboarding should be handled here)
 - **Contributor Profile board** — handled in the CoP repos, not here; the org-repo automation doesn't touch it (user to log a ticket)
+
+Use `docs/scratch/future-ideas.md` for conceptual someday org/tooling/process material that is too early for active spike work.
 
 *(Completed spikes and tasks are archived here or moved to `docs/archive/`.)*

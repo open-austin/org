@@ -14,8 +14,10 @@ When docs conflict, use this order:
 3. Active decision records in `docs/decisions/` — settled tradeoffs
 4. Active spike docs in `docs/active-spikes/` — current thinking for a theme of work
 5. `TODO.md` — active work coordination
-6. `docs/scratch/` — exploratory, non-authoritative
-7. `docs/archive/` — historical context only
+6. `docs/pinned-issues.md` — unresolved issues intentionally preserved for later
+7. `docs/scratch/future-ideas.md` — conceptual someday material
+8. `docs/scratch/misc.md` and other `docs/scratch/` files — exploratory intake, non-authoritative
+9. `docs/archive/` — historical context only
 
 This repo carries its own agent workflows in `skills/`. Repo-local skills are project authority — prefer `skills/<skill-name>/SKILL.md` over similarly named global skills, which are fallback seed material only.
 
@@ -97,7 +99,9 @@ For Projects v2 board moves, use `gh project item-edit` or the GraphQL API via `
 ## Process
 This repo uses a spike-based workflow. See `skills/run-project-spike/SKILL.md` for the full process.
 
-Active work is tracked in `TODO.md`. Settled decisions live in `docs/decisions/`. Finished spikes are archived in `docs/archive/`.
+Active work is tracked in `TODO.md`. Settled decisions live in `docs/decisions/`. Unresolved issues intentionally preserved for later live in `docs/pinned-issues.md`. Conceptual someday material lives in `docs/scratch/future-ideas.md`. Raw observed friction and issue intake live in `docs/scratch/misc.md`. Finished spikes are archived in `docs/archive/`.
+
+Use these holding areas carefully: `docs/pinned-issues.md` is not a GitHub issue backlog, `docs/scratch/future-ideas.md` is not active roadmap, and `docs/scratch/misc.md` is not durable authority. Public-org writes still require explicit approval.
 
 ## Skills
 Repeatable agent-assisted workflows live in `skills/`. When the user asks for one of these by name or intent, follow the local skill.
@@ -106,6 +110,9 @@ Repeatable agent-assisted workflows live in `skills/`. When the user asks for on
 |---|---|
 | `skills/run-project-spike/SKILL.md` | Starting, continuing, promoting, or archiving spike work |
 | `skills/triage-project-misc/SKILL.md` | Reviewing or routing `docs/scratch/misc.md` |
+| `skills/pin-issue/SKILL.md` | Preserving unresolved org/tooling/process issues for later |
+| `skills/log-future-idea/SKILL.md` | Capturing conceptual someday org/tooling/process ideas |
+| `skills/update-local-skills/SKILL.md` | Refreshing repo-local skill copies from global seed skills while preserving local divergence |
 | `skills/weekly-org-summary/SKILL.md` | "weekly summary", "weekly update", "org digest", "what's going on this week" |
 
 Each `SKILL.md`'s frontmatter `description` is the source of truth for exact trigger phrasing — this table is a quick index.
