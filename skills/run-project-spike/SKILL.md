@@ -23,14 +23,16 @@ docs/
   active-spikes/
     topic.md
     topic.todo.md
+  pinned-issues.md
   scratch/
+    future-ideas.md
     misc.md
   archive/
   decisions/
   README.md
 ```
 
-Active conceptual and to-do docs go in `docs/active-spikes/`, rough pre-spike material goes in `docs/scratch/`, and finished or superseded spike history goes in `docs/archive/`. Durable long-term docs (`README.md`, `AGENTS.md`, `contributor-policy.md`, decision records) stay out of active spike work.
+Active conceptual and to-do docs go in `docs/active-spikes/`, unresolved issues intentionally preserved for later go in `docs/pinned-issues.md`, conceptual someday material goes in `docs/scratch/future-ideas.md`, rough intake goes in `docs/scratch/misc.md`, and finished or superseded spike history goes in `docs/archive/`. Durable long-term docs (`README.md`, `AGENTS.md`, `contributor-policy.md`, decision records) stay out of active spike work.
 
 ## Authority Ladder
 When docs conflict, use this order (mirrors `AGENTS.md`):
@@ -41,8 +43,10 @@ When docs conflict, use this order (mirrors `AGENTS.md`):
 4. Active spike docs in `docs/active-spikes/` — current thinking for a theme of work
 5. Active spike to-do docs in `docs/active-spikes/` — implementation state
 6. `TODO.md` — active work coordination
-7. `docs/scratch/` — exploratory, non-authoritative
-8. `docs/archive/` — historical context only
+7. `docs/pinned-issues.md` — unresolved issues intentionally preserved for later
+8. `docs/scratch/future-ideas.md` — conceptual someday material
+9. `docs/scratch/misc.md` and other `docs/scratch/` files — exploratory intake, non-authoritative
+10. `docs/archive/` — historical context only
 
 Repo-local skills in `skills/` (this file included) are project authority over any similarly named global skill.
 
@@ -133,6 +137,14 @@ Use `Ready for Human QA` for things the agent cannot fully verify from the termi
 Be specific. A good QA item names the surface, command, expected output, or GitHub UI state the user should inspect.
 
 ## Scratch Promotion
+Use the shared routing taxonomy before promoting material:
+
+- `docs/decisions/` for settled durable repo rules.
+- `docs/pinned-issues.md` for unresolved issues intentionally preserved for later.
+- `docs/scratch/future-ideas.md` for conceptual someday material.
+- `docs/scratch/misc.md` for raw observed friction, QA nits, bugs, and issue intake.
+- `docs/active-spikes/` for active scoped work.
+
 Use `docs/scratch/` for rough notes, copied references, draft outlines, and exploratory material that is not yet a spike or durable rule.
 
 Scratch docs are not authoritative. Promote useful material into an active spike, durable doc, or local skill before relying on it.
@@ -141,7 +153,7 @@ Promotion means move, not copy. When promoting a scratch doc into `docs/active-s
 
 If a scratch doc contains multiple themes, split it deliberately: move each useful piece into the right destination, then remove the routed source material. Preserve nuance and concrete user phrasing while moving it.
 
-For loose unrouted notes, use `docs/scratch/misc.md` and the `triage-project-misc` skill.
+For loose unrouted notes, use `docs/scratch/misc.md` and the `triage-project-misc` skill. For unresolved questions that should be intentionally preserved, use `docs/pinned-issues.md` and `pin-issue`. For coherent someday concepts, use `docs/scratch/future-ideas.md` and `log-future-idea`.
 
 ## Durable Decisions
 Decision records are part of the project's durable docs structure, not the spike process itself. During a spike, create or update a decision record only when a tradeoff has become a durable project rule that should outlive the spike.
@@ -200,7 +212,10 @@ Before archiving, ask:
 - Did we settle a durable tradeoff? Add or update a decision record.
 - Did we change how auth or credentials are loaded? Update `AGENTS.md` and `.env.example`.
 - Did we add a repeatable manual process? Add or update a dedicated local skill in `skills/`.
-- Did we create future roadmap work? Update `TODO.md` or create a draft in `docs/scratch/`.
+- Did we create unresolved issues that should survive the chat but not become work yet? Update `docs/pinned-issues.md`.
+- Did we create conceptual someday material? Update `docs/scratch/future-ideas.md`.
+- Did we create raw friction or issue intake? Update `docs/scratch/misc.md`.
+- Did we create future roadmap work that is scoped enough to coordinate? Update `TODO.md` or create an active spike.
 - Did we learn something about API behavior, rate limits, or GraphQL quirks? Record it where future agents will find it.
 - Ask more questions than just these. Always check whether the durable docs still describe the repo's real shape.
 
