@@ -28,9 +28,40 @@ tools/sync/run.sh
 **Snapshots are gitignored** — always regenerate them at the start of a work session.
 
 ## Write Operations
-Guarded writes (label changes, issue closes, board moves) happen two ways: the **board-automation workflows** described below, and the **`gh` CLI** directly for ad-hoc changes — see [AGENTS.md](AGENTS.md) for the command patterns and safety rules. There is no separate Python write-tool layer; the early plan for one (now at `docs/archive/github-tooling.todo.md`) was set aside in favor of workflows + `gh`.
+Guarded writes happen through the **board-automation workflows** described below, the repo's narrow dry-run-first tools, and the **`gh` CLI** for ad-hoc changes that do not yet justify a wrapper. Use `tools/issues/create.sh` for issue creation and `tools/google-docs/run.sh` for bounded shared-Doc reads and exact-match replacements. See [AGENTS.md](AGENTS.md) for the approval and write-safety rules.
 
 All write operations follow the write-safety rules: dry-run first where supported, and explicit approval before anything that mutates shared org state.
+
+### Issue Creation
+```bash
+tools/issues/create.sh --title "Task title" --body-file /tmp/issue.md --label infrastructure --assign-me
+tools/issues/create.sh --title "Task title" --body-file /tmp/issue.md --label infrastructure --assign-me --execute
+```
+
+The first command prints the exact plan and changes nothing. `--execute` creates the approved issue and refreshes `snapshot/` unless `--no-sync` is supplied.
+
+### Shared Google Docs
+Copy `.env.example` to the ignored `.env`, set the Google credential/token paths, and enable the Google Docs API for the OAuth project. New contributors can authorize with:
+
+```bash
+tools/google-docs/run.sh auth
+```
+
+When the standard LifeOS credential and Open Austin token files exist under `~/configs/lifeos-tools/secrets/`, the wrapper reuses them automatically; the repo does not create a second credential or token copy. Other contributors configure their own paths in `.env`.
+
+An existing read-only LifeOS token can run `read` and dry-run planning, but the first executed Doc replacement requires the Google Docs write scope. Run `tools/google-docs/run.sh auth` once to grant that scope into the same configured token file before the first approved write.
+
+Read the canonical weekly notes or preview one exact replacement:
+
+```bash
+tools/google-docs/run.sh read
+tools/google-docs/run.sh replace-once --old-file /tmp/current.txt --new-file /tmp/replacement.txt
+```
+
+The replacement tool requires the old text to occur exactly once, re-fetches before mutation, and writes only with `--execute`. Use it for bounded corrections, action-state changes, and issue cross-links—not for inserting parallel agent minutes.
+
+## Weekly Organizing Meeting
+Follow [skills/process-weekly-meeting/SKILL.md](skills/process-weekly-meeting/SKILL.md) when reconciling the recurring weekly organizing meeting. `General Organizing - meeting notes` remains canonical. The workflow audits chatbot-produced beat-by-beat notes and analysis against the matching dated section and fresh GitHub state, then produces an exact approval slate before any shared Doc or public issue changes.
 
 ## Board Automation
 GitHub Actions in [`.github/workflows/`](.github/workflows/) keep issue state and the two project boards (Org Kanban, Open Roles) in sync, so closing/reopening an issue and moving a board card stay consistent without manual bookkeeping. **Almost everything is custom Actions in this repo** — with exactly **one deliberate exception**: the native Projects "Auto-close issue" workflow (see below). All other native Projects workflows are intentionally turned **off**, so code is the single source of truth.

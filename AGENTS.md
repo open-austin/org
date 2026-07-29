@@ -2,7 +2,7 @@
 This file defines the rules and boundaries for AI agents working in this repo. Read it before taking any action.
 
 ## What This Repo Is
-This repo is the operational layer for the Open Austin GitHub org. It contains tooling, documentation, and automation for managing issues, project boards, labels, milestones, and org health.
+This repo is the public operational layer for Open Austin. It contains tooling, documentation, and automation for managing GitHub issues, project boards, labels, milestones, org health, and bounded updates to shared organizational records used by its workflows.
 
 Agents are primary users of the tools here. This doc is your operating manual.
 
@@ -23,9 +23,10 @@ This repo carries its own agent workflows in `skills/`. Repo-local skills are pr
 
 ## What Agents May Do
 - Read and render snapshots from GitHub (issues, labels, milestones, project boards)
+- Read shared Open Austin Google Docs when the current workflow needs them
 - Run any `gh` read command (`gh issue list`, `gh project item-list`, `gh api graphql` for reads, etc.)
 - Analyze, cluster, triage, and summarize backlog state
-- Draft proposed changes for user review
+- Draft proposed GitHub or shared-Doc changes for user review
 - Run write commands **only after the user explicitly approves a specific plan**
 
 ## What Agents Must NOT Do Without Explicit User Approval
@@ -33,6 +34,7 @@ This repo carries its own agent workflows in `skills/`. Repo-local skills are pr
 - Add, remove, or change labels or milestones on issues
 - Move items on a Project v2 board (status field changes)
 - Post comments on issues or PRs — comments notify real people
+- Edit a shared Google Doc
 - Bulk-edit anything without a reviewed plan
 - Push commits or open PRs
 - Edit `contributor-policy.md`
@@ -50,7 +52,8 @@ These rules apply to all write operations, no exceptions:
 
 ## Auth Model
 - Credentials are loaded from the environment at runtime — never hardcoded or committed.
-- The required env var is `GH_TOKEN` (a GitHub PAT or token authorized via `gh auth login`).
+- GitHub operations use `GH_TOKEN` (a GitHub PAT or token authorized via `gh auth login`).
+- Google Docs operations use the local credential and token paths documented in `.env.example`; real OAuth files remain outside this repo. The wrapper can reuse standard LifeOS credential and Open Austin token files when they already exist.
 - See `.env.example` for the full list of required variables and their required scopes.
 - If the `open-austin` org enforces SAML SSO, the token must be SSO-authorized in GitHub's UI before use.
 - Never commit `.env`, `gh` host config, or any file containing a real token.
@@ -82,8 +85,13 @@ echo "Your message" | tools/notify/post.sh SLACK_WEBHOOK_ENGAGEMENT
 
 Webhook URLs are stored in `.env` (gitignored). See `.env.example` for the full list. The webhook var name maps to a specific channel — see `skills/weekly-org-summary/SKILL.md` for the channel table.
 
+### Google Docs Tools
+Use `tools/google-docs/run.sh read` for document text and `replace-once` for one exact, uniquely occurring replacement. `replace-once` is dry-run by default, re-fetches before execution, and uses the live revision ID. Follow `skills/process-weekly-meeting/SKILL.md` for the weekly organizing meeting's canonical-record and approval rules.
+
 ### Write Operations
-Use `gh` CLI directly for writes. All writes require explicit user approval first per the Write Safety Rules above.
+Use the guarded repo tools when a matching operation exists, and use `gh` CLI directly for other writes. All writes require explicit user approval first per the Write Safety Rules above.
+
+Create a new issue with `tools/issues/create.sh`, which prints an exact dry-run plan unless `--execute` is supplied. Use `tools/google-docs/run.sh` for bounded shared-Doc reads and exact-match replacements. Google Docs replacements are also dry-run by default and must match exactly once before execution.
 
 Common commands:
 ```bash
@@ -114,6 +122,7 @@ Repeatable agent-assisted workflows live in `skills/`. When the user asks for on
 | `skills/log-future-idea/SKILL.md` | Capturing conceptual someday org/tooling/process ideas |
 | `skills/update-local-skills/SKILL.md` | Refreshing repo-local skill copies from global seed skills while preserving local divergence |
 | `skills/weekly-org-summary/SKILL.md` | "weekly summary", "weekly update", "org digest", "what's going on this week" |
+| `skills/process-weekly-meeting/SKILL.md` | Processing or reconciling the Open Austin weekly organizing meeting, canonical shared notes, and resulting GitHub work |
 
 Each `SKILL.md`'s frontmatter `description` is the source of truth for exact trigger phrasing — this table is a quick index.
 
