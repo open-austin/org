@@ -116,6 +116,7 @@ Repeatable agent-assisted workflows live in `skills/`. When the user asks for on
 
 | Skill | Trigger phrases / use |
 |---|---|
+| `skills/commit-work/SKILL.md` | Committing completed work atomically by explicit pathspec without pushing or rewriting history |
 | `skills/run-project-spike/SKILL.md` | Starting, continuing, promoting, or archiving spike work |
 | `skills/triage-project-misc/SKILL.md` | Reviewing or routing `docs/scratch/misc.md` |
 | `skills/pin-issue/SKILL.md` | Preserving unresolved org/tooling/process issues for later |

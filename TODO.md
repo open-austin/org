@@ -39,10 +39,10 @@ Getting the repo into a state where agents can work effectively and the methodol
 - [x] Update `README.md` to document tooling and workflow
 
 ## Active Spikes
-### Weekly Meeting Processing
-Develop the public Open Austin workflow and bounded tools for reconciling the weekly organizing meeting with its canonical shared Google Doc and GitHub issues. See [docs/active-spikes/weekly-meeting-processing.md](docs/active-spikes/weekly-meeting-processing.md) and [docs/active-spikes/weekly-meeting-processing.todo.md](docs/active-spikes/weekly-meeting-processing.todo.md).
 
 ## Automation — residual QA / watch
+Low-priority follow-ups left after archiving the automation spikes (2026-07-08). None block anything; the automation is live and working.
+
 Low-priority follow-ups left after archiving the automation spikes (2026-07-08). None block anything; the automation is live and working.
 
 - **`role-pipeline-report` next first-Monday** — the cron fix (skip unless day-of-month ≤ 7) hasn't been observed on a real first Monday yet. Confirm it posts once, not daily.
