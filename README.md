@@ -55,7 +55,9 @@ Read the canonical weekly notes or preview one exact replacement:
 
 ```bash
 tools/google-docs/run.sh read
+tools/google-docs/run.sh read --show-links
 tools/google-docs/run.sh replace-once --old-file /tmp/current.txt --new-file /tmp/replacement.txt
+tools/google-docs/run.sh replace-once --old-file /tmp/current.txt --new-file /tmp/replacement.txt --link "Visible issue label=https://github.com/open-austin/org/issues/123"
 ```
 
 The replacement tool requires the old text to occur exactly once, re-fetches before mutation, and writes only with `--execute`. Use it for bounded corrections, action-state changes, and issue cross-links—not for inserting parallel agent minutes.

@@ -97,8 +97,12 @@ gh repo view "$repo" --json nameWithOwner --jq .nameWithOwner >/dev/null
 
 cmd=(gh issue create --repo "$repo" --title "$title")
 if [[ -n "$body_file" ]]; then cmd+=(--body-file "$body_file"); else cmd+=(--body "$body"); fi
-for label in "${labels[@]}"; do cmd+=(--label "$label"); done
-for assignee in "${assignees[@]}"; do cmd+=(--assignee "$assignee"); done
+if [[ ${#labels[@]} -gt 0 ]]; then
+    for label in "${labels[@]}"; do cmd+=(--label "$label"); done
+fi
+if [[ ${#assignees[@]} -gt 0 ]]; then
+    for assignee in "${assignees[@]}"; do cmd+=(--assignee "$assignee"); done
+fi
 
 created_url="$("${cmd[@]}")"
 printf 'Created issue: %s\n' "$created_url"
