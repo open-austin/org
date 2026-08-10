@@ -23,7 +23,7 @@ Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client
 
 ## To Do
 - [ ] **[USER] Delete the confirmed demo bases** — Applicant Tracking, Sales Leads, PR & Communications, Team Task Management (all Airtable sample templates, never touched by an OA human), and the empty Publicity base. Keep Membership Doc and Project intake (real). Deletion is destructive; the agent does not do it. All bases were exhaustively archived first, so deletion is safe.
-- [ ] **[USER] Clean/rename workspaces** — collapse the demo-era workspaces ("External: Up and out", "Internal", "Workspace") to a clear OA scheme; segment by access boundary given the 5-editor/workspace free cap.
+- [ ] **[USER] Rename an existing workspace** (e.g. "Internal" → "People Operations") rather than creating a new one, so the PAT's workspace-scoped access carries over without re-permissioning; delete the junk bases; keep ONE workspace for now (defer access-segmentation until a real second domain exists). Grant the PAT "all current and future bases in this workspace" so new bases are auto-covered.
 - [ ] Phase 2 guarded writes (`--dry-run` first): create tables/fields + records to build the VRM "OA Contributors" base per the schema sketch in `LifeOS open-austin/vrm.md`.
 - [ ] Migrate the GitHub Contributor Profiles into the People table (semi-automate via the org sync tooling → Phase-2 write tool).
 - [ ] Decide snapshot handling: Airtable people-data is PII; no committed snapshot. Gitignore any local dump.
