@@ -2,7 +2,7 @@
 
 ## Goal
 
-Build CLI and MCP tools that let agents (and contributors) read and act on the Open Austin GitHub org — issues, project boards, labels, milestones — with the same fluency that personal automation tools provide for personal work.
+Build CLI and MCP tools that let agents (and contributors) read and act on the Open Austin GitHub org (issues, project boards, labels, milestones) with enough local context to reason fluently without hitting the API for every question.
 
 The tooling should make the org's work visible and actionable without requiring constant API queries, and should give any contributor who clones the repo a consistent environment for working on org tasks.
 
@@ -29,7 +29,7 @@ Three reasons snapshots are better than direct API queries:
 
 ## Mental Model
 
-This is a direct port of that methodology to a shared org context:
+The tooling follows a snapshot-first model:
 
 ```
 gh / GraphQL API

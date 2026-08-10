@@ -7,7 +7,7 @@
 
 ## Context
 
-We are building automation tooling to manage the Open Austin GitHub org: reading and acting on issues, project boards, labels, and milestones. This is analogous to personal automation tooling, but pointed at shared org infrastructure with a much higher blast radius.
+We are building automation tooling to manage the Open Austin GitHub org: reading and acting on issues, project boards, labels, and milestones. Because it acts on shared org infrastructure, the blast radius is high, which drives the write-safety posture below.
 
 Several foundational choices needed to be made before any implementation work could proceed.
 

@@ -3,12 +3,12 @@ A read-first (later guarded-write) CLI wrapper for Open Austin's Airtable, so ag
 
 Consumer / driver: the VRM prototype ([open-austin/org#528](https://github.com/open-austin/org/issues/528)) needs a People/Roles/Orgs base with an intake form and a funnel kanban. This tool is the machinery for building and inspecting that base programmatically.
 
-## Why this lives in the org repo (not a personal tooling repo)
-This is Open Austin infrastructure, not Aslan's personal tooling. It should be owned by the org and usable by other contributors, and it should outlive any one person (the same "who maintains it after you" principle driving the VRM work). Personal Airtable use later would pull the tool in, not the other way around. It also fits the existing `tools/` pattern here (env-loaded credentials, `run.sh` wrappers, dry-run-first writes).
+## Fit
+OA-owned infrastructure that follows the existing `tools/` pattern in this repo: env-loaded credentials, `run.sh` wrappers, and dry-run-first writes.
 
 ## Auth & attribution model
 - **Airtable Personal Access Token (PAT)** loaded from the environment as `AIRTABLE_TOKEN`, never hardcoded or committed (same rule as `GH_TOKEN`). Documented in `.env.example`.
-- **Created under aslan@open-austin.org, not the admin@ owner account.** Rationale: the person piloting the agent acts as themselves, so Airtable's change history attributes edits to the individual rather than a shared admin login — cleaner audit, and it mirrors how Drive/Gmail access already runs through the `open-austin` = aslan@open-austin.org alias. admin@ stays the workspace *owner*; aslan@ is invited as an editor.
+- **Created under aslan@open-austin.org, not the admin@ owner account.** Rationale: the person piloting the agent acts as themselves, so Airtable's change history attributes edits to the individual rather than a shared admin login, so it's a cleaner audit trail, using the aslan@open-austin.org account for the org's Google access. admin@ stays the workspace owner; aslan@ is invited as an editor.
 - Scope broadly for real work (`data.records:read`, `data.records:write`, `schema.bases:read`, `schema.bases:write`; `webhook:manage` optional), granted to the specific OA workspaces/bases. The token is created and placed by the user — the agent never handles the raw secret.
 
 ## Safety & privacy boundaries

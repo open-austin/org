@@ -8,13 +8,13 @@ tags:
 ## Now
 - [x] Settle the public/private boundary and canonical-record posture.
 - [x] Draft `skills/process-weekly-meeting/SKILL.md` with the approved reconciliation taxonomy and exact approval slate.
-- [x] Move guarded issue creation from a personal CLI into `tools/issues/create.sh`.
+- [x] Move guarded issue creation into `tools/issues/create.sh`.
 - [x] Add dry-run-first Google Docs read and exact-match replacement tooling.
-- [x] Document clone-local Google authentication in `.env.example` while allowing Aslan to reuse existing local credential/token files by path.
+- [x] Document clone-local Google authentication in `.env.example` while allowing contributors to reuse existing local credential/token files by path.
 - [x] Update repo authority docs and tool documentation.
 - [x] Validate the skill shape manually and run local tooling tests. The bundled validator could not run because PyYAML is not installed; no dependency was installed as a side effect.
 - [x] Simplify the skill around its actual input and output: audit chatbot beat-by-beat notes and analysis against the explicitly named shared Doc, reconcile missed actions with live GitHub, and present exact changes for approval without expecting or adding a transcript link.
-- [x] Fix the wrapper's standard-the personal tooling credential fallback so paths discovered after `.env` loading are exported to the Python tool.
+- [x] Fix the wrapper's local-credential fallback so paths discovered after `.env` loading are exported to the Python tool.
 - [x] Vendor the global `commit-work` seed into `skills/commit-work/` so the repo-local spike workflow has its required commit workflow after clone.
 
 ## Human QA
