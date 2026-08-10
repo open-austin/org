@@ -25,7 +25,7 @@ The public workflow owns:
 - producing an exact approval slate;
 - applying approved Google Docs and GitHub writes through dry-run-first public tooling.
 
-The workflow does not own private personal-tooling context integration, private Trello work, or a redundant local meeting note.
+The workflow does not own any private context integration, private Trello work, or a redundant local meeting note.
 
 ## Tool Ownership
 The org repo owns the reusable Open Austin write mechanics. GitHub issue creation lives here, in `tools/issues/create.sh`, as the primary implementation of public issue writes.
