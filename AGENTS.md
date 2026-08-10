@@ -53,7 +53,7 @@ These rules apply to all write operations, no exceptions:
 ## Auth Model
 - Credentials are loaded from the environment at runtime — never hardcoded or committed.
 - GitHub operations use `GH_TOKEN` (a GitHub PAT or token authorized via `gh auth login`).
-- Google Docs operations use the local credential and token paths documented in `.env.example`; real OAuth files remain outside this repo. The wrapper can reuse standard LifeOS credential and Open Austin token files when they already exist.
+- Google Docs operations use the local credential and token paths documented in `.env.example`; real OAuth files remain outside this repo. The wrapper can reuse existing local credential and Open Austin token files when they already exist.
 - See `.env.example` for the full list of required variables and their required scopes.
 - If the `open-austin` org enforces SAML SSO, the token must be SSO-authorized in GitHub's UI before use.
 - Never commit `.env`, `gh` host config, or any file containing a real token.

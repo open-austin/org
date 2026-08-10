@@ -47,9 +47,9 @@ Copy `.env.example` to the ignored `.env`, set the Google credential/token paths
 tools/google-docs/run.sh auth
 ```
 
-When the standard LifeOS credential and Open Austin token files exist under `~/configs/lifeos-tools/secrets/`, the wrapper reuses them automatically; the repo does not create a second credential or token copy. Other contributors configure their own paths in `.env`.
+When the existing local credential and Open Austin token files exist at a local path you configure, the wrapper reuses them automatically; the repo does not create a second credential or token copy. Other contributors configure their own paths in `.env`.
 
-An existing read-only LifeOS token can run `read` and dry-run planning, but the first executed Doc replacement requires the Google Docs write scope. Run `tools/google-docs/run.sh auth` once to grant that scope into the same configured token file before the first approved write.
+An existing read-only token can run `read` and dry-run planning, but the first executed Doc replacement requires the Google Docs write scope. Run `tools/google-docs/run.sh auth` once to grant that scope into the same configured token file before the first approved write.
 
 Read the canonical weekly notes or preview one exact replacement:
 

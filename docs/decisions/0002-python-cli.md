@@ -46,7 +46,7 @@ The sync tools are implemented as:
 - Sync tools require Python 3 (present on macOS by default)
 - No external dependencies beyond `gh` CLI (which provides the data)
 - Write tools (Phase 2) will also be Python scripts
-- `tools/sync/run.sh` remains shell to maintain the familiar entry point pattern from LifeOS tools
+- `tools/sync/run.sh` remains shell to maintain the a familiar entry-point pattern
 
 ---
 

@@ -3,7 +3,7 @@ A read-first (later guarded-write) CLI wrapper for Open Austin's Airtable, so ag
 
 Consumer / driver: the VRM prototype ([open-austin/org#528](https://github.com/open-austin/org/issues/528)) needs a People/Roles/Orgs base with an intake form and a funnel kanban. This tool is the machinery for building and inspecting that base programmatically.
 
-## Why this lives in the org repo (not personal lifeos-tools)
+## Why this lives in the org repo (not a personal tooling repo)
 This is Open Austin infrastructure, not Aslan's personal tooling. It should be owned by the org and usable by other contributors, and it should outlive any one person (the same "who maintains it after you" principle driving the VRM work). Personal Airtable use later would pull the tool in, not the other way around. It also fits the existing `tools/` pattern here (env-loaded credentials, `run.sh` wrappers, dry-run-first writes).
 
 ## Auth & attribution model

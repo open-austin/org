@@ -24,7 +24,7 @@ Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client
 ## To Do
 - [ ] **[USER] Delete the confirmed demo bases** — Applicant Tracking, Sales Leads, PR & Communications, Team Task Management (all Airtable sample templates, never touched by an OA human), and the empty Publicity base. Keep Membership Doc and Project intake (real). Deletion is destructive; the agent does not do it. All bases were exhaustively archived first, so deletion is safe.
 - [ ] **[USER] Rename an existing workspace** (e.g. "Internal" → "People Operations") rather than creating a new one, so the PAT's workspace-scoped access carries over without re-permissioning; delete the junk bases; keep ONE workspace for now (defer access-segmentation until a real second domain exists). Grant the PAT "all current and future bases in this workspace" so new bases are auto-covered.
-- [ ] Phase 2 guarded writes (`--dry-run` first): create tables/fields + records to build the VRM "OA Contributors" base per the schema sketch in `LifeOS open-austin/vrm.md`.
+- [ ] Phase 2 guarded writes (`--dry-run` first): create tables/fields + records to build the VRM "OA Contributors" base per the schema sketch in the private VRM design notes.
 - [ ] Migrate the GitHub Contributor Profiles into the People table (semi-automate via the org sync tooling → Phase-2 write tool).
 - [ ] Decide snapshot handling: Airtable people-data is PII; no committed snapshot. Gitignore any local dump.
 
@@ -33,13 +33,13 @@ Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client
 
 ## Done
 - **Confirmed demo-vs-real via record timestamps** (2026-08-10): Applicant Tracking = Airtable's sample applicant set (Howie Liu as interviewer; all 9 records batch-imported in a 6-minute window with backdated 2013 timestamps). Team Task Management = Airtable's museum-exhibit-planning sample (docents, gallery installs, "Top Predator" exhibit — not civic-tech, not OA). Sales Leads / PR & Communications = Airtable's demo CRM/PR sets. Project intake = real (5 Austin-org contacts sourced by Liani / Daniel Roesler, created 2013, blanks added 2016). Membership Doc = real 2016 OA membership survey.
-- **Exhaustive export** (2026-08-10): all 7 bases / 23 tables / ~430 records → CSV, imported as a consolidated Google Doc into `_Archive/Pre 2026 Airtable Archive` in the OA Drive (lifeos can't upload raw .csv; raw CSVs also handed to Aslan). Nothing lost regardless of the delete decision.
-- **Base schema sketch** drafted in `LifeOS open-austin/vrm.md` (single "OA Contributors" base; People/Teams/Roles/Orgs; Status field doing funnel + active/inactive tagging).
+- **Exhaustive export** (2026-08-10): all 7 bases / 23 tables / ~430 records → CSV, imported as a consolidated Google Doc into `_Archive/Pre 2026 Airtable Archive` in the OA Drive (the import tool can't upload raw .csv; raw CSVs also handed to Aslan). Nothing lost regardless of the delete decision.
+- **Base schema sketch** drafted in the private VRM design notes (single "OA Contributors" base; People/Teams/Roles/Orgs; Status field doing funnel + active/inactive tagging).
 - **[USER] Created the Airtable PAT** (under aslan@open-austin.org) and placed it in the gitignored `.env`; invited aslan@ as a workspace editor. — 2026-08-08
 - Added the Airtable section to `.env.example` (scaffolding commit).
 - Scaffolded `tools/airtable/` — stdlib-only Python client (`airtable.py`) + `run.sh` loading `AIRTABLE_TOKEN` from `.env`. Never prints the token.
 - Phase 1 read commands: `list-bases`, `tables <base>`, `records <base> <table> [n]`, `survey`, `csv <base> <table>`. Verified against the live account (7 bases enumerated).
 - Surveyed all bases (see findings above) and exported the two real datasets to CSV (kept out of the repo; PII).
 - Decided Airtable over Baserow/NocoDB for the VRM build (free-tier kanban; OA already has the account). See #528.
-- Decided this tool lives in the org repo, not personal lifeos-tools (OA-owned, outlives any one maintainer).
+- Decided this tool lives in the org repo, not a personal tooling repo (OA-owned, outlives any one maintainer).
 - Decided aslan@ attribution over admin@ for edits, with admin@ as owner.

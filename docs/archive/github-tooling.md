@@ -2,7 +2,7 @@
 
 ## Goal
 
-Build CLI and MCP tools that let agents (and contributors) read and act on the Open Austin GitHub org — issues, project boards, labels, milestones — with the same fluency that LifeOS tools provide for personal work.
+Build CLI and MCP tools that let agents (and contributors) read and act on the Open Austin GitHub org — issues, project boards, labels, milestones — with the same fluency that personal automation tools provide for personal work.
 
 The tooling should make the org's work visible and actionable without requiring constant API queries, and should give any contributor who clones the repo a consistent environment for working on org tasks.
 
@@ -21,7 +21,7 @@ The tooling should make the org's work visible and actionable without requiring 
 
 Three reasons snapshots are better than direct API queries:
 
-1. **Context loading** — An agent loads `snapshot/issues.md` (~50KB of markdown) once at session start and has full issue context in working memory. During analysis and triage, the agent reasons over local data without hitting APIs mid-session. Same as LifeOS loading `sources/trello.md` — full board visibility without per-card queries.
+1. **Context loading** — An agent loads `snapshot/issues.md` (~50KB of markdown) once at session start and has full issue context in working memory. During analysis and triage, the agent reasons over local data without hitting APIs mid-session. Same as the personal tooling loading `sources/trello.md` — full board visibility without per-card queries.
 
 2. **Consistent view during work** — Triage sessions can take time. If the state changes mid-session (someone closes an issue, adds a label), you want to work from "the state when I started" rather than have your analysis invalidated partway through. The snapshot gives you a stable working copy. Re-sync when you're ready for fresh state.
 
@@ -29,7 +29,7 @@ Three reasons snapshots are better than direct API queries:
 
 ## Mental Model
 
-This is a direct port of the LifeOS methodology to a shared org context:
+This is a direct port of that methodology to a shared org context:
 
 ```
 gh / GraphQL API
@@ -149,6 +149,6 @@ These rules are non-negotiable and apply to all write tools. See `AGENTS.md` for
 
 ## Open Questions
 
-- Shell scripts vs. a lightweight Python CLI? Shell is simpler and closer to the LifeOS pattern. Python gives better argument parsing and testability. Decide before building write tools.
+- Shell scripts vs. a lightweight Python CLI? Shell is simpler and closer to that pattern. Python gives better argument parsing and testability. Decide before building write tools.
 - Should the sync command produce separate files per board, or one unified snapshot? Probably per-board for now, unified index later.
 - Rate limits: GitHub REST is 5000 req/hr for authenticated users; GraphQL counts differently. Snapshots should batch efficiently and avoid polling.

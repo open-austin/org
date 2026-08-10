@@ -7,7 +7,7 @@
 
 ## Context
 
-We are building automation tooling to manage the Open Austin GitHub org: reading and acting on issues, project boards, labels, and milestones. This is analogous to the LifeOS personal tooling in `configs/`, but pointed at shared org infrastructure with a much higher blast radius.
+We are building automation tooling to manage the Open Austin GitHub org: reading and acting on issues, project boards, labels, and milestones. This is analogous to personal automation tooling, but pointed at shared org infrastructure with a much higher blast radius.
 
 Several foundational choices needed to be made before any implementation work could proceed.
 
@@ -29,7 +29,7 @@ The tooling lives inside the `open-austin/org` repo, not a separate personal har
 
 The `gh` CLI (and `gh api graphql`) is the durable, scriptable path for snapshot generation and guarded write commands. It is the source of truth for any automated or repeatable behavior.
 
-Rationale: deterministic, auditable, composable, works in CI or a cron-free local flow — same reasoning that led the LifeOS work to prefer the CLI over desktop-app MCP connectors for persistent automation.
+Rationale: deterministic, auditable, composable, works in CI or a cron-free local flow — same reasoning that favors a CLI over desktop-app MCP connectors for persistent automation.
 
 ### 4. MCP server as the interactive desktop-app layer
 

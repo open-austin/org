@@ -4,7 +4,7 @@ description: "Reconcile an Open Austin weekly organizing meeting handoff with th
 ---
 # Process Weekly Meeting
 ## Scope
-Use this skill only for Open Austin's recurring weekly organizing meeting. [General Organizing - meeting notes](https://docs.google.com/document/d/REDACTED-DOC-ID/edit) is the canonical meeting record. Preserve that document's existing per-meeting structure and local writing style; do not create parallel minutes or require anyone's private LifeOS system.
+Use this skill only for Open Austin's recurring weekly organizing meeting. [General Organizing - meeting notes](https://docs.google.com/document/d/REDACTED-DOC-ID/edit) is the canonical meeting record. Preserve that document's existing per-meeting structure and local writing style; do not create parallel minutes or require anyone's private personal system.
 
 Other Open Austin meetings follow their normal meeting workflow, even when their notes also live in a shared Google Doc.
 
