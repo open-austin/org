@@ -1,0 +1,150 @@
+#!/usr/bin/env python3
+"""Read-first Airtable CLI for Open Austin (airtable-tooling spike).
+
+Stdlib only (urllib) so there is no dependency to install. Auth comes from the
+AIRTABLE_TOKEN environment variable (loaded from the gitignored .env by run.sh).
+Never prints the token. Read commands only in Phase 1.
+"""
+import json
+import os
+import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+
+API = "https://api.airtable.com/v0"
+
+
+def _token():
+    tok = os.environ.get("AIRTABLE_TOKEN", "").strip()
+    if not tok:
+        sys.exit("AIRTABLE_TOKEN is not set (expected in the gitignored .env).")
+    return tok
+
+
+def api_get(path, params=None):
+    url = f"{API}/{path}"
+    if params:
+        url += "?" + urllib.parse.urlencode(params)
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {_token()}"})
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(req) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            if e.code == 429:  # rate limited
+                time.sleep(1.5)
+                continue
+            body = e.read().decode("utf-8", "replace")
+            sys.exit(f"HTTP {e.code} on {path}: {body}")
+    sys.exit(f"rate-limited repeatedly on {path}")
+
+
+def list_bases():
+    bases, offset = [], None
+    while True:
+        params = {"offset": offset} if offset else None
+        data = api_get("meta/bases", params)
+        bases.extend(data.get("bases", []))
+        offset = data.get("offset")
+        if not offset:
+            break
+    return bases
+
+
+def base_schema(base_id):
+    return api_get(f"meta/bases/{base_id}/tables").get("tables", [])
+
+
+def all_records(base_id, table_id, cap=2000):
+    recs, offset = [], None
+    while True:
+        params = {"pageSize": 100}
+        if offset:
+            params["offset"] = offset
+        data = api_get(f"{base_id}/{urllib.parse.quote(table_id)}", params)
+        recs.extend(data.get("records", []))
+        offset = data.get("offset")
+        if not offset or len(recs) >= cap:
+            break
+    return recs
+
+
+def cmd_list_bases():
+    for b in list_bases():
+        print(f"{b['id']}\t{b.get('permissionLevel','?')}\t{b['name']}")
+
+
+def cmd_tables(base_id):
+    for t in base_schema(base_id):
+        fields = ", ".join(f["name"] for f in t.get("fields", []))
+        views = ", ".join(v["name"] for v in t.get("views", []))
+        print(f"\n## {t['name']}  (id={t['id']})")
+        print(f"fields: {fields}")
+        print(f"views:  {views}")
+
+
+def cmd_records(base_id, table_id, limit=5):
+    recs = all_records(base_id, table_id, cap=int(limit))
+    for r in recs[: int(limit)]:
+        print(json.dumps(r.get("fields", {}), ensure_ascii=False))
+
+
+def cmd_csv(base_id, table_id):
+    import csv as _csv
+    tables = base_schema(base_id)
+    match = next((t for t in tables if t["id"] == table_id or t["name"] == table_id), None)
+    cols = [f["name"] for f in match["fields"]] if match else []
+    recs = all_records(base_id, table_id)
+    if not cols:
+        seen = []
+        for r in recs:
+            for k in r.get("fields", {}):
+                if k not in seen:
+                    seen.append(k)
+        cols = seen
+    w = _csv.writer(sys.stdout)
+    w.writerow(cols)
+    for r in recs:
+        f = r.get("fields", {})
+        w.writerow([json.dumps(f[c], ensure_ascii=False) if isinstance(f.get(c), (list, dict)) else f.get(c, "") for c in cols])
+
+
+def cmd_survey():
+    """Full read: every base, its tables, field names, record counts, 1 sample."""
+    for b in list_bases():
+        print(f"\n{'='*70}\nBASE: {b['name']}  (id={b['id']}, {b.get('permissionLevel','?')})")
+        for t in base_schema(b["id"]):
+            recs = all_records(b["id"], t["id"])
+            n = len(recs)
+            fields = ", ".join(f["name"] for f in t.get("fields", []))
+            print(f"\n  TABLE: {t['name']}  [{n} records]")
+            print(f"    fields: {fields}")
+            if recs:
+                sample = recs[0].get("fields", {})
+                s = json.dumps(sample, ensure_ascii=False)
+                print(f"    sample: {s[:400]}")
+
+
+def main():
+    args = sys.argv[1:]
+    if not args:
+        sys.exit("usage: airtable.py {list-bases|tables <base>|records <base> <table> [n]|survey}")
+    cmd = args[0]
+    if cmd == "list-bases":
+        cmd_list_bases()
+    elif cmd == "tables":
+        cmd_tables(args[1])
+    elif cmd == "records":
+        cmd_records(args[1], args[2], args[3] if len(args) > 3 else 5)
+    elif cmd == "csv":
+        cmd_csv(args[1], args[2])
+    elif cmd == "survey":
+        cmd_survey()
+    else:
+        sys.exit(f"unknown command: {cmd}")
+
+
+if __name__ == "__main__":
+    main()
