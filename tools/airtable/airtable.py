@@ -41,6 +41,56 @@ def api_get(path, params=None):
     sys.exit(f"rate-limited repeatedly on {path}")
 
 
+def api_post(path, body):
+    data = json.dumps(body).encode("utf-8")
+    req = urllib.request.Request(
+        f"{API}/{path}", data=data, method="POST",
+        headers={"Authorization": f"Bearer {_token()}", "Content-Type": "application/json"},
+    )
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(req) as r:
+                return True, json.load(r)
+        except urllib.error.HTTPError as e:
+            if e.code == 429:
+                time.sleep(1.5)
+                continue
+            return False, e.read().decode("utf-8", "replace")
+    return False, "rate-limited repeatedly"
+
+
+def cmd_apply_fields(specfile, execute=False):
+    """Create fields from a JSON spec: {"baseId","tables":[{"id","name","fields":[{name,type,options?}]}]}.
+    Idempotent: skips fields that already exist by name. Dry-run unless execute=True."""
+    spec = json.load(open(specfile))
+    base_id = spec["baseId"]
+    current = {t["id"]: {f["name"] for f in t.get("fields", [])} for t in base_schema(base_id)}
+    created = skipped = failed = 0
+    for tbl in spec["tables"]:
+        exist = current.get(tbl["id"], set())
+        for fld in tbl["fields"]:
+            if fld["name"] in exist:
+                skipped += 1
+                continue
+            if not execute:
+                print(f"  PLAN  {tbl['name']}.{fld['name']}  ({fld['type']})")
+                created += 1
+                continue
+            body = {"name": fld["name"], "type": fld["type"]}
+            if fld.get("options"):
+                body["options"] = fld["options"]
+            ok, res = api_post(f"meta/bases/{base_id}/tables/{tbl['id']}/fields", body)
+            if ok:
+                print(f"  OK    {tbl['name']}.{fld['name']}")
+                created += 1
+            else:
+                print(f"  FAIL  {tbl['name']}.{fld['name']}: {res}")
+                failed += 1
+            time.sleep(0.25)
+    verb = "created" if execute else "to create"
+    print(f"\n{created} fields {verb}, {skipped} already existed, {failed} failed.")
+
+
 def list_bases():
     bases, offset = [], None
     while True:
@@ -138,6 +188,8 @@ def main():
         cmd_tables(args[1])
     elif cmd == "records":
         cmd_records(args[1], args[2], args[3] if len(args) > 3 else 5)
+    elif cmd == "apply-fields":
+        cmd_apply_fields(args[1], execute=("--execute" in args))
     elif cmd == "csv":
         cmd_csv(args[1], args[2])
     elif cmd == "survey":

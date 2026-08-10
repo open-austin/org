@@ -1,0 +1,1055 @@
+{
+  "baseId": "applWRIFU0rPBIgTe",
+  "tables": [
+    {
+      "id": "tblWu2q7Zmkx4Lsz6",
+      "name": "People",
+      "fields": [
+        {
+          "name": "UUID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Legal Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Pronouns",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Primary Email",
+          "type": "email"
+        },
+        {
+          "name": "Alternate Emails",
+          "type": "multilineText"
+        },
+        {
+          "name": "Phone",
+          "type": "phoneNumber"
+        },
+        {
+          "name": "Slack Handle",
+          "type": "singleLineText"
+        },
+        {
+          "name": "GitHub Handle",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Persona / Intent",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Experienced Builder"
+              },
+              {
+                "name": "Student / Early-Career Builder"
+              },
+              {
+                "name": "Advocate / Community Partner"
+              },
+              {
+                "name": "Social / Casual Learner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Affiliations",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Volunteer"
+              },
+              {
+                "name": "Board"
+              },
+              {
+                "name": "Partner liaison"
+              },
+              {
+                "name": "Donor"
+              },
+              {
+                "name": "Prospect"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Engagement Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Prospect"
+              },
+              {
+                "name": "Unengaged"
+              },
+              {
+                "name": "Engaged"
+              },
+              {
+                "name": "Disengaged"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Disengagement Type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Hiatus"
+              },
+              {
+                "name": "Dormant"
+              },
+              {
+                "name": "Departed"
+              },
+              {
+                "name": "Archived"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Community of Practice",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Dev"
+              },
+              {
+                "name": "Design"
+              },
+              {
+                "name": "Product"
+              },
+              {
+                "name": "Data"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Skills",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Frontend"
+              },
+              {
+                "name": "Backend"
+              },
+              {
+                "name": "Full-stack"
+              },
+              {
+                "name": "Data analysis"
+              },
+              {
+                "name": "Data engineering"
+              },
+              {
+                "name": "Machine learning"
+              },
+              {
+                "name": "GIS / mapping"
+              },
+              {
+                "name": "UX research"
+              },
+              {
+                "name": "UX / UI design"
+              },
+              {
+                "name": "Graphic design"
+              },
+              {
+                "name": "Product management"
+              },
+              {
+                "name": "Project management"
+              },
+              {
+                "name": "Writing"
+              },
+              {
+                "name": "Communications"
+              },
+              {
+                "name": "DevOps"
+              },
+              {
+                "name": "QA"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Other Skills",
+          "type": "multilineText"
+        },
+        {
+          "name": "Languages",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Spanish"
+              },
+              {
+                "name": "Vietnamese"
+              },
+              {
+                "name": "Mandarin"
+              },
+              {
+                "name": "Cantonese"
+              },
+              {
+                "name": "Korean"
+              },
+              {
+                "name": "Arabic"
+              },
+              {
+                "name": "French"
+              },
+              {
+                "name": "Hindi"
+              },
+              {
+                "name": "Tagalog"
+              },
+              {
+                "name": "ASL"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Interests / Wants to work on",
+          "type": "multilineText"
+        },
+        {
+          "name": "Wants to learn",
+          "type": "multilineText"
+        },
+        {
+          "name": "Willingness to expand roles",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Eager"
+              },
+              {
+                "name": "Open"
+              },
+              {
+                "name": "Prefers to stay focused"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Availability",
+          "type": "multilineText"
+        },
+        {
+          "name": "Location / Area",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Effort (hours)",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Source / How heard",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Website"
+              },
+              {
+                "name": "Event"
+              },
+              {
+                "name": "Tabling"
+              },
+              {
+                "name": "Intro"
+              },
+              {
+                "name": "Social"
+              },
+              {
+                "name": "GitHub"
+              },
+              {
+                "name": "Slack"
+              },
+              {
+                "name": "Other"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Date First Seen",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            }
+          }
+        },
+        {
+          "name": "Last Touchpoint",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            }
+          }
+        },
+        {
+          "name": "Public Listing Consent",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "History Flags",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "2016 survey"
+              },
+              {
+                "name": "GitHub profile"
+              },
+              {
+                "name": "Adam roster"
+              },
+              {
+                "name": "Liani roster"
+              },
+              {
+                "name": "Slack signup"
+              },
+              {
+                "name": "Intake form"
+              },
+              {
+                "name": "Former active contributor"
+              },
+              {
+                "name": "GitHub-only"
+              },
+              {
+                "name": "Needs review"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Access Held",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Slack"
+              },
+              {
+                "name": "GitHub org"
+              },
+              {
+                "name": "GitHub team"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Access Requested",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Slack"
+              },
+              {
+                "name": "GitHub org"
+              },
+              {
+                "name": "GitHub team"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Next Action",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Last Slack Activity",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            }
+          }
+        },
+        {
+          "name": "Last GitHub Activity",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            }
+          }
+        },
+        {
+          "name": "Repos Contributed To",
+          "type": "multilineText"
+        },
+        {
+          "name": "Teams",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblj1ul90dJUmOH93"
+          }
+        },
+        {
+          "name": "Roles",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tbl1rnMo11C3SfUpz"
+          }
+        },
+        {
+          "name": "Organization",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tbl70yPHyRJ3rFDPt"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tblj1ul90dJUmOH93",
+      "name": "Teams",
+      "fields": [
+        {
+          "name": "Type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Product Team"
+              },
+              {
+                "name": "Standing Team"
+              },
+              {
+                "name": "Community of Practice"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Description",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "id": "tbl70yPHyRJ3rFDPt",
+      "name": "Organizations",
+      "fields": [
+        {
+          "name": "Type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Partner"
+              },
+              {
+                "name": "Donor"
+              },
+              {
+                "name": "Funder"
+              },
+              {
+                "name": "Community org"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Website",
+          "type": "url"
+        }
+      ]
+    },
+    {
+      "id": "tbl1rnMo11C3SfUpz",
+      "name": "Roles",
+      "fields": [
+        {
+          "name": "Role Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Open"
+              },
+              {
+                "name": "Filled"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Skills Needed",
+          "type": "multilineText"
+        },
+        {
+          "name": "Commitment",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "1-2 hrs/week"
+              },
+              {
+                "name": "3-5 hrs/week"
+              },
+              {
+                "name": "5-10 hrs/week"
+              },
+              {
+                "name": "10+ hrs/week"
+              },
+              {
+                "name": "Flexible"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Team",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblj1ul90dJUmOH93"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tbldmJXE2WnvSX6xD",
+      "name": "Intake Staging",
+      "fields": [
+        {
+          "name": "UUID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Legal Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Pronouns",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Primary Email",
+          "type": "email"
+        },
+        {
+          "name": "Alternate Emails",
+          "type": "multilineText"
+        },
+        {
+          "name": "Phone",
+          "type": "phoneNumber"
+        },
+        {
+          "name": "Slack Handle",
+          "type": "singleLineText"
+        },
+        {
+          "name": "GitHub Handle",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Persona / Intent",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Experienced Builder"
+              },
+              {
+                "name": "Student / Early-Career Builder"
+              },
+              {
+                "name": "Advocate / Community Partner"
+              },
+              {
+                "name": "Social / Casual Learner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Affiliations",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Volunteer"
+              },
+              {
+                "name": "Board"
+              },
+              {
+                "name": "Partner liaison"
+              },
+              {
+                "name": "Donor"
+              },
+              {
+                "name": "Prospect"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Engagement Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Prospect"
+              },
+              {
+                "name": "Unengaged"
+              },
+              {
+                "name": "Engaged"
+              },
+              {
+                "name": "Disengaged"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Disengagement Type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Hiatus"
+              },
+              {
+                "name": "Dormant"
+              },
+              {
+                "name": "Departed"
+              },
+              {
+                "name": "Archived"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Community of Practice",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Dev"
+              },
+              {
+                "name": "Design"
+              },
+              {
+                "name": "Product"
+              },
+              {
+                "name": "Data"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Skills",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Frontend"
+              },
+              {
+                "name": "Backend"
+              },
+              {
+                "name": "Full-stack"
+              },
+              {
+                "name": "Data analysis"
+              },
+              {
+                "name": "Data engineering"
+              },
+              {
+                "name": "Machine learning"
+              },
+              {
+                "name": "GIS / mapping"
+              },
+              {
+                "name": "UX research"
+              },
+              {
+                "name": "UX / UI design"
+              },
+              {
+                "name": "Graphic design"
+              },
+              {
+                "name": "Product management"
+              },
+              {
+                "name": "Project management"
+              },
+              {
+                "name": "Writing"
+              },
+              {
+                "name": "Communications"
+              },
+              {
+                "name": "DevOps"
+              },
+              {
+                "name": "QA"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Other Skills",
+          "type": "multilineText"
+        },
+        {
+          "name": "Languages",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Spanish"
+              },
+              {
+                "name": "Vietnamese"
+              },
+              {
+                "name": "Mandarin"
+              },
+              {
+                "name": "Cantonese"
+              },
+              {
+                "name": "Korean"
+              },
+              {
+                "name": "Arabic"
+              },
+              {
+                "name": "French"
+              },
+              {
+                "name": "Hindi"
+              },
+              {
+                "name": "Tagalog"
+              },
+              {
+                "name": "ASL"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Interests / Wants to work on",
+          "type": "multilineText"
+        },
+        {
+          "name": "Wants to learn",
+          "type": "multilineText"
+        },
+        {
+          "name": "Willingness to expand roles",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Eager"
+              },
+              {
+                "name": "Open"
+              },
+              {
+                "name": "Prefers to stay focused"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Availability",
+          "type": "multilineText"
+        },
+        {
+          "name": "Location / Area",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Effort (hours)",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Source / How heard",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Website"
+              },
+              {
+                "name": "Event"
+              },
+              {
+                "name": "Tabling"
+              },
+              {
+                "name": "Intro"
+              },
+              {
+                "name": "Social"
+              },
+              {
+                "name": "GitHub"
+              },
+              {
+                "name": "Slack"
+              },
+              {
+                "name": "Other"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Date First Seen",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            }
+          }
+        },
+        {
+          "name": "Last Touchpoint",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            }
+          }
+        },
+        {
+          "name": "Public Listing Consent",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "History Flags",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "2016 survey"
+              },
+              {
+                "name": "GitHub profile"
+              },
+              {
+                "name": "Adam roster"
+              },
+              {
+                "name": "Liani roster"
+              },
+              {
+                "name": "Slack signup"
+              },
+              {
+                "name": "Intake form"
+              },
+              {
+                "name": "Former active contributor"
+              },
+              {
+                "name": "GitHub-only"
+              },
+              {
+                "name": "Needs review"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Access Held",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Slack"
+              },
+              {
+                "name": "GitHub org"
+              },
+              {
+                "name": "GitHub team"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Access Requested",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Slack"
+              },
+              {
+                "name": "GitHub org"
+              },
+              {
+                "name": "GitHub team"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Next Action",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Last Slack Activity",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            }
+          }
+        },
+        {
+          "name": "Last GitHub Activity",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            }
+          }
+        },
+        {
+          "name": "Repos Contributed To",
+          "type": "multilineText"
+        },
+        {
+          "name": "Import Source",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "2016 survey"
+              },
+              {
+                "name": "GitHub profile"
+              },
+              {
+                "name": "Adam roster"
+              },
+              {
+                "name": "Liani roster"
+              },
+              {
+                "name": "Manual"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Ready to Promote",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "Promoted Person",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblWu2q7Zmkx4Lsz6"
+          }
+        }
+      ]
+    }
+  ]
+}

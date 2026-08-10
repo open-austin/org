@@ -22,16 +22,19 @@ Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client
 - **Team Task Management** — Airtable's demo task base (2014 museum exhibit data). Junk.
 
 ## To Do
-- [ ] **[USER] Delete the confirmed demo bases** — Applicant Tracking, Sales Leads, PR & Communications, Team Task Management (all Airtable sample templates, never touched by an OA human), and the empty Publicity base. Keep Membership Doc and Project intake (real). Deletion is destructive; the agent does not do it. All bases were exhaustively archived first, so deletion is safe.
-- [ ] **[USER] Rename an existing workspace** (e.g. "Internal" → "People Operations") rather than creating a new one, so the PAT's workspace-scoped access carries over without re-permissioning; delete the junk bases; keep ONE workspace for now (defer access-segmentation until a real second domain exists). Grant the PAT "all current and future bases in this workspace" so new bases are auto-covered.
-- [ ] Phase 2 guarded writes (`--dry-run` first): create tables/fields + records to build the VRM `Relationship Management` base (People/Teams/Roles/Organizations/Intake) per the agreed schema, which should be documented in this repo before the Phase-2 build.
-- [ ] Migrate the GitHub Contributor Profiles into the People table (semi-automate via the org sync tooling → Phase-2 write tool).
+- [ ] **[USER] In the Airtable UI, delete the base-template cruft fields** on each table (Assignee, Status, Attachments, Attachment Summary) — unused, and the template "Status" is distinct from our "Engagement Status". (Kept them rather than API-deleting, since deletes are destructive.)
+- [ ] **[USER] Create the Views** (the API can't): a kanban by Engagement Status (the funnel), a skill-searchable Directory (public, consent-gated on `Public Listing Consent`), a Needs-follow-up view, and the public no-login Intake Form(s) writing into Intake Staging.
+- [ ] Import legacy data into **Intake Staging** oldest-first (2016 survey → GitHub Contributor Profiles → Adam's roster + Liani's 2024 roster), tagged by `Import Source`, then normalize/reconcile into People (manual identity resolution; no auto-merge).
+- [ ] Populate `UUID`s (write tool at import; an automation script for UI/form-created records).
+- [ ] After migration, retire the GitHub Contributor Profiles + issue templates (full cutover; relates to #468/#497).
 - [ ] Decide snapshot handling: Airtable people-data is PII; no committed snapshot. Gitignore any local dump.
 
 ## Ready for Human QA
 - (none yet)
 
 ## Done
+- **[USER] Cleaned the account + created the base** (2026-08-10): deleted the demo bases, renamed a workspace to "Open Austin", created base `Relationship Management` with tables People (record "Person"), Teams, Organizations, Roles, and Intake Staging (record "Prospect").
+- **Built the base schema via the Phase-2 write tool** (2026-08-10): added `apply-fields` (dry-run by default) and created all **82 fields** across the 5 tables from `tools/airtable/relationship-management-schema.json`, zero failures. People carries UUID + Name/Legal Name, the four classification dimensions (Persona / Affiliations / Engagement Status + Disengagement Type / History Flags), placements (Teams/Roles/Organization links, CoP), Engagement fields (Skills, Languages, Availability, Location, Effort, Willingness to expand roles), Access held/requested, and evidence fields (Last Slack/GitHub activity, Repos). Teams typed (Product/Standing/CoP). Intake Staging mirrors People (Person-shaped) + Import Source / Ready to Promote / Promoted Person. Linked records auto-created reverse fields.
 - **Confirmed demo-vs-real via record timestamps** (2026-08-10): Applicant Tracking = Airtable's sample applicant set (Howie Liu as interviewer; all 9 records batch-imported in a 6-minute window with backdated 2013 timestamps). Team Task Management = Airtable's museum-exhibit-planning sample (docents, gallery installs, "Top Predator" exhibit — not civic-tech, not OA). Sales Leads / PR & Communications = Airtable's demo CRM/PR sets. Project intake = real (5 Austin-org contacts sourced by Liani / Daniel Roesler, created 2013, blanks added 2016). Membership Doc = real 2016 OA membership survey.
 - **Exhaustive export** (2026-08-10): all 7 bases / 23 tables / ~430 records → CSV, imported as a consolidated Google Doc into `_Archive/Pre 2026 Airtable Archive` in the OA Drive (the import tool can't upload raw .csv; raw CSVs also exported locally). Nothing lost regardless of the delete decision.
 - **Base schema** agreed (base `Relationship Management`; People/Teams/Roles/Organizations/Intake; coarse Status + placements), to be documented in this repo before Phase-2.
