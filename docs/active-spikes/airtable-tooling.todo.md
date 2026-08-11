@@ -24,7 +24,8 @@ Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client
 ## To Do
 - [ ] **[USER] In the Airtable UI, delete the base-template cruft fields** on each table (Assignee, Status, Attachments, Attachment Summary) — unused, and the template "Status" is distinct from our "Engagement Status". (Kept them rather than API-deleting, since deletes are destructive.)
 - [x] [USER] Engagement Status kanban view created; deleted template-cruft fields on People + Intake Staging.
-- [~] **Priority: import legacy data into Intake Staging + normalize.** Added `import-records` (dry-run default, batches of 10). **Done: 2016 survey (44) + GitHub Contributor Profiles (44, from practice-devs/designers/data-nerds; CoP from repo, GitHub handle from issue author, tagged "GitHub profile", Unengaged).** Note cross-CoP duplicates in staging (e.g. Adam Corvus in Dev + Data, Alexis in Design + Data) that normalization will merge into one Person. Next: Adam's 2026 roster + Liani's 2024 roster. Then manual identity-resolution/normalization from Intake Staging into People (no auto-merge).
+- [x] **Import legacy data into Intake Staging.** Added `import-records` (dry-run default). **All four sources imported: 189 records** (2016 survey 44, GitHub profiles 44, Adam roster 22, Liani roster 76, + 3 form-test rows).
+- [ ] **Priority next: manual merge/normalization** from Intake Staging into People (no auto-merge; dedup by name/email/GitHub handle across sources; accrue all History Flags; most-current source wins on Engagement Status). Full guidance + known duplicate/name-variant list in the vault note `open-austin/vrm-import-normalization.md`.
 
 ### Deferred / backburner (revisit after ingestion)
 - Skill-searchable **Directory** view (a Grid/Gallery filtered/searched by Skills+Languages; nicer search later via Interfaces). Future task.
