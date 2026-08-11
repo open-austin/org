@@ -23,7 +23,13 @@ Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client
 
 ## To Do
 - [ ] **[USER] In the Airtable UI, delete the base-template cruft fields** on each table (Assignee, Status, Attachments, Attachment Summary) — unused, and the template "Status" is distinct from our "Engagement Status". (Kept them rather than API-deleting, since deletes are destructive.)
-- [ ] **[USER] Create the Views** (the API can't): a kanban by Engagement Status (the funnel), a skill-searchable Directory (public, consent-gated on `Public Listing Consent`), a Needs-follow-up view, and the public no-login Intake Form(s) writing into Intake Staging.
+- [x] [USER] Engagement Status kanban view created; deleted template-cruft fields on People + Intake Staging.
+- [ ] **Priority: import legacy data into Intake Staging + normalize** (see below).
+
+### Deferred / backburner (revisit after ingestion)
+- Skill-searchable **Directory** view (a Grid/Gallery filtered/searched by Skills+Languages; nicer search later via Interfaces). Future task.
+- **Needs-follow-up** view (a Grid filtered to attention-needed, sorted by oldest Last Touchpoint). Backburner.
+- **Public listing / public directory** and the **no-login Intake Form** — premature; we're internal-first for Engagement. Backburner. (`Public Listing Consent` field sits dormant meanwhile.)
 - [ ] Import legacy data into **Intake Staging** oldest-first (2016 survey → GitHub Contributor Profiles → Adam's roster + Liani's 2024 roster), tagged by `Import Source`, then normalize/reconcile into People (manual identity resolution; no auto-merge).
 - [ ] Populate `UUID`s (write tool at import; an automation script for UI/form-created records).
 - [ ] After migration, retire the GitHub Contributor Profiles + issue templates (full cutover; relates to #468/#497).
