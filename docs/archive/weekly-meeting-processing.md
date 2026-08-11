@@ -14,7 +14,7 @@ tags:
 Create a reusable Open Austin workflow for reconciling the weekly organizing meeting with the shared recurring Google Doc and GitHub, usable by any contributor from a clone of this repo.
 
 ## Boundary
-The canonical shared Doc is [General Organizing - meeting notes](https://docs.google.com/document/d/REDACTED-DOC-ID/edit), a human-authored recurring record. The public workflow receives chatbot-produced beat-by-beat notes and analysis, not the transcript. That handoff can reveal missing actions, stale states, or absent issue links, but it is not a second set of minutes to paste into the document.
+The canonical shared Doc is **General Organizing - meeting notes** (an open-edit link kept out of this repo; provide it at runtime or via `OPEN_AUSTIN_WEEKLY_NOTES_DOC_ID` in `.env`), a human-authored recurring record. The public workflow receives chatbot-produced beat-by-beat notes and analysis, not the transcript. That handoff can reveal missing actions, stale states, or absent issue links, but it is not a second set of minutes to paste into the document.
 
 The public workflow owns:
 

@@ -8,7 +8,7 @@ OA-owned infrastructure that follows the existing `tools/` pattern in this repo:
 
 ## Auth & attribution model
 - **Airtable Personal Access Token (PAT)** loaded from the environment as `AIRTABLE_TOKEN`, never hardcoded or committed (same rule as `GH_TOKEN`). Documented in `.env.example`.
-- **Created under aslan@open-austin.org, not the admin@ owner account.** Rationale: the person piloting the agent acts as themselves, so Airtable's change history attributes edits to the individual rather than a shared admin login, so it's a cleaner audit trail, using the aslan@open-austin.org account for the org's Google access. admin@ stays the workspace owner; aslan@ is invited as an editor.
+- **Created under an individual's own OA account, not the admin@ owner account.** Rationale: the person piloting the agent acts as themselves, so Airtable's change history attributes edits to the individual rather than a shared admin login, a cleaner audit trail. admin@ stays the workspace owner; the individual is invited as an editor.
 - Scope broadly for real work (`data.records:read`, `data.records:write`, `schema.bases:read`, `schema.bases:write`; `webhook:manage` optional), granted to the specific OA workspaces/bases. The token is created and placed by the user — the agent never handles the raw secret.
 
 ## Safety & privacy boundaries

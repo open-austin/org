@@ -4,7 +4,7 @@ description: "Reconcile an Open Austin weekly organizing meeting handoff with th
 ---
 # Process Weekly Meeting
 ## Scope
-Use this skill only for Open Austin's recurring weekly organizing meeting. [General Organizing - meeting notes](https://docs.google.com/document/d/REDACTED-DOC-ID/edit) is the canonical meeting record. Preserve that document's existing per-meeting structure and local writing style; do not create parallel minutes.
+Use this skill only for Open Austin's recurring weekly organizing meeting. The canonical meeting record is the shared **General Organizing - meeting notes** Google Doc. Its link is an open-edit URL and is deliberately kept out of this repo, provide it at runtime, or read the doc ID from your local gitignored `.env` (`OPEN_AUSTIN_WEEKLY_NOTES_DOC_ID`). Preserve that document's existing per-meeting structure and local writing style; do not create parallel minutes.
 
 Other Open Austin meetings follow their normal meeting workflow, even when their notes also live in a shared Google Doc.
 
@@ -24,7 +24,7 @@ Gather:
 
 - the meeting date;
 - the chatbot-produced `Beat-by-beat notes` and `Light analysis`;
-- the matching dated section of [General Organizing - meeting notes](https://docs.google.com/document/d/REDACTED-DOC-ID/edit); and
+- the matching dated section of the **General Organizing - meeting notes** Doc (link provided at runtime or via `OPEN_AUSTIN_WEEKLY_NOTES_DOC_ID` in `.env`); and
 - current GitHub issue and project state from a fresh `tools/sync/run.sh` run.
 
 Explicit corrections from an authorized participant outrank the chatbot handoff. Treat the handoff as compressed evidence, not as authoritative minutes.

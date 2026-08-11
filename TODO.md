@@ -40,7 +40,7 @@ Getting the repo into a state where agents can work effectively and the methodol
 
 ## Active Spikes
 ### Airtable Tooling → `docs/active-spikes/airtable-tooling.md` (+ `.todo.md`)
-A read-first (then guarded-write) Airtable CLI in `tools/airtable/`, so agents/contributors can inspect and manage OA's Airtable like GitHub/Drive. Drives the VRM prototype (#528). **Blocked on two user actions:** create an Airtable PAT under aslan@open-austin.org (into gitignored `.env` as `AIRTABLE_TOKEN`) and invite aslan@ as a workspace editor. Then Phase 1 read commands, then workspace cleanup, then Phase 2 guarded writes to build the VRM base.
+A read-first (then guarded-write) Airtable CLI in `tools/airtable/`, so agents/contributors can inspect and manage OA's Airtable like GitHub/Drive. Drives the VRM prototype (#528). **Blocked on two user actions:** create an Airtable PAT under your own OA account (not shared admin@), into gitignored `.env` as `AIRTABLE_TOKEN`, and invite that account as a workspace editor. Then Phase 1 read commands, then workspace cleanup, then Phase 2 guarded writes to build the VRM base.
 
 ## Automation — residual QA / watch
 Low-priority follow-ups left after archiving the automation spikes (2026-07-08). None block anything; the automation is live and working.
