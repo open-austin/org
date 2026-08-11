@@ -24,7 +24,7 @@ Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client
 ## To Do
 - [ ] **[USER] In the Airtable UI, delete the base-template cruft fields** on each table (Assignee, Status, Attachments, Attachment Summary) — unused, and the template "Status" is distinct from our "Engagement Status". (Kept them rather than API-deleting, since deletes are destructive.)
 - [x] [USER] Engagement Status kanban view created; deleted template-cruft fields on People + Intake Staging.
-- [ ] **Priority: import legacy data into Intake Staging + normalize** (see below).
+- [~] **Priority: import legacy data into Intake Staging + normalize.** Added `import-records` (dry-run default, batches of 10). **Done: 2016 survey (44 records)** imported and tagged. Next sources: GitHub Contributor Profiles, then Adam's roster + Liani's 2024 roster. Then manual identity-resolution/normalization from Intake Staging into People (no auto-merge).
 
 ### Deferred / backburner (revisit after ingestion)
 - Skill-searchable **Directory** view (a Grid/Gallery filtered/searched by Skills+Languages; nicer search later via Interfaces). Future task.

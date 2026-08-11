@@ -59,6 +59,29 @@ def api_post(path, body):
     return False, "rate-limited repeatedly"
 
 
+def cmd_import_records(base_id, table_id, recfile, execute=False):
+    """Insert records from a JSON array of field-dicts. Dry-run unless execute=True.
+    Batches of 10 (Airtable limit); typecast lets Airtable coerce dates/selects."""
+    recs = json.load(open(recfile))
+    print(f"{'IMPORT' if execute else 'DRY-RUN'}: {len(recs)} records into {table_id}")
+    if recs:
+        print("sample:", json.dumps(recs[0], ensure_ascii=False)[:500])
+    if not execute:
+        print("re-run with --execute to insert.")
+        return
+    created = 0
+    for i in range(0, len(recs), 10):
+        batch = {"records": [{"fields": r} for r in recs[i:i + 10]], "typecast": True}
+        ok, res = api_post(f"{base_id}/{urllib.parse.quote(table_id)}", batch)
+        if ok:
+            created += len(res.get("records", []))
+        else:
+            print(f"  FAIL at batch {i}: {res[:300]}")
+            break
+        time.sleep(0.3)
+    print(f"created {created} records.")
+
+
 def cmd_apply_fields(specfile, execute=False):
     """Create fields from a JSON spec: {"baseId","tables":[{"id","name","fields":[{name,type,options?}]}]}.
     Idempotent: skips fields that already exist by name. Dry-run unless execute=True."""
@@ -190,6 +213,8 @@ def main():
         cmd_records(args[1], args[2], args[3] if len(args) > 3 else 5)
     elif cmd == "apply-fields":
         cmd_apply_fields(args[1], execute=("--execute" in args))
+    elif cmd == "import-records":
+        cmd_import_records(args[1], args[2], args[3], execute=("--execute" in args))
     elif cmd == "csv":
         cmd_csv(args[1], args[2])
     elif cmd == "survey":
