@@ -7,7 +7,7 @@ Building the VRM pilot (#528) in Airtable. We want the agent to inspect/manage t
 ## General Principles
 - Follow the repo `tools/` pattern: `tools/airtable/run.sh` wrapper + a Python client, env-loaded creds.
 - Dry-run by default on any write. No destructive deletes. No committed data or tokens (public repo, PII).
-- Token created under aslan@open-austin.org; agent never handles the raw secret.
+- Token created under an individual's own OA account (not shared admin@); agent never handles the raw secret.
 
 ## Current State Overview
 Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client + run.sh). Surveyed all 7 bases. Finding: the account is essentially an abandoned ~2016 Airtable-evaluation sandbox full of default demo templates, with ONE genuinely real dataset (the 2016 membership survey) and a handful of real Austin-org names buried in an otherwise-template CRM. Real data has been exported to CSV. Next: user archives the CSVs to Drive + deletes the junk (destructive, user's action), then we build the VRM base fresh in a clean workspace.
@@ -25,7 +25,12 @@ Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client
 - [ ] **[USER] In the Airtable UI, delete the base-template cruft fields** on each table (Assignee, Status, Attachments, Attachment Summary) — unused, and the template "Status" is distinct from our "Engagement Status". (Kept them rather than API-deleting, since deletes are destructive.)
 - [x] [USER] Engagement Status kanban view created; deleted template-cruft fields on People + Intake Staging.
 - [x] **Import legacy data into Intake Staging.** Added `import-records` (dry-run default). **All four sources imported: 189 records** (2016 survey 44, GitHub profiles 44, Adam roster 22, Liani roster 76, + 3 form-test rows).
-- [ ] **Priority next: manual merge/normalization** from Intake Staging into People (no auto-merge; dedup by name/email/GitHub handle across sources; accrue all History Flags; most-current source wins on Engagement Status). Full guidance + known duplicate/name-variant list in the vault note `open-austin/vrm-import-normalization.md`.
+- [ ] **Priority next: promote Intake Staging → People.** Merge decisions are captured (all 37 clusters + 100 singletons approved, with per-cluster overrides) in the vault note `open-austin/vrm-merge-decisions.md`; full guidance in `open-austin/vrm-import-normalization.md`. Promotion is on hold pending a go decision, then run as one scripted batch that bakes in: full-name expansion, per-cluster engagement overrides (Carey Disengaged, Ansara/Ryan not Engaged), Disengagement Types, and dropping the duplicate Adam Corvus profile row.
+
+### Deferred post-merge passes (agreed 2026-08-11)
+- [ ] **Skills normalization.** Extract the free-text `Other Skills` / `Wants to Learn` blobs into the non-exclusive `Skills` select. Large cleanup; do it AFTER the initial merge, carry free text verbatim until then.
+- [ ] **Retire the legacy `Community of Practice` multi-select** once People are placed, in favor of the `Communities of Practice` link (source of truth). Keep the multi-select through the merge since it holds the imported CoP values.
+- [ ] **Engagement re-grade heuristic.** The importer's "Adam roster → Engaged" default over-counts Slack-only joins; engagement is a human judgment at promotion, not a source-derived field.
 
 ### Deferred / backburner (revisit after ingestion)
 - Skill-searchable **Directory** view (a Grid/Gallery filtered/searched by Skills+Languages; nicer search later via Interfaces). Future task.
@@ -45,11 +50,11 @@ Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client
 - **Confirmed demo-vs-real via record timestamps** (2026-08-10): Applicant Tracking = Airtable's sample applicant set (Howie Liu as interviewer; all 9 records batch-imported in a 6-minute window with backdated 2013 timestamps). Team Task Management = Airtable's museum-exhibit-planning sample (docents, gallery installs, "Top Predator" exhibit — not civic-tech, not OA). Sales Leads / PR & Communications = Airtable's demo CRM/PR sets. Project intake = real (5 Austin-org contacts sourced by Liani / Daniel Roesler, created 2013, blanks added 2016). Membership Doc = real 2016 OA membership survey.
 - **Exhaustive export** (2026-08-10): all 7 bases / 23 tables / ~430 records → CSV, imported as a consolidated Google Doc into `_Archive/Pre 2026 Airtable Archive` in the OA Drive (the import tool can't upload raw .csv; raw CSVs also exported locally). Nothing lost regardless of the delete decision.
 - **Base schema** agreed (base `Relationship Management`; People/Teams/Roles/Organizations/Intake; coarse Status + placements), to be documented in this repo before Phase-2.
-- **[USER] Created the Airtable PAT** (under aslan@open-austin.org) and placed it in the gitignored `.env`; invited aslan@ as a workspace editor. — 2026-08-08
+- **[USER] Created the Airtable PAT** (under an individual OA account, not shared admin@) and placed it in the gitignored `.env`; invited that account as a workspace editor. — 2026-08-08
 - Added the Airtable section to `.env.example` (scaffolding commit).
 - Scaffolded `tools/airtable/` — stdlib-only Python client (`airtable.py`) + `run.sh` loading `AIRTABLE_TOKEN` from `.env`. Never prints the token.
 - Phase 1 read commands: `list-bases`, `tables <base>`, `records <base> <table> [n]`, `survey`, `csv <base> <table>`. Verified against the live account (7 bases enumerated).
 - Surveyed all bases (see findings above) and exported the two real datasets to CSV (kept out of the repo; PII).
 - Decided Airtable over Baserow/NocoDB for the VRM build (free-tier kanban; OA already has the account). See #528.
 - Decided this tool is OA-owned and lives in the org repo (outlives any one maintainer).
-- Decided aslan@ attribution over admin@ for edits, with admin@ as owner.
+- Decided individual-account attribution over shared admin@ for edits, with admin@ as owner.
