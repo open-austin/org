@@ -26,8 +26,16 @@ for r in recs:
         "src": (f.get("Import Source") or "(none)"),
         "cop": f.get("Community of Practice") or [],
         "status": f.get("Engagement Status") or "",
+        "notes": f.get("Notes") or "",
         "nn": norm(f.get("Name", "")),
     })
+def team_hint(notes):
+    h = []
+    m = re.search(r'Team \(2024 roster\):\s*(.+)', notes)
+    if m: h.append("roster-team=" + m.group(1).strip())
+    m = re.search(r'Most recent Slack channel:\s*(.+)', notes)
+    if m: h.append("slack=" + m.group(1).strip())
+    return (" | " + ", ".join(h)) if h else ""
 # union-find
 parent = {r["id"]: r["id"] for r in R}
 def find(x):
@@ -78,7 +86,7 @@ for n, c in enumerate(merges, 1):
     names = sorted({x["name"] for x in c})
     out.append(f"### M{n} — {names[0]}  ({conf})")
     for x in c:
-        out.append(f"- [{x['src']}] {x['name']} | {x['email'] or '-'} | gh:{x['gh'] or '-'} | {x['cop']} | {x['status']} | `{x['id']}`")
+        out.append(f"- [{x['src']}] {x['name']} | {x['email'] or '-'} | gh:{x['gh'] or '-'} | {x['cop']} | {x['status']}{team_hint(x['notes'])} | `{x['id']}`")
     out.append(f"- **Proposed Person:** {names[0]}"
                + (f" (also seen as: {', '.join(names[1:])})" if len(names) > 1 else "")
                + f"; CoP {cops or '[]'}; History Flags {srcs}; Status **{resolve_status(srcs)}**.")
@@ -86,6 +94,6 @@ for n, c in enumerate(merges, 1):
     out.append("")
 out.append("## Singletons (promote 1:1, no merge decision)")
 for x in sorted(singles, key=lambda x: x["name"].lower()):
-    out.append(f"- {x['name']} | [{x['src']}] | {x['email'] or '-'} | gh:{x['gh'] or '-'} | {x['status']}")
+    out.append(f"- {x['name']} | [{x['src']}] | {x['email'] or '-'} | gh:{x['gh'] or '-'} | {x['status']}{team_hint(x['notes'])}")
 open(sys.argv[1], "w").write("\n".join(out))
 print(f"{len(merges)} merge clusters, {len(singles)} singletons -> {sys.argv[1]}")
