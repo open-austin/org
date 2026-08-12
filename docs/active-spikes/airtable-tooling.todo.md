@@ -25,12 +25,14 @@ Phase 1 read tooling is built and working (`tools/airtable/`, stdlib-only client
 - [ ] **[USER] In the Airtable UI, delete the base-template cruft fields** on each table (Assignee, Status, Attachments, Attachment Summary) — unused, and the template "Status" is distinct from our "Engagement Status". (Kept them rather than API-deleting, since deletes are destructive.)
 - [x] [USER] Engagement Status kanban view created; deleted template-cruft fields on People + Intake Staging.
 - [x] **Import legacy data into Intake Staging.** Added `import-records` (dry-run default). **All four sources imported: 189 records** (2016 survey 44, GitHub profiles 44, Adam roster 22, Liani roster 76, + 3 form-test rows).
-- [ ] **Priority next: promote Intake Staging → People.** Merge decisions are captured (all 37 clusters + 100 singletons approved, with per-cluster overrides) in the vault note `open-austin/vrm-merge-decisions.md`; full guidance in `open-austin/vrm-import-normalization.md`. Promotion is on hold pending a go decision, then run as one scripted batch that bakes in: full-name expansion, per-cluster engagement overrides (Carey Disengaged, Ansara/Ryan not Engaged), Disengagement Types, and dropping the duplicate Adam Corvus profile row.
+- [x] **Dedup merge DONE (2026-08-11):** all 37 clusters merged in Intake Staging (flag-and-filter via `Merge Status`, nothing deleted). 189 raw rows → 137 clean records (37 survivors + 100 singletons) + 49 superseded + 3 form-test rows flagged. Per-cluster overrides applied (Carey Disengaged/Departed, Ansara/Ryan not Engaged, full-name expansion, duplicate Adam Corvus profile dropped). Decisions in `open-austin/vrm-merge-decisions.md`.
+- [x] **Skills normalization DONE (2026-08-11):** built a ~85-option controlled vocabulary from the free-text skills (kept as bespoke `Other Skills` remainder, deduped and normalized). Tagged 72/137 records (the rest are roster-only, no skills ever collected). Split into four grouped multi-selects — `Dev & Engineering Skills`, `Data & Analytics Skills`, `Design & Research Skills`, `Product & Org Skills` — with a casing rule (descriptive lowercase, proper nouns/acronyms preserved). Slate: `open-austin/vrm-skills-slate.md`.
+- [ ] **Priority next: promote Intake Staging → People.** All pre-promotion cleaning is done; promotion copies the 137 clean records into People and links placements (three team columns), on hold pending go.
+- [ ] **[USER] Delete redundant fields in the UI** (API can't delete fields/select choices): the single `Skills` field on both tables (superseded by the 4 grouped fields); optionally the legacy `Community of Practice` multi-select (superseded by the `Communities of Practice` link).
+- [ ] **Commit the canonical tagging/merge/split tooling** (`scratchpad/restore_fix.py` etc.) into `tools/airtable/`; update `relationship-management-schema.json` for the new Skills fields.
 
-### Deferred post-merge passes (agreed 2026-08-11)
-- [ ] **Skills normalization.** Extract the free-text `Other Skills` / `Wants to Learn` blobs into the non-exclusive `Skills` select. Large cleanup; do it AFTER the initial merge, carry free text verbatim until then.
-- [ ] **Retire the legacy `Community of Practice` multi-select** once People are placed, in favor of the `Communities of Practice` link (source of truth). Keep the multi-select through the merge since it holds the imported CoP values.
-- [ ] **Engagement re-grade heuristic.** The importer's "Adam roster → Engaged" default over-counts Slack-only joins; engagement is a human judgment at promotion, not a source-derived field.
+### Notes
+- **Engagement re-grade** was applied as a human judgment during the merge (per-cluster), not a source-derived default.
 
 ### Deferred / backburner (revisit after ingestion)
 - Skill-searchable **Directory** view (a Grid/Gallery filtered/searched by Skills+Languages; nicer search later via Interfaces). Future task.
