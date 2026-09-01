@@ -38,11 +38,12 @@ jobs:
           NOW=$(date +%s)
 
           # Fetch all Open Roles items
-          ITEMS=$(gh api graphql -f query='
-            query($project: ID!) {
+          ITEMS=$(gh api graphql --paginate -f query='
+            query($project: ID!, $endCursor: String) {
               node(id: $project) {
                 ... on ProjectV2 {
-                  items(first: 100) {
+                  items(first: 100, after: $endCursor) {
+                    pageInfo { hasNextPage endCursor }
                     nodes {
                       updatedAt
                       fieldValueByName(name: "Status") {

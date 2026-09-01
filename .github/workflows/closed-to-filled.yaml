@@ -23,11 +23,12 @@ jobs:
           ISSUE_NODE_ID="${{ github.event.issue.node_id }}"
 
           # Find the item on Open Roles board
-          RESULT=$(gh api graphql -f query='
-            query($project: ID!) {
+          RESULT=$(gh api graphql --paginate --slurp -f query='
+            query($project: ID!, $endCursor: String) {
               node(id: $project) {
                 ... on ProjectV2 {
-                  items(first: 100) {
+                  items(first: 100, after: $endCursor) {
+                    pageInfo { hasNextPage endCursor }
                     nodes {
                       id
                       fieldValueByName(name: "Status") {
@@ -40,8 +41,8 @@ jobs:
               }
             }' -f project="$OPEN_ROLES_PROJECT_ID")
 
-          ITEM_ID=$(echo "$RESULT" | jq -r ".data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .id")
-          CURRENT=$(echo "$RESULT" | jq -r ".data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .fieldValueByName.optionId // \"\"")
+          ITEM_ID=$(echo "$RESULT" | jq -r ".[].data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .id")
+          CURRENT=$(echo "$RESULT" | jq -r ".[].data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .fieldValueByName.optionId // \"\"")
 
           if [ -z "$ITEM_ID" ]; then
             echo "Issue not on Open Roles board — nothing to update."

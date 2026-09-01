@@ -21,11 +21,12 @@ jobs:
           ISSUE_NODE_ID="${{ github.event.issue.node_id }}"
 
           # Find the item on Org Kanban
-          ITEM_ID=$(gh api graphql -f query='
-            query($project: ID!) {
+          ITEM_ID=$(gh api graphql --paginate -f query='
+            query($project: ID!, $endCursor: String) {
               node(id: $project) {
                 ... on ProjectV2 {
-                  items(first: 100) {
+                  items(first: 100, after: $endCursor) {
+                    pageInfo { hasNextPage endCursor }
                     nodes {
                       id
                       content { ... on Issue { id } }
@@ -34,7 +35,7 @@ jobs:
                 }
               }
             }' -f project="$ORG_KANBAN_PROJECT_ID" \
-            --jq ".data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .id")
+            --jq ".data.node.items.nodes[] | select(.content.id == \"$ISSUE_NODE_ID\") | .id" | head -1)
 
           if [ -z "$ITEM_ID" ]; then
             echo "Issue not on Org Kanban — nothing to update."
