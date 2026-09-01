@@ -1,0 +1,94 @@
+name: Move items with open blockers to Blocked
+
+# GitHub's native issue dependencies ("blocked by #12") are a relationship,
+# not a status — setting one does not move the card. This bridges that.
+#
+# There is no webhook for a dependency changing, so this polls. Runs on the
+# same cadence as board-reopen-reconcile.
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (log without moving anything)'
+        required: false
+        default: 'true'
+        type: boolean
+
+env:
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+  ORG_KANBAN_PROJECT_ID: PVT_kwDOAA7NZM4AqQF8
+  STATUS_FIELD_ID: PVTSSF_lADOAA7NZM4AqQF8zghh1hc
+  BLOCKED_OPTION_ID: b22db561
+  DONE_OPTION_ID: "98236657"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move items with open blockers to Blocked
+        run: |
+          DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+
+          gh api graphql --paginate -f query='
+            query($project: ID!, $endCursor: String) {
+              node(id: $project) {
+                ... on ProjectV2 {
+                  items(first: 100, after: $endCursor) {
+                    pageInfo { hasNextPage endCursor }
+                    nodes {
+                      id
+                      fieldValueByName(name: "Status") {
+                        ... on ProjectV2ItemFieldSingleSelectValue { optionId }
+                      }
+                      content {
+                        ... on Issue {
+                          number
+                          state
+                          issueDependenciesSummary { blockedBy }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f project="$ORG_KANBAN_PROJECT_ID" \
+            --jq '.data.node.items.nodes[]' > /tmp/items.ndjson
+
+          echo "Checking $(wc -l < /tmp/items.ndjson) board items."
+
+          while IFS= read -r item; do
+            ITEM_ID=$(echo "$item" | jq -r '.id // ""')
+            OPTION_ID=$(echo "$item" | jq -r '.fieldValueByName.optionId // ""')
+            NUMBER=$(echo "$item" | jq -r '.content.number // ""')
+            STATE=$(echo "$item" | jq -r '.content.state // ""')
+            BLOCKERS=$(echo "$item" | jq -r '.content.issueDependenciesSummary.blockedBy // 0')
+
+            [ "$STATE" != "OPEN" ] && continue
+            [ -z "$ITEM_ID" ] && continue
+            [ "$BLOCKERS" -eq 0 ] 2>/dev/null && continue
+            # Already Blocked, or finished — leave it alone.
+            [ "$OPTION_ID" == "$BLOCKED_OPTION_ID" ] && continue
+            [ "$OPTION_ID" == "$DONE_OPTION_ID" ] && continue
+
+            echo "Move #$NUMBER to Blocked — $BLOCKERS open blocker(s)."
+            if [ "$DRY_RUN" != "true" ]; then
+              gh api graphql -f query='
+                mutation($project: ID!, $item: ID!, $field: ID!, $option: String!) {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: $project, itemId: $item, fieldId: $field,
+                    value: { singleSelectOptionId: $option }
+                  }) { projectV2Item { id } }
+                }' \
+                -f project="$ORG_KANBAN_PROJECT_ID" -f item="$ITEM_ID" \
+                -f field="$STATUS_FIELD_ID" -f option="$BLOCKED_OPTION_ID" >/dev/null
+              echo "  → moved."
+            fi
+          done < /tmp/items.ndjson
+
+          # Deliberately one-directional: clearing a dependency does not move a
+          # card out of Blocked. An issue can be blocked for reasons that are
+          # not dependencies, and auto-unblocking would override a human who
+          # put it there on purpose. Move it out by hand.
