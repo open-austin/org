@@ -25,19 +25,19 @@ Gather:
 - the meeting date;
 - the chatbot-produced `Beat-by-beat notes` and `Light analysis`;
 - the matching dated section of the **General Organizing - meeting notes** Doc (link provided at runtime or via `OPEN_AUSTIN_WEEKLY_NOTES_DOC_ID` in `.env`); and
-- current GitHub issue and project state from a fresh `tools/sync/run.sh` run.
+- current GitHub issue and project state, read fresh at runtime (see step 1).
 
 Explicit corrections from an authorized participant outrank the chatbot handoff. Treat the handoff as compressed evidence, not as authoritative minutes.
 
 ## Workflow
-1. Run `tools/sync/run.sh` to refresh GitHub state.
+1. Read current GitHub state. **This repo has no sync tool** — `tools/sync/` was removed 2026-09-07 (see `docs/archive/retire-sync-tooling.md`), and its absence is deliberate. Use `gh issue list --limit 200 --state open --json number,title,labels,assignees,updatedAt` and `gh project item-list 9 --owner open-austin --format json`, or your own tooling. Whatever you use, read it fresh — never work from stale state.
 2. Read the meeting's current dated section in `General Organizing - meeting notes`, especially its existing action list.
 3. Compare the shared section with the chatbot's beat-by-beat notes and analysis. Identify concrete actions, decisions, status changes, and dependencies that may have been missed or recorded incompletely.
 4. Search current GitHub issues before proposing a new issue. For each credible action, classify it as `update existing`, `create candidate`, `already covered`, `completed`, or `not actionable`.
 5. Apply the public/private filter. Keep private strategy, personal workload, sensitive context, and speculative judgments out of the shared Doc and GitHub.
 6. Present an exact approval slate covering both shared-Doc and GitHub changes. Do not edit either system until the user approves each proposed change, unless the current request already contains exact approval for that change.
 7. Re-fetch each approved target, run the narrow write tool in dry-run mode, and confirm the dry run still matches the approved text or issue change.
-8. Execute only the approved changes. Re-read changed objects and refresh `snapshot/` afterward.
+8. Execute only the approved changes. Re-read each changed object afterward to confirm it landed.
 
 ## Reconciliation Categories
 - **Update existing:** an action or issue already owns the work and needs new context, a corrected status, or a cross-link.

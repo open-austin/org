@@ -4,6 +4,8 @@ description: "Produce the weekly Open Austin org summary, broken out per team in
 ---
 
 # Weekly Org Summary
+**Process, not automation.** As of 2026-09-07 this skill describes how the weekly summary is produced; it no longer wraps a sync tool. Drafting and Slack posting still have tooling here (`tools/notify/`); gathering issue state does not. A contributor can run this whole process by hand.
+
 This is the Open Austin org repo's own weekly summary process. It supersedes the old `docs/runbook-weekly-summary.md` (removed) and is project authority here.
 
 ## What This Produces
@@ -35,23 +37,28 @@ Group issues by label into these destinations. An issue can appear in more than 
 If a channel has zero matching issues that week, skip both drafting and posting for it — don't post an empty "nothing to report" message. Bounded notifications matter on a shared org.
 
 ## Steps
-### 1. Sync the snapshot
+### 1. Gather current issue state
+**This repo no longer ships a sync tool.** `tools/sync/` was removed on 2026-09-07 — it existed to feed one maintainer's private knowledge system, had no other users, and its absence is deliberate rather than an oversight. See `docs/archive/retire-sync-tooling.md`.
+
+You need, for every open issue: number, title, labels, and assignees. Any of these works:
+
 ```bash
-tools/sync/run.sh
+# Structured, and the easiest to route from:
+gh issue list --limit 200 --state open --json number,title,labels,assignees,updatedAt
+
+# Or read the board and issue list in the GitHub UI.
 ```
 
-This regenerates `snapshot/` from the live GitHub state. Always sync before summarizing — never summarize from a stale snapshot.
+Whatever you use, get it **fresh**. Never summarize from a stale snapshot — a summary that reports closed issues as open is worse than no summary, and it will be noticed.
 
-### 2. Read the snapshot and context
+If you maintain your own tooling that produces a `snapshot/`-shaped set of files, it drops straight into the rest of this process; the steps below only assume you have current issue data in some form.
+
+### 2. Read the supporting context
 Load and read:
-- `snapshot/issues.md` — open issues by team label (each issue's labels are listed; use them for routing)
-- `snapshot/labels.md` — current label taxonomy (for reference)
 - `docs/templates/weekly-summary-template.md` — canonical per-channel and `#oa-org` message shapes
-- recent files in `docs/weekly-review-archive/`, if any — trend context only
+- recent folders in `docs/weekly-review-archive/` — trend context only, not source of truth
 
-Individual issue detail files (`snapshot/issues/*.md`) are available if a specific issue needs deeper context.
-
-Always summarize from the fresh snapshot. The archive is useful context, not source of truth.
+The current label taxonomy is visible in the GitHub UI under Labels, or via `gh label list`.
 
 ### 3. Produce the per-channel drafts
 For each row in Routing with at least one matching issue, write `snapshot/weekly-summary-<slug>.md` (e.g. `weekly-summary-infrastructure.md`, `weekly-summary-org.md` for the priority feed), following `docs/templates/weekly-summary-template.md`. Use Slack-friendly `mrkdwn`: short headings, `-` markers with line breaks for list structure, plain text. Avoid tables. Do not use `*` as a bullet marker; in Slack `mrkdwn`, `*text*` means bold.
@@ -123,11 +130,10 @@ If a draft was revised after posting, archive the revised text with a suffix suc
 This is manually triggered — no cron. Run it when the user asks. Once a week is typical but there's no fixed schedule.
 
 ## Related
-- `tools/sync/run.sh` — sync command
 - `tools/notify/post.sh` — Slack post command, generic across channels/webhook vars
 - `tools/notify/render_weekly_summary_blocks.py` — renders any weekly-summary-shaped markdown file to Slack Block Kit JSON, generic across files
 - `docs/templates/weekly-summary-template.md` — per-channel and `#oa-org` message templates
 - `docs/weekly-review-archive/` — final weekly summary archive
 - `.env.example` — webhook var placeholders, including the new per-team ones
 - `AGENTS.md` — agent rules and write safety
-- `snapshot/` — gitignored, always regenerate before use
+- `snapshot/` — gitignored working directory for drafts and rendered payloads. Nothing in this repo regenerates it from GitHub any more; it is scratch space that `tools/notify/` reads from.
