@@ -14,7 +14,6 @@ title=""
 body=""
 body_file=""
 execute=0
-sync_after=1
 assign_me=0
 labels=()
 assignees=()
@@ -37,7 +36,6 @@ Options:
   --repo OWNER/REPO
   --execute                 Create the approved issue
   --dry-run                 Print the plan only (default)
-  --no-sync                 Skip tools/sync/run.sh after creation
 EOF
 }
 
@@ -52,7 +50,6 @@ while [[ $# -gt 0 ]]; do
         --repo) [[ $# -ge 2 ]] || fail "--repo requires OWNER/REPO"; repo="$2"; shift 2 ;;
         --execute) execute=1; shift ;;
         --dry-run) execute=0; shift ;;
-        --no-sync) sync_after=0; shift ;;
         -h|--help) usage; exit 0 ;;
         *) fail "Unknown option: $1" ;;
     esac
@@ -107,6 +104,3 @@ fi
 created_url="$("${cmd[@]}")"
 printf 'Created issue: %s\n' "$created_url"
 
-if [[ $sync_after -eq 1 ]]; then
-    "$ROOT/tools/sync/run.sh"
-fi
