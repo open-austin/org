@@ -2,6 +2,7 @@
 
 **Date:** 2026-06-10
 **Status:** Accepted
+**Note (2026-09-07):** The sync tools this decision was written about (`tools/sync/`) were removed — see `docs/archive/retire-sync-tooling.md`. The decision itself still stands and is **not** superseded: `tools/airtable/` and `tools/google-docs/` are Python for the reasons recorded below, and the rule still governs new tooling here. Only the examples are historical.
 
 ---
 

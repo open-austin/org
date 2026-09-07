@@ -59,21 +59,20 @@ These rules apply to all write operations, no exceptions:
 - Never commit `.env`, `gh` host config, or any file containing a real token.
 
 ## Tooling Overview
-### Sync Tools
-Run at the start of any work session to pull current org state into local markdown:
+### Reading Org State
+**There is no sync tool in this repo.** `tools/sync/` was removed 2026-09-07 — it fed one maintainer's private knowledge system and had no other users. Its absence is deliberate; do not assume a missing script and do not rebuild one without being asked. History in `docs/archive/retire-sync-tooling.md`.
+
+Read current state through `gh`:
 
 ```bash
-tools/sync/run.sh
+gh issue list --limit 200 --state open --json number,title,labels,assignees,updatedAt
+gh issue view <number> --comments
+gh label list
+gh project item-list 9 --owner open-austin --format json   # Org Kanban
+gh project item-list 6 --owner open-austin --format json   # Open Roles
 ```
 
-Outputs to `snapshot/` (gitignored — always regenerate, never commit):
-- `snapshot/issues.md` — index of all open issues grouped by team label
-- `snapshot/issues/<number>.md` — full issue with complete comment thread
-- `snapshot/labels.md` — current label taxonomy
-- `snapshot/board-org-kanban.md` — Org Kanban project board by status column
-- `snapshot/board-open-roles.md` — Open Roles project board
-
-Tools are Python 3 scripts that call `gh` CLI and format output as readable markdown. No external dependencies beyond `gh`.
+`snapshot/` is still gitignored and is still where `tools/notify/` expects draft files, but nothing regenerates it from GitHub. Treat it as scratch space, never as a source of truth, and never commit it.
 
 ### Notify Tools
 Post messages to Slack via Incoming Webhooks:

@@ -18,7 +18,7 @@ Broke the weekly org summary into per-team Slack channels (`#oa-board`, `#t-infr
 Migrated GitHub wiki content to Google Drive: cloned the wiki, moved content over, left a forwarding note, formally retired the wiki. See the archived to-do doc for what wasn't explicitly confirmed (board onboarding doc gap, no settled norm on where future org docs should live).
 
 ### GitHub Tooling *(archived: `docs/archive/github-tooling.md`)*
-Built Python sync tools (`tools/sync/`) that pull issues (with full comment threads), labels, and board state into local `snapshot/` markdown. Write operations use `gh` CLI directly. See `AGENTS.md` for tool usage.
+Built Python sync tools (`tools/sync/`) that pull issues (with full comment threads), labels, and board state into local `snapshot/` markdown. Write operations use `gh` CLI directly. See `AGENTS.md` for tool usage. *(Superseded 2026-09-07: `tools/sync/` was removed — see `docs/archive/retire-sync-tooling.md`.)*
 
 ### Repo Scaffolding
 Getting the repo into a state where agents can work effectively and the methodology is established.

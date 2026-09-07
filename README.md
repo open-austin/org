@@ -10,22 +10,16 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for setup instructions (GitHub CLI, auth,
 ### For Agents
 See [AGENTS.md](AGENTS.md) or [CLAUDE.md](CLAUDE.md) for rules, boundaries, and write safety requirements.
 
-## Sync Tools
-The sync tools pull current org state into local markdown snapshots. This gives you (or an agent) full context without repeated API calls.
-
-**Run the sync:**
+## Reading Org State
+This repo does not ship a sync tool. It had one until 2026-09-07; `tools/sync/` was removed because it existed to feed one maintainer's private knowledge system and had no other users. Read current org state through the GitHub UI, or `gh` directly:
 
 ```bash
-tools/sync/run.sh
+gh issue list --limit 200 --state open --json number,title,labels,assignees
+gh project item-list 9 --owner open-austin --format json   # Org Kanban
+gh project item-list 6 --owner open-austin --format json   # Open Roles
 ```
 
-**Output:**
-- `snapshot/issues.md` — all open issues grouped by team label
-- `snapshot/labels.md` — current label taxonomy
-- `snapshot/board-org-kanban.md` — Org Kanban project board
-- `snapshot/board-open-roles.md` — Open Roles project board
-
-**Snapshots are gitignored** — always regenerate them at the start of a work session.
+`snapshot/` remains gitignored scratch space that `tools/notify/` reads from. Nothing here regenerates it from GitHub any more. See `docs/archive/retire-sync-tooling.md`.
 
 ## Write Operations
 Guarded writes happen through the **board-automation workflows** described below, the repo's narrow dry-run-first tools, and the **`gh` CLI** for ad-hoc changes that do not yet justify a wrapper. Use `tools/issues/create.sh` for issue creation and `tools/google-docs/run.sh` for bounded shared-Doc reads and exact-match replacements. See [AGENTS.md](AGENTS.md) for the approval and write-safety rules.
