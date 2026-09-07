@@ -1,5 +1,9 @@
 # Weekly Meeting Notes — Per-Meeting Doc Format (spike)
-Status: **proposed, not started.** Blocked on agreement to change the notes format. This doc captures the design so the work can be picked up later with full context.
+Status: **dropped 2026-09-07. Do not pick this up.**
+
+Aslan proposed the per-meeting-doc format to Liani and she declined it, so the format is not changing. It was also downstream of `process-weekly-meeting`, which is moving out of this repo — but the proposal was dead on its own merits before that, and would not have been revived even if the skill had stayed.
+
+The design below is preserved because the reasoning is still legible and someone may raise the same idea again; it is history, not a plan. Note that its main implementation dependency, a `create-from-template` capability in `tools/google-docs/`, was never built.
 
 ## Problem
 The weekly organizing meeting notes live in a single, continuously growing Google Doc. One long document is hard to navigate, hard to skim for a specific week, and awkward for tooling to process, since the entire history is one blob the tools have to scroll and re-parse. The `process-weekly-meeting` skill currently has to locate the latest dated section inside that monolith.
