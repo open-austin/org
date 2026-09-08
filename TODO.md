@@ -2,6 +2,9 @@
 This is the coordination map for active work in this repo. See `skills/run-project-spike/SKILL.md` for the full process.
 
 ## Done
+### Retire Sync Tooling *(archived: `docs/archive/retire-sync-tooling.md`)*
+Removed `tools/sync/` and `tools/issues/create.sh` — single-maintainer tooling that had no second user and split the maintainer's own workflow across two repos. The weekly org summary ran a final time to all seven team channels on 2026-09-07 and is now retired, its skill kept as the reimplementation record. What stays, verified rather than assumed: `tools/notify/` (still used by `role-pipeline-report.yaml`), `tools/google-docs/`, `tools/airtable/`, all thirteen Actions workflows, and both the PAT setup and Write Safety sections of CONTRIBUTING, which turned out not to be sync-specific.
+
 ### Board ↔ Issue Sync Redesign *(archived: `docs/archive/board-sync-redesign.md`)*
 Re-architected board↔issue sync: native `Auto-close issue` is the single non-code exception (card→close), everything else is code, one `board-reopen-reconcile` poller (~5 min) handles card→reopen, all other native Projects workflows off. Confirmed working live 2026-07-08. Durable outcomes in `README.md` (Board Automation) and decisions `0004`/`0005`. Note: GitHub scheduled runs can be badly delayed (first reopen took ~25+ min).
 
