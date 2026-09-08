@@ -11,7 +11,7 @@ Built the full board/issue automation set — routing, issue↔board status sync
 ### Backlog Triage *(archived: `docs/archive/backlog-triage.md`)*
 Restructured label taxonomy to match Refactor 2026 Teams structure. Labeled all issues, closed dead issues, retired old labels. Done column cleanup and "To Do" column review deferred to automation spike and human triage.
 
-### Weekly Summary Per-Team Channels *(archived: `docs/archive/weekly-summary-channels.md`)*
+### Weekly Summary Per-Team Channels *(archived: `docs/archive/weekly-summary-channels.md`; the workflow itself was **retired 2026-09-07** — see `skills/weekly-org-summary/SKILL.md`)*
 Broke the weekly org summary into per-team Slack channels (`#oa-board`, `#t-infrastructure`, `#t-finance`, `#t-fundraising`, `#t-communications`, `#t-education`, `#pg-data-fellowship`, plus existing `#t-engagement`); `#oa-org` is now priority-only. First real run posted successfully 2026-07-07. See the archived to-do doc for two editorial points that weren't explicitly re-confirmed before closing (multi-label cross-posting, open-role issues in non-engagement channels).
 
 ### Wiki Migration *(archived: `docs/archive/wiki-migration.md`)*

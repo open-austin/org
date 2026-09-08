@@ -4,6 +4,16 @@ description: "Produce the weekly Open Austin org summary, broken out per team in
 ---
 
 # Weekly Org Summary
+> **RETIRED 2026-09-07. Do not run this.**
+>
+> Aslan retired the weekly summary. It had been paused for a while — Open Austin is still spinning up team chairs, and automated reminders of every open ticket assigned to a team read as nagging people who are not yet fully engaged. A final run posted to all seven channels on 2026-09-07 and is archived in `docs/weekly-review-archive/2026-09-07/`.
+>
+> **This file is kept as the reimplementation record, not as an active workflow.** Everything below — the label-to-channel routing table, the message shapes, the review gate, the Slack `mrkdwn` gotchas, the archive convention — is what someone would need to stand it up again, and it is not written down anywhere else. Deleting it would lose institutional knowledge that took two spikes to accumulate.
+>
+> What still works if it is revived: `tools/notify/render_weekly_summary_blocks.py` and `tools/notify/post.sh` are intact and generic, and the per-team Slack webhooks exist. What does not: there is no sync tool any more, so step 1 has to be done through `gh` or your own tooling.
+>
+> `tools/notify/` is **not** retired — `.github/workflows/role-pipeline-report.yaml` still uses it on a schedule.
+
 **Process, not automation.** As of 2026-09-07 this skill describes how the weekly summary is produced; it no longer wraps a sync tool. Drafting and Slack posting still have tooling here (`tools/notify/`); gathering issue state does not. A contributor can run this whole process by hand.
 
 This is the Open Austin org repo's own weekly summary process. It supersedes the old `docs/runbook-weekly-summary.md` (removed) and is project authority here.
