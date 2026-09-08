@@ -90,7 +90,7 @@ Use `tools/google-docs/run.sh read` for document text and `replace-once` for one
 ### Write Operations
 Use the guarded repo tools when a matching operation exists, and use `gh` CLI directly for other writes. All writes require explicit user approval first per the Write Safety Rules above.
 
-Create a new issue with `tools/issues/create.sh`, which prints an exact dry-run plan unless `--execute` is supplied. Use `tools/google-docs/run.sh` for bounded shared-Doc reads and exact-match replacements. Google Docs replacements are also dry-run by default and must match exactly once before execution.
+Create a new issue with `gh issue create`. There is no wrapper any more — it was removed 2026-09-07 with the rest of the single-maintainer tooling — so the dry-run discipline is yours to keep: state the exact title, body, labels, and assignees to the user and get approval **before** running the command, not after. Use `tools/google-docs/run.sh` for bounded shared-Doc reads and exact-match replacements. Google Docs replacements are also dry-run by default and must match exactly once before execution.
 
 Common commands:
 ```bash

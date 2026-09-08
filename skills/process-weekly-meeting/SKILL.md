@@ -71,7 +71,7 @@ Make only small in-place improvements such as adding a missing action, correctin
 If the needed insertion cannot be expressed safely with the current exact-replacement tool, stop and propose the smallest additional bounded tool operation rather than rewriting the whole meeting section.
 
 ## GitHub Writes
-- Use `tools/issues/create.sh` for an approved new issue; it dry-runs by default.
+- Use `gh issue create` for an approved new issue. The dry-run wrapper was removed 2026-09-07, so show the exact title, body, labels, and assignees for approval before running it.
 - Inspect an existing issue immediately before proposing or executing an edit.
 - Use the narrowest explicit `gh` command allowed by [../../AGENTS.md](../../AGENTS.md) for approved updates, comments, closures, or project-field changes.
 - Interlink the shared action and issue when the link materially improves follow-through.

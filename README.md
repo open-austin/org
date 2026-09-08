@@ -22,17 +22,16 @@ gh project item-list 6 --owner open-austin --format json   # Open Roles
 `snapshot/` remains gitignored scratch space that `tools/notify/` reads from. Nothing here regenerates it from GitHub any more. See `docs/archive/retire-sync-tooling.md`.
 
 ## Write Operations
-Guarded writes happen through the **board-automation workflows** described below, the repo's narrow dry-run-first tools, and the **`gh` CLI** for ad-hoc changes that do not yet justify a wrapper. Use `tools/issues/create.sh` for issue creation and `tools/google-docs/run.sh` for bounded shared-Doc reads and exact-match replacements. See [AGENTS.md](AGENTS.md) for the approval and write-safety rules.
+Guarded writes happen through the **board-automation workflows** described below, the repo's narrow dry-run-first tools, and the **`gh` CLI** for ad-hoc changes that do not yet justify a wrapper. Use `gh issue create` for issue creation and `tools/google-docs/run.sh` for bounded shared-Doc reads and exact-match replacements. See [AGENTS.md](AGENTS.md) for the approval and write-safety rules.
 
 All write operations follow the write-safety rules: dry-run first where supported, and explicit approval before anything that mutates shared org state.
 
 ### Issue Creation
 ```bash
-tools/issues/create.sh --title "Task title" --body-file /tmp/issue.md --label infrastructure --assign-me
-tools/issues/create.sh --title "Task title" --body-file /tmp/issue.md --label infrastructure --assign-me --execute
+gh issue create --repo open-austin/org --title "Task title" --body-file /tmp/issue.md --label infrastructure --assignee @me
 ```
 
-The first command prints the exact plan and changes nothing. `--execute` creates the approved issue and refreshes `snapshot/` unless `--no-sync` is supplied.
+The wrapper that used to front this (`tools/issues/create.sh`, dry-run by default) was removed 2026-09-07 along with the rest of the single-maintainer tooling — see `docs/archive/retire-sync-tooling.md`. `gh` does the work; the approval discipline it enforced is stated in [AGENTS.md](AGENTS.md) and is a rule rather than a script. **Confirm the exact title, body, labels, and assignees with a human before creating an issue.**
 
 ### Shared Google Docs
 Copy `.env.example` to the ignored `.env`, set the Google credential/token paths, and enable the Google Docs API for the OAuth project. New contributors can authorize with:
