@@ -8,7 +8,7 @@ The repo's agent workflow had grown into two parallel, ad hoc mechanisms: `docs/
 Separately, active spike docs lived flat under `docs/` (e.g. `docs/github-automation.md` + `.todo.md`), while `docs/scratch/wiki-migration.md` was informally tracked as an "Active Spike" in `TODO.md` despite living in scratch with no `.todo.md` companion — an inconsistency the user wanted to eliminate.
 
 ## Decision
-1. Adopt `skills/` as the single mechanism for repo-local agent workflows. Vendor `run-project-spike` and `triage-project-misc` from `~/configs/skills/` into `skills/`, adapted with this repo's authority ladder, write-safety rules, and GitHub/org-specific QA guidance (previously in `docs/how-to-spike.md`, now removed).
+1. Adopt `skills/` as the single mechanism for repo-local agent workflows. Obtain seeds from the configured or discovered skill library and use `skills/update-local-skills/SKILL.md` to compare existing copies before updating them. Preserve this repo's authority ladder, write-safety rules, and GitHub/org-specific QA guidance (previously in `docs/how-to-spike.md`, now removed). The original maintainer's checkout path is not a setup requirement.
 2. Rewrite the weekly summary runbook as `skills/weekly-org-summary/SKILL.md` (previously `docs/runbook-weekly-summary.md`, now removed). Its frontmatter `description` carries the trigger phrases that used to live in `AGENTS.md`'s Runbooks table.
 3. Adopt `docs/active-spikes/` for active spike doc pairs, migrating `docs/github-automation.{md,todo.md}` there and promoting `docs/scratch/wiki-migration.md` into a proper `docs/active-spikes/wiki-migration.{md,todo.md}` pair.
 

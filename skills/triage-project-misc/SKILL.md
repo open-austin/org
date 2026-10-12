@@ -26,7 +26,7 @@ The flow is:
 ## Routing Taxonomy
 Use the first matching destination:
 
-- `docs/decisions/` for settled durable repo rules.
+- `docs/decisions/` for current durable rules, defaults, and procedures.
 - `docs/pinned-issues.md` for unresolved issues intentionally preserved for later.
 - `docs/scratch/future-ideas.md` for conceptual someday material.
 - `docs/scratch/misc.md` for raw observed friction, QA nits, bugs, and issue intake.
@@ -41,7 +41,7 @@ Future ideas are conceptual and farther-horizon than misc notes. Pinned issues a
 - `docs/scratch/misc-1.md`, `misc-2.md`, and so on are numbered miscellaneous buckets for real work that does not yet form a clean thematic spike.
 - Thematic scratch docs such as `board-onboarding.md`, `github-label-taxonomy.md`, or `org-summary-tone.md` are preferred when notes cluster around a coherent theme.
 - Active spike docs in `docs/active-spikes/` exist only after a scratch topic becomes the current implementation focus.
-- Decision records in `docs/decisions/` are durable project rules, not scratch or spike notes.
+- Current guidance in `docs/decisions/` holds durable project rules and procedures, not scratch or spike notes.
 - Archived spike docs in `docs/archive/` are historical context after a spike closes.
 
 ## What Belongs In Misc
@@ -94,10 +94,8 @@ If an item is an unresolved concern, question, or tradeoff that should be intent
 
 A pin should include the current context and a concrete revisit trigger. Do not use pins as ordinary backlog, and do not let pins masquerade as decisions.
 
-### Durable Decision
-If triage reveals that a rule is already settled and should guide future agents, create or update a decision record under `docs/decisions/`.
-
-Decision records should be rare and durable. Do not create them for every implementation note or unresolved question.
+### Durable Guidance
+If triage reveals that a rule is already adopted and should guide future agents, create or update current guidance under `docs/decisions/`. Revise it directly and let Git preserve its evolution. Do not create durable rules for every implementation note or unresolved question; the existing governance and external-write boundaries still apply.
 
 ### Existing Thematic Scratch Doc
 If an item clearly belongs to an existing scratch topic, move it there.

@@ -7,7 +7,7 @@ description: "Capture conceptual someday Open Austin org/tooling/process ideas i
 This is the Open Austin org repo's own future-idea process. It is project authority here, not fallback seed material.
 
 ## Purpose
-Use this skill for conceptual future material: ideas that may matter someday but are not ready to become active Open Austin org tooling work.
+Use this skill for conceptual future org infrastructure, tooling, documentation, or process ideas that are not ready to become active work. A future date alone is not enough: community projects and other domain content belong in their relevant project context. This routing does not authorize creating GitHub issues or other external writes.
 
 Default file:
 
@@ -20,7 +20,7 @@ Create it only when the user asks to log a future idea or an existing misc/futur
 ## Taxonomy
 Use the first matching destination:
 
-- `docs/decisions/` for settled durable repo rules.
+- `docs/decisions/` for current durable rules, defaults, and procedures.
 - `docs/pinned-issues.md` for unresolved issues intentionally preserved for later.
 - `docs/scratch/future-ideas.md` for conceptual someday material.
 - `docs/scratch/misc.md` for raw observed friction, QA nits, bugs, and issue intake.

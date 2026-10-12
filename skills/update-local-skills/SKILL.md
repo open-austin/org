@@ -10,11 +10,7 @@ If the current repo already has `skills/update-local-skills/SKILL.md`, read and 
 ## Purpose
 Use this skill when a repo already has local `skills/` and the user wants to update one or more local copies from a global seed source.
 
-Default seed source:
-
-```text
-~/configs/skills/
-```
+Locate the seed library from the user's request, project configuration, or installed skill catalog. Do not assume a personal checkout location. Ask for the source only if the available context cannot resolve it.
 
 Default local target:
 
@@ -32,21 +28,22 @@ The value of this workflow is the comparison: what changed upstream, how the loc
 ## Workflow
 1. Identify the repo root and the local `skills/` directory.
 2. Identify the requested skill names. If the user asked for "all," list local skills and matching seed skills.
-3. Read each global seed `SKILL.md` and each local `SKILL.md` in full.
+3. Read each global seed `SKILL.md` and each local `SKILL.md` in full, then inspect changed or referenced supporting resources and metadata.
 4. Compare:
    - upstream changes in the seed
    - local project-specific divergence
    - direct conflicts where both changed the same guidance
+   - introduced dependencies, personal paths, private examples, or references unavailable in the target project
 5. Report the comparison before editing unless the user explicitly requested a verbatim overwrite.
 6. Apply upstream changes while preserving intentional local divergence.
 7. If a conflict is substantive, ask the user rather than guessing.
-8. Validate edited skills when practical.
-9. Report updated skills and any skills left untouched.
+8. Validate edited skills when practical. Check that required relative resources resolve and separately installed dependencies have an available or documented setup route; inspect supporting files as well as `SKILL.md`.
+9. Report updated skills, explicit adaptations, dependencies still unavailable, and any skills left untouched. Do not equate matching the seed with being usable after clone.
 
 ## What To Preserve
 Project-local divergence may include:
 
-- exact repo paths
+- repository-relative paths
 - project-specific authority order
 - validation commands
 - public/private boundaries
@@ -55,6 +52,8 @@ Project-local divergence may include:
 - user taste or quality rules
 
 Do not replace these with generic seed text unless the user explicitly asks to reset the local copy.
+
+Personal absolute paths and assumed home-directory layouts are portability defects, not useful project specialization. Resolve them through supplied relative resources, documented configuration, or discovery without losing the underlying workflow. Preserve actual platform-required paths when justified. Repair reusable seed defects when authorized and disclose target-specific adaptations; do not silently introduce a dependency on the maintainer's private tools or global skills. Keep required dependencies distinct from optional integrations.
 
 ## Rename Handling
 When a global skill has been renamed:

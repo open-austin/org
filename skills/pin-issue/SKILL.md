@@ -1,6 +1,6 @@
 ---
 name: pin-issue
-description: "Preserve an unresolved Open Austin org/tooling/process issue in docs/pinned-issues.md without turning it into a GitHub issue backlog item, active spike, or durable decision. Use when the user says to put a pin in something, circle back later, defer a thorny org/process/tooling question, revisit pinned issues, or route a pin into active work, future ideas, misc intake, or a decision record."
+description: "Preserve an unresolved Open Austin org/tooling/process issue in docs/pinned-issues.md without turning it into a GitHub issue backlog item, active spike, or durable policy. Use when the user says to put a pin in something, circle back later, defer a thorny org/process/tooling question, revisit pinned issues, or route a pin into active work, future ideas, misc intake, or current guidance."
 ---
 
 # Pin Issue
@@ -14,13 +14,13 @@ The register is `docs/pinned-issues.md`. Create it only when the user asks to pi
 ## Taxonomy
 Use the first matching destination:
 
-- `docs/decisions/` for settled durable repo rules.
+- `docs/decisions/` for current durable rules, defaults, and procedures.
 - `docs/pinned-issues.md` for unresolved issues intentionally preserved for later.
 - `docs/scratch/future-ideas.md` for conceptual someday material.
 - `docs/scratch/misc.md` for raw observed friction, QA nits, bugs, and issue intake.
 - `docs/active-spikes/` for active scoped work.
 
-Do not treat `docs/pinned-issues.md` as a pre-decision queue. Some pins become decision records; many become active work, misc notes, future ideas, or nothing.
+Do not treat `docs/pinned-issues.md` as a queue that must produce policies. Some pins lead to current guidance; many become active work, misc notes, future ideas, or nothing.
 
 ## What Belongs Here
 Pin an issue when the right handling depends on future context, such as:
@@ -39,7 +39,7 @@ Do not use pinned issues for ordinary GitHub issues, automation bugs, implementa
 3. Add a short entry under `## Current Pins`.
 4. State the pinned issue, current context, and concrete revisit trigger.
 5. Prefer a condition-based revisit trigger over a vague date.
-6. Link to related active spikes, archived spikes, decision records, issues, or files only when the link will help future review.
+6. Link to related active spikes, archived spikes, current guidance, issues, or files only when the link will help future review.
 7. Avoid duplicating the same work across `docs/pinned-issues.md`, `docs/scratch/`, `TODO.md`, and spike todo docs. One place should own active work.
 
 ## Revisiting Workflow
@@ -49,7 +49,7 @@ Route each reviewed pin into one outcome:
 - **Promote to active work:** move concrete tasks into the relevant spike `.todo.md` or `TODO.md`, then remove the pin.
 - **Move to future ideas:** move conceptual someday material to `docs/scratch/future-ideas.md`, then remove the pin.
 - **Move to misc:** move raw issue intake or QA observations to `docs/scratch/misc.md`, then remove the pin.
-- **Record durable decision:** create or update a decision record under `docs/decisions/`, then remove the pin.
+- **Record durable policy:** create or update current guidance under `docs/decisions/`, revising it directly while Git preserves its evolution; then remove the pin.
 - **Discard:** remove the pin if the issue is no longer relevant.
 
 Do not include tokens, private credentials, Slack webhook URLs, private contributor data, or other public-unsafe details in pinned issues. Use placeholders or generic phrasing when a pin depends on private context.
