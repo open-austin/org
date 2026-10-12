@@ -13,7 +13,7 @@ Turn a dirty working tree into one or more correctly-scoped commits with real me
 The hard part is not prose. It is **scope**: deciding what constitutes one coherent change. A commit whose contents are "everything that happened to be lying around" cannot be given a good message, because it is not one thing. Message quality is downstream of scope.
 
 ## Review Holds
-Follow the repository's commit policy. When the user explicitly requests review before committing, leave the affected changes uncommitted until that review ends or they authorize the checkpoint. This is an occasional override, not a question to ask before routine commits. Preserve the spike workflow's separate review of its closing commit message. Permission to commit does not imply permission to push.
+Follow the repository's commit policy. When the user explicitly requests review before committing, leave the affected changes uncommitted until that review ends or they authorize the checkpoint. This is an occasional override, not a question to ask before routine commits. Follow the spike workflow's closure authorization and closing-message review; wording approval alone does not close a spike, and one clear approval can cover both. Permission to commit does not imply permission to push.
 
 ## Foundational Principle
 Violating the letter of these rules is violating their spirit. Every rule below exists because a specific, verified failure mode is on the other side of it.
@@ -59,8 +59,8 @@ The word is not the test; independent purposes are. A command change, its usage 
 A spike knows its own file scope, roughly: the files its work touches and its own `.todo.md`.
 
 - **Inside that scope**: make coherent checkpoints without routine confirmation, unless an explicit review hold applies. File scope is not enough by itself: inspect for overlapping work from another stream.
-- **Outside that scope**: stop and ask. "There is an unrelated change in `movement/movement.sh` — commit it separately, or leave it dirty?" This prompt fires only when there is genuinely stray work, so it is rare, and it is exactly where a scope misjudgment would matter.
-- **No spike context at all**: the work is a **patch**. Draft the message with a `Patch: <slug>` trailer (see The Patch Trailer), show it, and commit on a conversational yes. Do not open an editor. Do not write a `Spike:` trailer.
+- **Unrelated changes outside that scope**: leave them untouched and continue with the authorized work. Do not include, revert, stash, or separately commit them. Ask when shared-file overlap, dependencies, or uncertain ownership prevent safely selecting your change, or before expanding into work the user has not authorized. Preserve any stronger repository-specific worktree rule; merely seeing unrelated dirty paths is otherwise not a reason to interrupt.
+- **No spike context at all**: a bounded, self-contained change can be a **patch**. Draft its message with a `Patch: <slug>` trailer (see The Patch Trailer), show it, and commit on a conversational yes. Do not open an editor or invent a `Spike:` trailer. Substantial or evolving work that needs shared reasoning or a plan should enter the spike workflow instead of being treated as a patch merely because no spike exists yet.
 - **Work that belongs to an open spike but falls outside its written scope**: prefer widening the spike, updating its concept and `.todo.md` in the same commit as the work, over committing it as a patch. One coherent history per theme beats a scattering of patches. Ask the human before widening a scope they have not discussed.
 
 The `.todo.md` edit that moves an item and a `TODO.md` update describing the same work belong **in the same commit as that work**, provided their full diffs are in scope. One commit should show both the change and its recorded intent and status.
@@ -157,14 +157,15 @@ Git still detects it as a rename, and the index is left clean. Verified 2026-07-
 ## Rewriting History
 Never on your own initiative. Not to fix a typo in a message, not to squash a noisy sequence, not to tidy before a push.
 
-A user may direct a rewrite, and then you may run it. The same reversibility line applies as everywhere else: rewriting a *local* branch is undoable, because `git filter-branch` leaves the old tip at `refs/original/refs/heads/<branch>` and `git reflog` remembers. Publishing the rewrite is not undoable. So:
+A user may direct a rewrite within the repository's policy. Before changing history:
 
-- Run the rewrite. Keep the backup ref until the user says otherwise.
-- Verify the trees are untouched: `git diff refs/original/refs/heads/<branch> HEAD --stat` must be empty. Only messages should have changed.
-- **Never push the result.** `--force-with-lease` is still a push, and it is still the user's.
-- Check first that no other agent is working in the clone. A rewrite invalidates every hash they may be holding.
+1. Establish the exact branch, commit range, and intended result. Check for concurrent work and whether others may depend on the affected history, including shared or published commits. Resolve a conflict before rewriting; permission for one rewrite does not authorize rewriting other work.
+2. Create and verify a uniquely named recovery reference to the original tip, such as `refs/original/<unique-rewrite-name>`. Do not overwrite an existing recovery ref or assume the rewrite command creates one. A ref preserves committed history only: separately preserve any authorized uncommitted inputs that the operation could disturb. Keep the recovery ref until the user says otherwise.
+3. Run only the authorized rewrite, then compare the result against the recovery ref and intended result. For a message-only rewrite or squash that preserves the final state, the final tree must be identical. When reviewed content changes are part of the request, inspect the full diff and verify exactly those changes, with unrelated content preserved. Verify the intended commit sequence and messages too; a clean working tree alone is not proof of correctness.
 
-**Commit hashes are not durable.** Any rewrite invalidates every one. Never record a hash in a doc that outlives the branch — cite the `Spike:` trailer, which survives.
+**Never push the result.** Local recovery cannot retract copies others may have obtained after publication. `--force-with-lease` is still a push, and it is still the user's.
+
+Rewriting commits can replace their hashes and those of affected descendants; it does not invalidate every hash in the repository. For documents intended to outlive the branch, cite the stable `Spike:` trailer rather than recording a commit hash as the enduring handle.
 
 ## When A Commit Fails
 The failure modes look alike and demand opposite responses. Read the error; never retry blindly.
@@ -177,7 +178,7 @@ The failure modes look alike and demand opposite responses. Read the error; neve
 | `did not match any file(s) known to git` | 1 | Or: path is **gitignored** | Refuse loudly. Never `-f` |
 | `nothing to commit, working tree clean` | 1 | Named path is tracked but unmodified | Benign. Not an error. Do not retry |
 
-Note the two identical-message pairs. The first requires `check-ignore` to disambiguate; the second requires bounded retries. A blind retry-on-nonzero loop gets both wrong.
+Note the two identical-message pairs. The index-lock pair requires bounded retries; the unknown-path pair requires `check-ignore` to disambiguate. A blind retry-on-nonzero loop gets both wrong.
 
 ## The Spike Trailer
 Every commit made inside a spike carries:
@@ -241,7 +242,7 @@ Every one of these has been thought by an agent about to do the wrong thing.
 | "The user obviously wants this pushed." | Push is never yours. Say the branch is ready, and stop. |
 | "I'll just `--amend` to fix the message." | Another agent may have built on it. Write a new commit. |
 | "These two changes happened in the same conversation." | Shared timing is not shared purpose. Split independent changes; keep a change's own documentation and bookkeeping with it. |
-| "The tree is dirty with old stray work; I'll include it." | Ask. Stray work is never swept in silently. |
+| "The tree is dirty with old stray work; I'll include it." | Leave unrelated paths alone. Ask only if overlap, dependencies, ownership, or a stronger local rule prevents proceeding safely. |
 | "This is small, so it always needs its own commit." | Commit a small independent change promptly; fold dependent edits and bookkeeping into the change they belong to. |
 | "Explicit paths make shared-file edits safe automatically." | They isolate selected paths, not contributors within a file. Inspect the entire diff and resolve overlap. |
 | "The commit failed, I'll retry until it works." | Two of the five failure modes never resolve by retrying. |
@@ -251,7 +252,7 @@ Every one of these has been thought by an agent about to do the wrong thing.
 | "`git rm` is just how you delete a file in git." | It stages the deletion. Plain `rm`, then commit the path. |
 | "`git mv` is just how you rename a file in git." | It stages both halves. Plain `mv`, `git add` the new path, commit both. |
 | "This file has two unrelated changes, so I'll `git add -p` just this once." | Then you have staged, and a concurrent bare commit can take it. Commit the file whole and say so, or ask. |
-| "The user is not watching; asking about the stray file will slow things down." | The prompt is rare by construction. Its rarity is why it is worth honoring. |
+| "The selected file includes another workstream's changes, but asking will slow things down." | Resolve the shared-file scope before committing it. Permission to continue around unrelated paths does not cover overlapping changes. |
 
 ## Red Flags
 Stop if you catch yourself:

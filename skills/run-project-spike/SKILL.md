@@ -11,9 +11,9 @@ A spike is not just a checklist. It is a temporary collaboration space for the u
 
 Spikes are useful here because this repo manages shared org infrastructure and automation tooling. Changes often need to answer more than "does it work?": they need to be safe for shared org state, respect write authorization boundaries, avoid leaking secrets, produce bounded and auditable output, and avoid firing unwanted notifications to real contributors.
 
-Default toward bucketing project work into a spike so work is easy to find, continue, archive, and relate to later phases. Even small or mixed work can live in a miscellaneous spike bucket such as `misc-302` if it is real project work that should leave history.
+Use a spike for substantial or evolving project work that needs shared reasoning, an implementation plan, or continuity across checkpoints. Related small work can share a miscellaneous spike bucket such as `misc-302` when that context is useful.
 
-Only skip spike bucketing for truly throwaway actions that the user clearly does not want recorded, such as answering a quick question or running a one-off read-only command.
+A bounded, self-contained one-off fix can use the `commit-work` patch workflow without a conceptual/to-do pair; its commit body records the purpose and reasoning. Work that already belongs to an active spike stays with that spike. Answering a quick question or running a one-off read-only command need not create a project artifact. Follow local commit policy in every case.
 
 ## Where Active Work Lives
 This repo uses `docs/active-spikes/`. Create and update active spike pairs there:
@@ -197,7 +197,7 @@ Use the existing `docs/decisions/` location for current durable rules, defaults,
 
 ## Starting A Spike
 1. Inspect `AGENTS.md`, `README.md`, `TODO.md`, `docs/active-spikes/`, `docs/scratch/`, `docs/archive/`, durable docs, and repo-local skills.
-2. Decide whether the work belongs in an existing active spike, a new named spike, or a miscellaneous spike bucket.
+2. Decide whether the work belongs in an existing active spike, a new named spike, or a miscellaneous spike bucket. For a self-contained patch that needs no spike context, use the patch route instead and stop this setup sequence.
 3. Choose a short topic slug. For mixed work, use the repo's numbered misc convention.
 4. Create or update `docs/active-spikes/<topic>.md` for conceptual context, with `attention: live` or the repository's equivalent.
 5. Create or update `docs/active-spikes/<topic>.todo.md` for implementation state, with the same attention marker.
@@ -230,15 +230,15 @@ Write `Continues from:` marker lines in successor conceptual docs. Write `Contin
 Use continuation links when a spike is gated, handed off, superseded, split into a new phase, or intentionally closed while related work continues elsewhere. Do not use them for unrelated follow-up ideas.
 
 ## Archiving A Spike
-When a spike is finished or superseded:
+When a spike appears finished or superseded, prepare closure while keeping both documents active:
 
 1. Review and update the conceptual and to-do docs to reflect progress.
-2. Fold durable lessons into long-lived docs.
-3. Add `Continues in:` / `Continues from:` links if related work continues in another spike.
-4. Leave spike-local detail in the spike docs. Set both to `attention: historical` or the repository's equivalent, and add a plain-language historical notice, closure date, and stable spike slug to both; link the conceptual doc to the maintained guidance and successor work that now own the subject. If no successor or maintained guidance resulted, say so rather than inventing one.
-5. Move both spike docs from `docs/active-spikes/` to `docs/archive/`. Retain the pair by default, even when all useful current guidance has been integrated elsewhere.
-6. Update `TODO.md` so the active work index stays current.
-7. Where agent commits are permitted, land the archival as a single commit via `commit-work`, with the spike summary as its message. Show the message to the user and commit on their approval.
+2. Fold durable lessons into long-lived docs and run the bounded Durable Lessons Check below. Resolve remaining work or explicitly account for its deferral or successor.
+3. Add `Continues in:` / `Continues from:` links if related work continues in another spike, and identify the maintained guidance that now owns the subject. If no successor or maintained guidance resulted, say so rather than inventing one.
+4. Prepare the closing summary and, where agent commits are permitted, its proposed archival commit message. Establish that the user authorizes closure itself as well as the message. One clear approval can cover both; use existing explicit authorization rather than asking again. Approval of wording alone is not permission to close. Until closure is authorized, keep the pair in its active location with its active attention marker and index entry.
+5. Once closure is authorized, leave spike-local detail in the pair, set both to `attention: historical` or the repository's equivalent, and add a plain-language historical notice, actual closure date, stable spike slug, and the identified guidance or successor pointers.
+6. Move both spike docs from `docs/active-spikes/` to `docs/archive/`, repair inbound and continuation links, and update `TODO.md`. Retain the pair by default, even when all useful current guidance has been integrated elsewhere.
+7. Where agent commits are permitted and the closing message has been approved, record the archival through `commit-work` using that summary. Normally this is one archival commit; preserve a repository's explicit alternative cadence. Do not request the same approval twice.
 
 Archived spike docs are historical context. They may be out of date. Use maintained docs or the current implementation to establish what applies now, even when the archive appears to agree. Keep their historical body as it stood at closure; later navigation repairs are allowed, and any necessary factual correction should be marked as a later correction rather than silently rewriting the record.
 
@@ -249,10 +249,12 @@ The archival is itself a commit: the doc moves and the `TODO.md` update are its 
 
 That message is a **synthesis, not a rollup**. Draw on the trailer log, the conceptual doc, the to-do doc's `Done` section, and verified working context. Explain consequential alternatives, discovered constraints, and corrections needed to understand the result; do not invent a cleaner development story or infer user agreement. Earlier commits may preserve an abandoned implementation, but they cannot recover reasoning never recorded. Select only material suitable for the repository's audience.
 
-Write the summary message and do the archival doc pass as one act, from one synthesis.
+Prepare the summary and the intended archival changes together. Apply the archival transition only after the closure authorization above; preparing or approving the message alone does not change the spike's status.
 
 ## Durable Lessons Check
 Before archiving, check the live guidance affected by this spike. Search for changed paths, commands, and rules where useful; this is a bounded dependency check, not a whole-repository audit. Preserve substantial reasoning, examples, and qualifications when integrating them into maintained docs; current guidance need not be a compressed summary. Historical accounts of an old behavior are not stale instructions to rewrite.
+
+Check how affected live docs link to the archive. A link for past reasoning or dated evidence is useful; an instruction to consult an archive for current rules, status, or verification limits leaves current authority in the wrong place. Verify those claims and maintain them in the appropriate live owner, retaining archive links as provenance. Mark unresolved claims as unverified rather than promoting historical prose wholesale. Keep archive bodies historical, and do not turn this check into an audit of unrelated archives.
 
 Ask:
 
