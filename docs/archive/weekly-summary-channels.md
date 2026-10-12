@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Weekly Summary Per-Team Channels
 ## Goal
 Break the single `#oa-org` weekly summary into per-team posts, so each team sees only its own active issues in its own channel, and `#oa-org` becomes a priority-only feed instead of a full org digest.

@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Retire The Sync Tooling — To Do
 ## Background
 Remove `tools/sync/`, rewrite the weekly-summary skill around the process rather than the tools, and update the docs that reference either. Conceptual doc: `docs/active-spikes/retire-sync-tooling.md`.

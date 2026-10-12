@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Retire The Sync Tooling
 ## Why
 `tools/sync/` pulls issues, labels, and board state into gitignored `snapshot/` markdown. It was built to feed one person's private knowledge vault, and in practice it has had exactly one user. Nobody else has adopted it, and it only makes sense to someone running a comparable personal system.

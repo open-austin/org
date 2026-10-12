@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Weekly Summary Per-Team Channels — To Do
 ## Background
 Break out the weekly org summary into per-team Slack channels instead of one combined `#oa-org` post. See `docs/active-spikes/weekly-summary-channels.md` (conceptual doc) for the routing table and rationale.

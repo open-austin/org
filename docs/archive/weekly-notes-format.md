@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Weekly Meeting Notes — Per-Meeting Doc Format (spike)
 Status: **dropped 2026-09-07. Do not pick this up.**
 

@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # GitHub Automation — To Do
 
 ## Background

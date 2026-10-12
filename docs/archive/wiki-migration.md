@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Wiki Migration
 
 ## Goal

@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Docs Taxonomy Refresh
 Status: closed, archived 2026-07-13 after human review and QA approval. Opened 2026-07-13 to bring this repo's local docs and skills taxonomy in line with the current personal project workflow pattern while preserving Open Austin-specific write-safety and public-org boundaries.
 

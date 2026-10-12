@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Board ↔ Issue Sync Redesign
 Continues from: docs/archive/github-automation.md
 

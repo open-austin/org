@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Docs Taxonomy Refresh To-Do
 ## Current State
 Opened 2026-07-13. Closed and archived 2026-07-13 after human review and QA approval. The repo already had `docs/active-spikes/`, `docs/archive/`, `docs/decisions/`, `docs/scratch/misc.md`, and local workflow skills. This pass added the newer taxonomy for pinned issues, future ideas, misc intake, durable decisions, and active spikes while preserving Open Austin-specific write-safety rules.

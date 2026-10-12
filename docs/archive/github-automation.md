@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # GitHub Automation
 Continues in: docs/archive/board-sync-redesign.md
 

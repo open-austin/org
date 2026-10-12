@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Board ↔ Issue Sync Redesign — To Do
 ## Background
 Execute the redesign described in `docs/active-spikes/board-sync-redesign.md`: native `Auto-close issue` for card→close (the one exception), all other board logic in code, one 5-minute reopen poller, all other native Projects workflows off. Continues the sync-layer work from `docs/active-spikes/github-automation.md`.

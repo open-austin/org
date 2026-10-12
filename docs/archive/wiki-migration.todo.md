@@ -1,3 +1,6 @@
+---
+attention: historical
+---
 # Wiki Migration — To Do
 ## Background
 Move Open Austin's GitHub wiki content into Google Drive so non-technical contributors can actually find and edit it. See `docs/active-spikes/wiki-migration.md` (conceptual doc) for the full rationale and approach.
