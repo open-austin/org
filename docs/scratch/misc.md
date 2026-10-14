@@ -7,4 +7,4 @@ Live inbox for loose observations.
 ## Latest Routing Session
 Reviewed 2026-07-07.
 
-- Initialized inbox as part of the skills-based workflow migration (see `docs/decisions/0003-skills-based-workflow.md`).
+- Initialized inbox as part of the skills-based workflow migration (see `docs/policies/0003-skills-based-workflow.md`).

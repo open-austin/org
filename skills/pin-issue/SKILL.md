@@ -14,7 +14,7 @@ The register is `docs/pinned-issues.md`. Create it only when the user asks to pi
 ## Taxonomy
 Use the first matching destination:
 
-- `docs/decisions/` for current durable rules, defaults, and procedures.
+- `docs/policies/` for current durable rules, defaults, and procedures.
 - `docs/pinned-issues.md` for unresolved issues intentionally preserved for later.
 - `docs/scratch/future-ideas.md` for conceptual someday material.
 - `docs/scratch/misc.md` for raw observed friction, QA nits, bugs, and issue intake.
@@ -49,7 +49,7 @@ Route each reviewed pin into one outcome:
 - **Promote to active work:** move concrete tasks into the relevant spike `.todo.md` or `TODO.md`, then remove the pin.
 - **Move to future ideas:** move conceptual someday material to `docs/scratch/future-ideas.md`, then remove the pin.
 - **Move to misc:** move raw issue intake or QA observations to `docs/scratch/misc.md`, then remove the pin.
-- **Record durable policy:** create or update current guidance under `docs/decisions/`, revising it directly while Git preserves its evolution; then remove the pin.
+- **Record durable policy:** create or update current guidance under `docs/policies/`, revising it directly while Git preserves its evolution; then remove the pin.
 - **Discard:** remove the pin if the issue is no longer relevant.
 
 Do not include tokens, private credentials, Slack webhook URLs, private contributor data, or other public-unsafe details in pinned issues. Use placeholders or generic phrasing when a pin depends on private context.

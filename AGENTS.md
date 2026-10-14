@@ -11,7 +11,7 @@ When docs conflict, use this order:
 
 1. `AGENTS.md` (this file) and `README.md` — durable project rules
 2. `contributor-policy.md` — Open Austin governance doc; **do not edit it** through tooling or agent work
-3. Active decision records in `docs/decisions/` — settled tradeoffs
+3. Current policies in `docs/policies/` — durable rules, defaults, procedures, and useful rationale
 4. Active spike docs in `docs/active-spikes/` — current thinking for a theme of work
 5. `TODO.md` — active work coordination
 6. `docs/pinned-issues.md` — unresolved issues intentionally preserved for later
@@ -104,9 +104,11 @@ gh label delete <name> --repo open-austin/org --yes
 For Projects v2 board moves, use `gh project item-edit` or the GraphQL API via `gh api graphql`.
 
 ## Process
+Policies describe current rules, defaults, procedures, exceptions, and useful rationale. Revise them directly; Git preserves their evolution. Keep development chronology and abandoned alternatives in Git or archived spike notes rather than accumulating immutable ADRs. No fixed Context / Decision / Consequences format is required.
+
 This repo uses a spike-based workflow. See `skills/run-project-spike/SKILL.md` for the full process.
 
-Active work is tracked in `TODO.md`. Settled decisions live in `docs/decisions/`. Unresolved issues intentionally preserved for later live in `docs/pinned-issues.md`. Conceptual someday material lives in `docs/scratch/future-ideas.md`. Raw observed friction and issue intake live in `docs/scratch/misc.md`. Finished spikes are archived in `docs/archive/`.
+Active work is tracked in `TODO.md`. Current policies live in `docs/policies/`. Unresolved issues intentionally preserved for later live in `docs/pinned-issues.md`. Conceptual someday material lives in `docs/scratch/future-ideas.md`. Raw observed friction and issue intake live in `docs/scratch/misc.md`. Finished spikes are archived in `docs/archive/`.
 
 Use these holding areas carefully: `docs/pinned-issues.md` is not a GitHub issue backlog, `docs/scratch/future-ideas.md` is not active roadmap, and `docs/scratch/misc.md` is not durable authority. Public-org writes still require explicit approval.
 

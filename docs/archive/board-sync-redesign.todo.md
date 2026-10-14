@@ -29,7 +29,7 @@ User reported (2026-07-08): **only `Auto-close issue` is ON; every other native 
 - [x] Commit/push the schedule enable — reconciler is live and confirmed firing (with GitHub's usual scheduled-run delay).
 
 ## Docs — done
-- [x] Decision record `docs/decisions/0005-board-sync-architecture.md`.
+- [x] Decision record `docs/policies/0005-board-sync-architecture.md`.
 - [x] README Board Automation section + Mermaid updated (native `Auto-close` exception called out, `board-reopen-reconcile` ~5m, native workflows off).
 - [x] Pointer added from `docs/active-spikes/github-automation.md` (Continues in).
 

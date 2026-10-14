@@ -29,7 +29,7 @@ gh auth status   # should show open-austin org access
 This repo uses a spike-based workflow. See [`skills/run-project-spike/SKILL.md`](skills/run-project-spike/SKILL.md) for the full process.
 
 - **`TODO.md`** — active work and backlog
-- **`docs/`** — decision records, active spikes (`docs/active-spikes/`), scratch, archive
+- **`docs/`** — policies, active spikes (`docs/active-spikes/`), scratch, archive
 - **`skills/`** — repo-local agent workflows (spike process, misc triage, weekly org summary)
 - **`tools/`** — CLI and MCP tooling (to be created)
 - **`AGENTS.md`** — rules for AI agents working in this repo
@@ -37,7 +37,7 @@ This repo uses a spike-based workflow. See [`skills/run-project-spike/SKILL.md`]
 ## Opening Issues and PRs
 - Open an issue before starting significant work so others know what's in flight.
 - Keep PRs focused. One spike or feature per PR.
-- Reference the relevant spike doc or decision record in your PR description if applicable.
+- Reference the relevant spike doc or policy in your PR description if applicable.
 - Do not commit `.env` or any file containing real credentials. See `.env.example` for what's needed.
 
 ## Write Safety

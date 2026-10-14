@@ -28,17 +28,17 @@ docs/
     future-ideas.md
     misc.md
   archive/
-  decisions/
+  policies/
 ```
 
-Active conceptual and to-do docs go in `docs/active-spikes/`, unresolved issues intentionally preserved for later go in `docs/pinned-issues.md`, conceptual someday material goes in `docs/scratch/future-ideas.md`, rough intake goes in `docs/scratch/misc.md`, and finished or superseded spike history goes in `docs/archive/`. Durable long-term docs (`README.md`, `AGENTS.md`, `contributor-policy.md`, decision records) stay out of active spike work.
+Active conceptual and to-do docs go in `docs/active-spikes/`, unresolved issues intentionally preserved for later go in `docs/pinned-issues.md`, conceptual someday material goes in `docs/scratch/future-ideas.md`, rough intake goes in `docs/scratch/misc.md`, and finished or superseded spike history goes in `docs/archive/`. Durable long-term docs (`README.md`, `AGENTS.md`, `contributor-policy.md`, current policies) stay out of active spike work.
 
 ## Authority Ladder
 When docs conflict, use this order (mirrors `AGENTS.md`):
 
 1. `AGENTS.md` (or `CLAUDE.md`) and `README.md` — durable project rules
 2. `contributor-policy.md` — Open Austin governance doc; do not edit it through tooling or agent work
-3. Active decision records in `docs/decisions/` — settled tradeoffs
+3. Current policies in `docs/policies/` — durable rules, defaults, procedures, and useful rationale
 4. Active spike docs in `docs/active-spikes/` — current thinking for a theme of work
 5. Active spike to-do docs in `docs/active-spikes/` — implementation state
 6. `TODO.md` — active work coordination
@@ -87,7 +87,7 @@ Use the conceptual doc for:
 - safety and privacy boundaries
 - continuation links to predecessor or successor spikes
 
-Avoid turning the conceptual doc into a running changelog. When implementation details become durable rules, fold them into longer-lived docs such as `README.md`, `AGENTS.md`, a decision record, a local skill in `skills/`, or another active reference doc.
+Avoid turning the conceptual doc into a running changelog. When implementation details become durable rules, fold them into longer-lived docs such as `README.md`, `AGENTS.md`, a policy, a local skill in `skills/`, or another active reference doc.
 
 ## Selecting Material for the Repository
 Before writing spike notes, consider the repository's intended audience. Preserve project-relevant reasoning, qualifications, corrections, and useful examples without copying unnecessary or unauthorized private conversation, source packages, personal paths, or surrounding workspace details. Permission to preserve development reasoning is not permission to publish private source material. Keep user decisions distinguishable from agent suggestions; a saved proposal is not evidence of human agreement.
@@ -176,7 +176,7 @@ Be specific. A good QA item names the surface, command, expected output, or GitH
 ## Scratch Promotion
 Use the shared routing taxonomy before promoting material:
 
-- `docs/decisions/` for settled durable repo rules.
+- `docs/policies/` for settled durable repo rules.
 - `docs/pinned-issues.md` for unresolved issues intentionally preserved for later.
 - `docs/scratch/future-ideas.md` for conceptual someday material.
 - `docs/scratch/misc.md` for raw observed friction, QA nits, bugs, and issue intake.
@@ -192,8 +192,8 @@ If a scratch doc contains multiple themes, split it deliberately: move each usef
 
 For loose unrouted notes, use `docs/scratch/misc.md` and the `triage-project-misc` skill. For unresolved questions that should be intentionally preserved, use `docs/pinned-issues.md` and `pin-issue`. For coherent someday concepts, use `docs/scratch/future-ideas.md` and `log-future-idea`.
 
-## Durable Guidance
-Use the existing `docs/decisions/` location for current durable rules, defaults, procedures, and their rationale. Revise current guidance directly and let Git preserve its evolution; do not require an immutable ADR or a new record for every implementation choice. Keep developing alternatives in the spike until adopted. Existing governance authority and the prohibition on agent edits to `contributor-policy.md` still apply.
+## Durable Policies
+Use `docs/policies/` for current durable rules, defaults, procedures, and their rationale. Revise current guidance directly and let Git preserve its evolution; do not require an immutable ADR or a new record for every implementation choice. Keep developing alternatives in the spike until adopted. Existing governance authority and the prohibition on agent edits to `contributor-policy.md` still apply.
 
 ## Starting A Spike
 1. Inspect `AGENTS.md`, `README.md`, `TODO.md`, `docs/active-spikes/`, `docs/scratch/`, `docs/archive/`, durable docs, and repo-local skills.
@@ -260,7 +260,7 @@ Ask:
 
 - Did we add or rename CLI commands or MCP tools? Update `README.md` and `AGENTS.md`.
 - Did we change agent workflow or write-safety rules? Update `AGENTS.md`.
-- Did we settle a durable tradeoff? Add or update a decision record.
+- Did we settle a durable tradeoff? Add or update a policy.
 - Did we change how auth or credentials are loaded? Update `AGENTS.md` and `.env.example`.
 - Did we add a repeatable manual process? Add or update a dedicated local skill in `skills/`.
 - Did we create unresolved issues that should survive the chat but not become work yet? Update `docs/pinned-issues.md`.

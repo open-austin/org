@@ -10,7 +10,7 @@ Archived 2026-07-08 — complete and QA-confirmed live. Durable outcomes live in
 Re-architect the board↔issue sync layer so it is (in priority order): auditable and version-controlled in this repo, immediate wherever the platform allows, and minimal in surface area — one system doing the work, not custom Actions and native Projects workflows fighting each other.
 
 ## Why
-The original design leaned on `on: projects_v2_item` triggers that never fired (see `docs/decisions/0004-projects-v2-automation-triggers.md`), and it ran alongside GitHub's native Projects workflows, producing the visible sprawl the user flagged during testing:
+The original design leaned on `on: projects_v2_item` triggers that never fired (see `docs/policies/0004-projects-v2-automation-triggers.md`), and it ran alongside GitHub's native Projects workflows, producing the visible sprawl the user flagged during testing:
 - A new issue was added to Org Kanban by native "Auto-add to project", then moved to To Do by a custom Action — two actors for one outcome.
 - An open-role issue was added to *both* boards by native auto-add, then removed from Org Kanban by a custom Action — added wrong, then cleaned up, instead of routed right the first time.
 

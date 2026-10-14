@@ -20,7 +20,7 @@ Create it only when the user asks to log a future idea or an existing misc/futur
 ## Taxonomy
 Use the first matching destination:
 
-- `docs/decisions/` for current durable rules, defaults, and procedures.
+- `docs/policies/` for current durable rules, defaults, and procedures.
 - `docs/pinned-issues.md` for unresolved issues intentionally preserved for later.
 - `docs/scratch/future-ideas.md` for conceptual someday material.
 - `docs/scratch/misc.md` for raw observed friction, QA nits, bugs, and issue intake.

@@ -102,7 +102,7 @@ Per-team weekly issue summaries to Slack are handled separately by the [`weekly-
 
 ## Documentation
 - **Active spikes:** `docs/active-spikes/` — current work with accompanying `.todo.md` files
-- **Decisions:** `docs/decisions/` — settled architectural choices
+- **Policies:** `docs/policies/` — current rules, defaults, procedures, and useful rationale
 - **Pinned issues:** `docs/pinned-issues.md` — unresolved org/tooling/process questions intentionally preserved for later
 - **Future ideas:** `docs/scratch/future-ideas.md` — conceptual someday material that is not active work
 - **Misc intake:** `docs/scratch/misc.md` — raw observed friction and issue intake
