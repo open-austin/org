@@ -19,3 +19,5 @@ On 2026-10-26, the separately authorized capture-for-later migration retired bot
 
 ## Shared rollout follow-up
 Reconciled shared main `8f6bdcf` locally, preserving this project's adaptation. The follow-up clarifies separately authorized list migration, incomplete parent scaffolds, and private local recovery. Publication remains on hold; the public source URL does not make this new child pin available remotely.
+
+The final capture check also converted the five existing TODO Later / Ideas bullets into individual scratch notes, preserving uncertainty and ownership. Existing Docs access and the deliberate sync-tool retirement are explicitly distinguished from residual possibilities; no external action or new task is implied.

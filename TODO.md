@@ -59,13 +59,4 @@ Low-priority follow-ups left after archiving the automation spikes (2026-07-08).
 - **`stale-role-warning` dry-run** — YAML parse bug fixed and logic proven locally; a `dry_run` input was added (commit pending). After committing, dispatch once with `dry_run=true` to confirm end-to-end.
 - **Two board-sync edge paths** — blank-issue-then-`open role` routing, and the fresh-close guard, are verified by reading but not exercised live.
 
-## Later / Ideas
-- **Google Drive agent access** — once the GitHub layer is stable, giving agents GDrive read access would allow them to use org docs, meeting notes, and wiki exports as context without needing everything committed to the repo
-- **Staleness surfacing** — periodic snapshot-based digest of stale issues for agent-assisted triage sessions
-- **Board resolution tracking** — low priority for now; decision-making is highly human/interpersonal
-- **Board onboarding doc** — carried over from the wiki migration (`docs/archive/wiki-migration.md`); unconfirmed whether existing material exists or still needs creating (closed #393 noted onboarding should be handled here)
-- **Contributor Profile board** — handled in the CoP repos, not here; the org-repo automation doesn't touch it (user to log a ticket)
-
-Use individual `docs/scratch/` notes with capture-for-later for conceptual someday material or deliberately parked questions; the existing Later / Ideas entries above remain unchanged.
-
 *(Completed spikes and tasks are archived here or moved to `docs/archive/`.)*
