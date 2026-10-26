@@ -19,7 +19,7 @@ When docs conflict, use this order:
 8. `docs/scratch/misc.md` and other `docs/scratch/` files — exploratory intake, non-authoritative
 9. `docs/archive/` — historical context only
 
-This repo carries its own agent workflows in `skills/`. Repo-local skills are project authority — prefer `skills/<skill-name>/SKILL.md` over similarly named global skills, which are fallback seed material only.
+This repository adopts [Project Workflows](project-workflows/README.md) as a pinned Git submodule. Read [workflow.toml](project-workflows/workflow.toml), then load `project-workflows/<skill-name>/SKILL.md` before global workflow seeds. The child branch is `project/org`; the parent branch is separate. Project instructions and existing document conventions remain authoritative. Actual project documents stay here, outside the collection. Organization-specific skills remain under `skills/` and retain their own scope and status.
 
 ## What Agents May Do
 - Read and render snapshots from GitHub (issues, labels, milestones, project boards)
@@ -106,23 +106,26 @@ For Projects v2 board moves, use `gh project item-edit` or the GraphQL API via `
 ## Process
 Policies describe current rules, defaults, procedures, exceptions, and useful rationale. Revise them directly; Git preserves their evolution. Keep development chronology and abandoned alternatives in Git or archived spike notes rather than accumulating immutable ADRs. No fixed Context / Decision / Consequences format is required.
 
-This repo uses a spike-based workflow. See `skills/run-project-spike/SKILL.md` for the full process.
+This repo uses a spike-based workflow. See `project-workflows/run-project-spike/SKILL.md` for the full process.
 
 Active work is tracked in `TODO.md`. Current policies live in `docs/policies/`. Unresolved issues intentionally preserved for later live in `docs/pinned-issues.md`. Conceptual someday material lives in `docs/scratch/future-ideas.md`. Raw observed friction and issue intake live in `docs/scratch/misc.md`. Finished spikes are archived in `docs/archive/`.
 
 Use these holding areas carefully: `docs/pinned-issues.md` is not a GitHub issue backlog, `docs/scratch/future-ideas.md` is not active roadmap, and `docs/scratch/misc.md` is not durable authority. Public-org writes still require explicit approval.
 
 ## Skills
-Repeatable agent-assisted workflows live in `skills/`. When the user asks for one of these by name or intent, follow the local skill.
+Use the adopted collection for project workflows and `skills/` for organization-specific procedures. When the user asks for one of these by name or intent, follow the owning local procedure.
+
+Use `capture-for-later` for new saved possibilities or parked subjects as small individual notes in `docs/scratch/`. Existing `docs/pinned-issues.md` and `docs/scratch/future-ideas.md` records remain valid and stay in place; update a related existing entry rather than duplicating or bulk migrating it. Capturing a subject does not create tasks or authorize external writes.
 
 | Skill | Trigger phrases / use |
 |---|---|
-| `skills/commit-work/SKILL.md` | Committing completed work atomically by explicit pathspec without pushing or rewriting history |
-| `skills/run-project-spike/SKILL.md` | Starting, continuing, promoting, or archiving spike work |
-| `skills/triage-project-misc/SKILL.md` | Reviewing or routing `docs/scratch/misc.md` |
-| `skills/pin-issue/SKILL.md` | Preserving unresolved org/tooling/process issues for later |
-| `skills/log-future-idea/SKILL.md` | Capturing conceptual someday org/tooling/process ideas |
-| `skills/update-local-skills/SKILL.md` | Refreshing repo-local skill copies from global seed skills while preserving local divergence |
+| `project-workflows/commit-work/SKILL.md` | Committing completed work atomically by explicit pathspec without pushing or rewriting history |
+| `project-workflows/run-project-spike/SKILL.md` | Starting, continuing, promoting, or archiving spike work |
+| `project-workflows/triage-project-misc/SKILL.md` | Reviewing or routing `docs/scratch/misc.md` |
+| `project-workflows/capture-for-later/SKILL.md` | Saving possibilities or deliberately parked subjects without starting work |
+| `project-workflows/update-project-workflows/SKILL.md` | Reconciling shared workflows, project customizations, and the parent pin |
+| `project-workflows/setup-project-workflows/SKILL.md` | Adopting or repairing the collection and documentation routing |
+| `project-workflows/draft-approval-slate/SKILL.md` | Presenting concrete changes for human review |
 | `skills/weekly-org-summary/SKILL.md` | "weekly summary", "weekly update", "org digest", "what's going on this week" |
 | `skills/process-weekly-meeting/SKILL.md` | Processing or reconciling the Open Austin weekly organizing meeting, canonical shared notes, and resulting GitHub work |
 

@@ -16,7 +16,7 @@ Organization tooling acts on shared issues, boards, labels, and milestones. Keep
 
 ## Links
 - [AGENTS.md](../../AGENTS.md) — authorization and operating rules
-- [Spike skill](../../skills/run-project-spike/SKILL.md)
+- [Spike skill](../../project-workflows/run-project-spike/SKILL.md)
 - [TODO.md](../../TODO.md) — active work index
 - [Tooling history](../archive/github-tooling.md)
 - [Sync retirement](../archive/retire-sync-tooling.md)

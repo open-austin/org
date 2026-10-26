@@ -1,0 +1,4 @@
+[submodule "project-workflows"]
+	path = project-workflows
+	url = https://github.com/jcklpe/project-workflows.git
+	branch = project/org

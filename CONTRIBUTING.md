@@ -26,7 +26,7 @@ gh auth status   # should show open-austin org access
 ```
 
 ## How Work Is Organized
-This repo uses a spike-based workflow. See [`skills/run-project-spike/SKILL.md`](skills/run-project-spike/SKILL.md) for the full process.
+This repo uses a spike-based workflow. See [`project-workflows/run-project-spike/SKILL.md`](project-workflows/run-project-spike/SKILL.md) for the full process.
 
 - **`TODO.md`** — active work and backlog
 - **`docs/`** — policies, active spikes (`docs/active-spikes/`), scratch, archive

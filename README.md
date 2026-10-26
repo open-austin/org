@@ -109,4 +109,7 @@ Per-team weekly issue summaries to Slack are handled separately by the [`weekly-
 - **Scratch:** `docs/scratch/` — exploratory drafts
 - **Archive:** `docs/archive/` — historical context
 
-See [skills/run-project-spike/SKILL.md](skills/run-project-spike/SKILL.md) for the full workflow, and [skills/](skills/) for the repo's other agent-assisted workflows.
+See [project-workflows/run-project-spike/SKILL.md](project-workflows/run-project-spike/SKILL.md) for the full workflow, and [skills/](skills/) for the repo's other agent-assisted workflows.
+
+## Project Workflows adoption
+The complete collection lives in `project-workflows/` on `project/org`; the parent pins its exact commit. Use its [update procedure](project-workflows/update-project-workflows/SKILL.md) for reconciliation, with project rules in [AGENTS.md](AGENTS.md). After the required commit is published, initialize a fresh clone with `git submodule update --init project-workflows`. This adoption is local only pending security/privacy review: the recorded public URL does not yet make the new pin available to collaborators. [Reconciliation and validation](docs/active-spikes/project-workflows-adoption.md) · [remaining steps](docs/active-spikes/project-workflows-adoption.todo.md).

@@ -1,5 +1,8 @@
 # TODO
-This is the coordination map for active work in this repo. See `skills/run-project-spike/SKILL.md` for the full process.
+This is the coordination map for active work in this repo. See `project-workflows/run-project-spike/SKILL.md` for the full process.
+
+## Active
+- **Project Workflows adoption** — [reconciliation](docs/active-spikes/project-workflows-adoption.md) · [local validation and publication hold](docs/active-spikes/project-workflows-adoption.todo.md).
 
 ## Done
 ### Retire Sync Tooling *(archived: `docs/archive/retire-sync-tooling.md`)*
@@ -26,7 +29,7 @@ Built Python sync tools (`tools/sync/`) that pull issues (with full comment thre
 ### Repo Scaffolding
 Getting the repo into a state where agents can work effectively and the methodology is established.
 
-- [x] Adapt `docs/how-to-spike.md` to this repo's context *(superseded 2026-07-07: process now lives in `skills/run-project-spike/SKILL.md`)*
+- [x] Adapt `docs/how-to-spike.md` to this repo's context *(superseded 2026-07-07: process now lives in `project-workflows/run-project-spike/SKILL.md`)*
 - [x] Create `AGENTS.md`
 - [x] Create `CLAUDE.md` (symlink → `AGENTS.md`)
 - [x] Add `.claude/` and `.env` to `.gitignore`
