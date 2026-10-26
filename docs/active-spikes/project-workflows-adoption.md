@@ -13,3 +13,6 @@ Replace copied run-project-spike, commit-work, and triage-project-misc with the 
 Validate skill frontmatter/resources, local links, workflow configuration, shared ancestry, project differences, ignored paths, and child/index/committed pins. Preserve unrelated files and product submodules. No runtime build or external write is required. A repeated setup must recognize this adoption rather than duplicate it.
 
 This is local only. The public source URL is recorded for later reviewed publication, but the new child and parent commits are not remotely available. Security/privacy review, publication, fresh recursive collaborator cloning, and live client discovery are separate unfinished checks.
+
+## Authorized legacy-list migration
+On 2026-10-26, the separately authorized capture-for-later migration retired both empty legacy registers (zero entries to convert) and repaired maintained routing. Existing TODO Later / Ideas entries and archived taxonomy history remain unchanged.

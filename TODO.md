@@ -66,6 +66,6 @@ Low-priority follow-ups left after archiving the automation spikes (2026-07-08).
 - **Board onboarding doc** — carried over from the wiki migration (`docs/archive/wiki-migration.md`); unconfirmed whether existing material exists or still needs creating (closed #393 noted onboarding should be handled here)
 - **Contributor Profile board** — handled in the CoP repos, not here; the org-repo automation doesn't touch it (user to log a ticket)
 
-Use `docs/scratch/future-ideas.md` for conceptual someday org/tooling/process material that is too early for active spike work.
+Use individual `docs/scratch/` notes with capture-for-later for conceptual someday material or deliberately parked questions; the existing Later / Ideas entries above remain unchanged.
 
 *(Completed spikes and tasks are archived here or moved to `docs/archive/`.)*

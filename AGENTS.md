@@ -14,8 +14,7 @@ When docs conflict, use this order:
 3. Current policies in `docs/policies/` — durable rules, defaults, procedures, and useful rationale
 4. Active spike docs in `docs/active-spikes/` — current thinking for a theme of work
 5. `TODO.md` — active work coordination
-6. `docs/pinned-issues.md` — unresolved issues intentionally preserved for later
-7. `docs/scratch/future-ideas.md` — conceptual someday material
+6. Individual `docs/scratch/` subject notes — captured possibilities or deliberately parked questions
 8. `docs/scratch/misc.md` and other `docs/scratch/` files — exploratory intake, non-authoritative
 9. `docs/archive/` — historical context only
 
@@ -108,14 +107,14 @@ Policies describe current rules, defaults, procedures, exceptions, and useful ra
 
 This repo uses a spike-based workflow. See `project-workflows/run-project-spike/SKILL.md` for the full process.
 
-Active work is tracked in `TODO.md`. Current policies live in `docs/policies/`. Unresolved issues intentionally preserved for later live in `docs/pinned-issues.md`. Conceptual someday material lives in `docs/scratch/future-ideas.md`. Raw observed friction and issue intake live in `docs/scratch/misc.md`. Finished spikes are archived in `docs/archive/`.
+Active work is tracked in `TODO.md`. Current policies live in `docs/policies/`. Saved possibilities and parked questions live in individual `docs/scratch/` notes. Raw observed friction and issue intake live in `docs/scratch/misc.md`. Finished spikes are archived in `docs/archive/`.
 
-Use these holding areas carefully: `docs/pinned-issues.md` is not a GitHub issue backlog, `docs/scratch/future-ideas.md` is not active roadmap, and `docs/scratch/misc.md` is not durable authority. Public-org writes still require explicit approval.
+Use these holding areas carefully: captured or parked scratch notes are not a GitHub issue backlog or active roadmap, and `docs/scratch/misc.md` is not durable authority. Public-org writes still require explicit approval.
 
 ## Skills
 Use the adopted collection for project workflows and `skills/` for organization-specific procedures. When the user asks for one of these by name or intent, follow the owning local procedure.
 
-Use `capture-for-later` for new saved possibilities or parked subjects as small individual notes in `docs/scratch/`. Existing `docs/pinned-issues.md` and `docs/scratch/future-ideas.md` records remain valid and stay in place; update a related existing entry rather than duplicating or bulk migrating it. Capturing a subject does not create tasks or authorize external writes.
+Use `capture-for-later` for saved possibilities or parked subjects as small individual notes in `docs/scratch/`. Update an existing subject note rather than duplicating it. Capturing a subject does not create tasks or authorize external writes.
 
 | Skill | Trigger phrases / use |
 |---|---|
