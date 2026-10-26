@@ -16,3 +16,6 @@ This is local only. The public source URL is recorded for later reviewed publica
 
 ## Authorized legacy-list migration
 On 2026-10-26, the separately authorized capture-for-later migration retired both empty legacy registers (zero entries to convert) and repaired maintained routing. Existing TODO Later / Ideas entries and archived taxonomy history remain unchanged.
+
+## Shared rollout follow-up
+Reconciled shared main `8f6bdcf` locally, preserving this project's adaptation. The follow-up clarifies separately authorized list migration, incomplete parent scaffolds, and private local recovery. Publication remains on hold; the public source URL does not make this new child pin available remotely.
