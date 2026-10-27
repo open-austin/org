@@ -22,7 +22,7 @@ gh project item-list 6 --owner open-austin --format json   # Open Roles
 `snapshot/` remains gitignored scratch space that `tools/notify/` reads from. Nothing here regenerates it from GitHub any more. See `docs/archive/retire-sync-tooling.md`.
 
 ## Write Operations
-Guarded writes happen through the **board-automation workflows** described below, the repo's narrow dry-run-first tools, and the **`gh` CLI** for ad-hoc changes that do not yet justify a wrapper. Use `gh issue create` for issue creation and `tools/google-docs/run.sh` for bounded shared-Doc reads and exact-match replacements. See [AGENTS.md](AGENTS.md) for the approval and write-safety rules.
+Guarded writes happen through the **board-automation workflows** described below, the repo's narrow dry-run-first tools, and the **`gh` CLI** for ad-hoc changes that do not yet justify a wrapper. Use `gh issue create` for issue creation and Agent Hands `use-google-docs` for bounded shared-Doc reads and exact-match replacements. See [AGENTS.md](AGENTS.md) for the approval and write-safety rules.
 
 All write operations follow the write-safety rules: dry-run first where supported, and explicit approval before anything that mutates shared org state.
 
@@ -34,26 +34,20 @@ gh issue create --repo open-austin/org --title "Task title" --body-file /tmp/iss
 The wrapper that used to front this (`tools/issues/create.sh`, dry-run by default) was removed 2026-09-07 along with the rest of the single-maintainer tooling — see `docs/archive/retire-sync-tooling.md`. `gh` does the work; the approval discipline it enforced is stated in [AGENTS.md](AGENTS.md) and is a rule rather than a script. **Confirm the exact title, body, labels, and assignees with a human before creating an issue.**
 
 ### Shared Google Docs
-Copy `.env.example` to the ignored `.env`, set the Google credential/token paths, and enable the Google Docs API for the OAuth project. New contributors can authorize with:
+Use [Agent Hands](https://github.com/jcklpe/agent-hands)' [setup-google-services](https://github.com/jcklpe/agent-hands/blob/main/setup-google-services/SKILL.md) and [use-google-docs](https://github.com/jcklpe/agent-hands/blob/main/use-google-docs/SKILL.md). Org no longer carries a second Docs client or OAuth implementation. Keep the two skills together in an Agent Hands checkout or a supported installation. Follow their runtime prerequisites; Org's organization rules still govern target selection, authorship and approval.
+
+Select an existing Google account alias and keep its credentials and token in Agent Hands' private provider configuration. Reuse existing credential/token paths rather than copying secrets into Org or creating a second token. Installation does not grant account access or permission to edit a document. Do not reauthorize merely to test this cutover; request missing access only for an actual authorized operation.
+
+Set `AGENT_HANDS_ROOT` to the installed checkout root, `OPEN_AUSTIN_GOOGLE_ALIAS` to the selected alias, and `OPEN_AUSTIN_WEEKLY_NOTES_DOC_ID` to the target supplied at runtime. The placeholders are in `.env.example`; export the selected values in your shell. These commands do not automatically load Org's `.env`.
 
 ```bash
-tools/google-docs/run.sh auth
+bash "$AGENT_HANDS_ROOT/use-google-docs/scripts/docs" --help
+bash "$AGENT_HANDS_ROOT/use-google-docs/scripts/docs" read "$OPEN_AUSTIN_GOOGLE_ALIAS" "$OPEN_AUSTIN_WEEKLY_NOTES_DOC_ID" --show-links
+bash "$AGENT_HANDS_ROOT/use-google-docs/scripts/docs" replace-once "$OPEN_AUSTIN_GOOGLE_ALIAS" "$OPEN_AUSTIN_WEEKLY_NOTES_DOC_ID" --old-file /tmp/current.txt --new-file /tmp/replacement.txt
+bash "$AGENT_HANDS_ROOT/use-google-docs/scripts/docs" replace-once "$OPEN_AUSTIN_GOOGLE_ALIAS" "$OPEN_AUSTIN_WEEKLY_NOTES_DOC_ID" --old-file /tmp/current.txt --new-file /tmp/replacement.txt --link "Visible issue label=https://github.com/open-austin/org/issues/123"
 ```
 
-When the existing local credential and Open Austin token files exist at a local path you configure, the wrapper reuses them automatically; the repo does not create a second credential or token copy. Other contributors configure their own paths in `.env`.
-
-An existing read-only token can run `read` and dry-run planning, but the first executed Doc replacement requires the Google Docs write scope. Run `tools/google-docs/run.sh auth` once to grant that scope into the same configured token file before the first approved write.
-
-Read the canonical weekly notes or preview one exact replacement:
-
-```bash
-tools/google-docs/run.sh read
-tools/google-docs/run.sh read --show-links
-tools/google-docs/run.sh replace-once --old-file /tmp/current.txt --new-file /tmp/replacement.txt
-tools/google-docs/run.sh replace-once --old-file /tmp/current.txt --new-file /tmp/replacement.txt --link "Visible issue label=https://github.com/open-austin/org/issues/123"
-```
-
-The replacement tool requires the old text to occur exactly once, re-fetches before mutation, and writes only with `--execute`. Use it for bounded corrections, action-state changes, and issue cross-links—not for inserting parallel agent minutes.
+Replacement previews by default, requires exactly one match, re-fetches before execution, and uses a required revision ID. Add `--execute` only for the approved exact change, then independently re-read the affected section. Optional `--tab-id` limits the target. Use small corrections, action-state changes and issue cross-links; do not insert parallel agent minutes or substitute a whole-body rewrite. The Open Austin procedure remains [process-weekly-meeting](skills/process-weekly-meeting/SKILL.md).
 
 ## Weekly Organizing Meeting
 Follow [skills/process-weekly-meeting/SKILL.md](skills/process-weekly-meeting/SKILL.md) when reconciling the recurring weekly organizing meeting. `General Organizing - meeting notes` remains canonical. The workflow audits chatbot-produced beat-by-beat notes and analysis against the matching dated section and fresh GitHub state, then produces an exact approval slate before any shared Doc or public issue changes.
@@ -98,7 +92,7 @@ Everything on the issue side (open / close / reopen) and the native card→close
 | `stale-role-warning` | weekly | Comment on open roles with no update in 90+ days |
 | `role-pipeline-report` | monthly (1st Monday) | Post the Open Roles pipeline snapshot to `#t-engagement` |
 
-Per-team weekly issue summaries to Slack are handled separately by the [`weekly-org-summary`](skills/weekly-org-summary/SKILL.md) skill, not by these Actions.
+The per-team [`weekly-org-summary`](skills/weekly-org-summary/SKILL.md) is retired and retained as a historical reimplementation record. It is not an active scheduled service. The monthly role report above posts directly from its workflow; it does not call `tools/notify/`.
 
 ## Documentation
 - **Active spikes:** `docs/active-spikes/` — current work with accompanying `.todo.md` files

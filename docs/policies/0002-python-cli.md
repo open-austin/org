@@ -1,6 +1,6 @@
 # 0002 — Python CLI over Shell Scripts
 ## Current Approach
-Use Python 3 for substantive CLI tools. Thin shell wrappers may provide familiar entry points. Current examples include `tools/airtable/` and `tools/google-docs/`; the retired `tools/sync/` scripts are historical examples, not missing dependencies.
+Use Python 3 for substantive CLI tools. Thin shell wrappers may provide familiar entry points. The local example is `tools/airtable/`. Generic Google Docs operations use the separately installed Agent Hands `use-google-docs` skill; Org owns the meeting procedure and target choices. The retired `tools/google-docs/` and `tools/sync/` scripts are historical examples, not missing dependencies.
 
 ## Rationale
 1. **Native JSON handling:** Python's `json` module is more intuitive than multi-stage `jq` pipelines for complex transformations

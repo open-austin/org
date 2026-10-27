@@ -15,8 +15,8 @@ When docs conflict, use this order:
 4. Active spike docs in `docs/active-spikes/` — current thinking for a theme of work
 5. `TODO.md` — active work coordination
 6. Individual `docs/scratch/` subject notes — captured possibilities or deliberately parked questions
-8. `docs/scratch/misc.md` and other `docs/scratch/` files — exploratory intake, non-authoritative
-9. `docs/archive/` — historical context only
+7. `docs/scratch/misc.md` and other `docs/scratch/` files — exploratory intake, non-authoritative
+8. `docs/archive/` — historical context only
 
 This repository adopts [Project Workflows](project-workflows/README.md) as a pinned Git submodule. Read [workflow.toml](project-workflows/workflow.toml), then load `project-workflows/<skill-name>/SKILL.md` before global workflow seeds. The child branch is `project/org`; the parent branch is separate. Project instructions and existing document conventions remain authoritative. Actual project documents stay here, outside the collection. Organization-specific skills remain under `skills/` and retain their own scope and status.
 
@@ -52,7 +52,7 @@ These rules apply to all write operations, no exceptions:
 ## Auth Model
 - Credentials are loaded from the environment at runtime — never hardcoded or committed.
 - GitHub operations use `GH_TOKEN` (a GitHub PAT or token authorized via `gh auth login`).
-- Google Docs operations use the local credential and token paths documented in `.env.example`; real OAuth files remain outside this repo. The wrapper can reuse existing local credential and Open Austin token files when they already exist.
+- Google Docs operations use Agent Hands `setup-google-services` account configuration and `use-google-docs`. Org supplies an explicit account alias and document ID; real credentials and tokens stay outside this repo. Preserve existing private credential/token paths, and do not create or broaden authorization as part of routine installation.
 - See `.env.example` for the full list of required variables and their required scopes.
 - If the `open-austin` org enforces SAML SSO, the token must be SSO-authorized in GitHub's UI before use.
 - Never commit `.env`, `gh` host config, or any file containing a real token.
@@ -84,12 +84,12 @@ echo "Your message" | tools/notify/post.sh SLACK_WEBHOOK_ENGAGEMENT
 Webhook URLs are stored in `.env` (gitignored). See `.env.example` for the full list. The webhook var name maps to a specific channel — see `skills/weekly-org-summary/SKILL.md` for the channel table.
 
 ### Google Docs Tools
-Use `tools/google-docs/run.sh read` for document text and `replace-once` for one exact, uniquely occurring replacement. `replace-once` is dry-run by default, re-fetches before execution, and uses the live revision ID. Follow `skills/process-weekly-meeting/SKILL.md` for the weekly organizing meeting's canonical-record and approval rules.
+Use the installed Agent Hands `use-google-docs` skill for document reads and one exact, uniquely occurring replacement. Follow the explicit alias/document commands in [README.md](README.md#shared-google-docs); do not recreate a local OAuth wrapper. `replace-once` previews by default, re-fetches before execution, and uses a required revision ID. Follow `skills/process-weekly-meeting/SKILL.md` for the canonical record and approval rules, then independently read back approved edits.
 
 ### Write Operations
 Use the guarded repo tools when a matching operation exists, and use `gh` CLI directly for other writes. All writes require explicit user approval first per the Write Safety Rules above.
 
-Create a new issue with `gh issue create`. There is no wrapper any more — it was removed 2026-09-07 with the rest of the single-maintainer tooling — so the dry-run discipline is yours to keep: state the exact title, body, labels, and assignees to the user and get approval **before** running the command, not after. Use `tools/google-docs/run.sh` for bounded shared-Doc reads and exact-match replacements. Google Docs replacements are also dry-run by default and must match exactly once before execution.
+Create a new issue with `gh issue create`. There is no wrapper any more — it was removed 2026-09-07 with the rest of the single-maintainer tooling — so the dry-run discipline is yours to keep: state the exact title, body, labels, and assignees to the user and get approval **before** running the command, not after. Use Agent Hands `use-google-docs` for bounded shared-Doc reads and exact-match replacements. Google Docs replacements are also dry-run by default and must match exactly once before execution.
 
 Common commands:
 ```bash

@@ -64,7 +64,7 @@ Public or notification effect: Who can see it and whether anyone will be notifie
 List `Already covered` and `Not actionable` findings briefly after the actionable slate. Approval applies only to the exact displayed change. If live state has materially changed, stop and present a revised slate.
 
 ## Shared Google Doc Writes
-Use `tools/google-docs/run.sh` for API reads and exact, uniquely matched replacements. `replace-once` is dry-run by default, re-fetches the live document, and uses its current revision ID. Add repeatable `--link "Visible text=https://…"` arguments when approved replacement text needs embedded links; each visible label must occur exactly once in the replacement.
+Use the installed Agent Hands `use-google-docs` skill for API reads and exact, uniquely matched replacements, with an explicit account alias and document ID as documented in [README](../../README.md#shared-google-docs). `replace-once` is dry-run by default, re-fetches the live document, and uses its current revision ID. Add repeatable `--link "Visible text=https://…"` arguments when approved replacement text needs embedded links; each visible label must occur exactly once in the replacement.
 
 Make only small in-place improvements such as adding a missing action, correcting an action's state, or linking an action to its GitHub issue. Preserve the surrounding dated section and its local format. Do not add a transcript link, chatbot analysis, or separate agent-written minutes.
 
@@ -84,6 +84,6 @@ Before reporting completion, confirm that:
 - no chatbot summary, analysis, or transcript link was inserted;
 - every issue link points to the intended issue;
 - every executed change matches its approved slate item; and
-- `snapshot/` reflects final GitHub state.
+- every reported result is checked against a fresh API read; any optional draft in ignored `snapshot/` is labelled as a draft, not treated as a generated source of truth.
 
 Report unresolved ambiguity instead of filling it with assumptions.

@@ -12,26 +12,26 @@ This repo contains operational tooling and documentation for managing the Open A
 
 ### Setup
 ```sh
-# 1. Clone the repo
-git clone https://github.com/open-austin/org.git
+git clone --recurse-submodules https://github.com/open-austin/org.git
 cd org
+# For an existing checkout:
+git submodule update --init --recursive
 
-# 2. Copy and fill in your environment
-cp .env.example .env
-# Edit .env and set GH_TOKEN to your PAT
-
-# 3. Authenticate the gh CLI
-export GH_TOKEN=$(grep GH_TOKEN .env | cut -d= -f2)
-gh auth status   # should show open-austin org access
+# Use your existing gh login, or authenticate your own account if needed.
+gh auth status
+# gh auth login
 ```
+
+Copy `.env.example` to an ignored `.env` only if one does not already exist. Keep real tokens and target IDs private. `gh` can use its existing credential store or an explicitly exported `GH_TOKEN`; neither cloning nor this setup requires replacing credentials. Org access and any SSO authorization must be verified for the actual operation. For Google Docs, follow [Shared Google Docs](README.md#shared-google-docs) to use Agent Hands with an existing account alias. No service authorization or shared-state write follows from installing the tooling.
 
 ## How Work Is Organized
 This repo uses a spike-based workflow. See [`project-workflows/run-project-spike/SKILL.md`](project-workflows/run-project-spike/SKILL.md) for the full process.
 
 - **`TODO.md`** — active work and backlog
 - **`docs/`** — policies, active spikes (`docs/active-spikes/`), scratch, archive
-- **`skills/`** — repo-local agent workflows (spike process, misc triage, weekly org summary)
-- **`tools/`** — CLI and MCP tooling (to be created)
+- **`project-workflows/`** — pinned reusable workflow skills
+- **`skills/`** — organization-specific procedures, with retired procedures clearly marked
+- **`tools/`** — retained Airtable operations and Slack webhook/Block Kit helpers; generic Docs tooling lives in Agent Hands
 - **`AGENTS.md`** — rules for AI agents working in this repo
 
 ## Opening Issues and PRs

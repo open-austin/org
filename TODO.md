@@ -6,7 +6,7 @@ This is the coordination map for active work in this repo. See `project-workflow
 
 ## Done
 ### Retire Sync Tooling *(archived: `docs/archive/retire-sync-tooling.md`)*
-Removed `tools/sync/` and `tools/issues/create.sh` — single-maintainer tooling that had no second user and split the maintainer's own workflow across two repos. The weekly org summary ran a final time to all seven team channels on 2026-09-07 and is now retired, its skill kept as the reimplementation record. What stays, verified rather than assumed: `tools/notify/` (still used by `role-pipeline-report.yaml`), `tools/google-docs/`, `tools/airtable/`, all thirteen Actions workflows, and both the PAT setup and Write Safety sections of CONTRIBUTING, which turned out not to be sync-specific.
+Removed `tools/sync/` and `tools/issues/create.sh` — single-maintainer tooling that had no second user and split the maintainer's own workflow across two repos. The weekly org summary ran a final time to all seven team channels on 2026-09-07 and is now retired, its skill kept as the reimplementation record. What stayed at retirement: `tools/notify/`, `tools/google-docs/`, `tools/airtable/`, all thirteen Actions workflows, and both the PAT setup and Write Safety sections of CONTRIBUTING, which turned out not to be sync-specific. **2026-10-27 correction:** the scheduled role report uses inline curl, not `tools/notify/`; Google Docs is now delegated to Agent Hands. See the Agent Hands cutover below.
 
 ### Board ↔ Issue Sync Redesign *(archived: `docs/archive/board-sync-redesign.md`)*
 Re-architected board↔issue sync: native `Auto-close issue` is the single non-code exception (card→close), everything else is code, one `board-reopen-reconcile` poller (~5 min) handles card→reopen, all other native Projects workflows off. Confirmed working live 2026-07-08. Durable outcomes in `README.md` (Board Automation) and policies `0004`/`0005`. Note: GitHub scheduled runs can be badly delayed (first reopen took ~25+ min).
@@ -45,13 +45,12 @@ Getting the repo into a state where agents can work effectively and the methodol
 - [x] Update `README.md` to document tooling and workflow
 
 ## Active Spikes
+- Agent Hands cutover (slug `agent-hands-cutover`, opened 2026-10-27): [scope and ownership](docs/active-spikes/agent-hands-cutover.md), [checks and remaining limits](docs/active-spikes/agent-hands-cutover.todo.md). Generic Docs moved to Agent Hands; notification preview hardening and publication checks are in progress.
 - Policies Migration (slug `policies-migration`, opened 2026-10-14): migrated current guidance and local routing to `docs/policies/`; verification and checkpoint state in [reasoning](docs/active-spikes/policies-migration.md) and [tasks](docs/active-spikes/policies-migration.todo.md). Closure pending.
 ### Airtable Tooling → `docs/active-spikes/airtable-tooling.md` (+ `.todo.md`)
-A read-first (then guarded-write) Airtable CLI in `tools/airtable/`, so agents/contributors can inspect and manage OA's Airtable like GitHub/Drive. Drives the VRM prototype (#528). **Blocked on two user actions:** create an Airtable PAT under your own OA account (not shared admin@), into gitignored `.env` as `AIRTABLE_TOKEN`, and invite that account as a workspace editor. Then Phase 1 read commands, then workspace cleanup, then Phase 2 guarded writes to build the VRM base.
+Org-specific Airtable operations remain in `tools/airtable/`; Agent Hands currently has no Airtable capability. The owning spike records completed read tooling and guarded schema/import work. Follow its current task list and evidence rather than the superseded initial credential-setup blocker; this review does not verify current account access or authorize further data changes.
 
 ## Automation — residual QA / watch
-Low-priority follow-ups left after archiving the automation spikes (2026-07-08). None block anything; the automation is live and working.
-
 Low-priority follow-ups left after archiving the automation spikes (2026-07-08). None block anything; the automation is live and working.
 
 - **`role-pipeline-report` next first-Monday** — the cron fix (skip unless day-of-month ≤ 7) hasn't been observed on a real first Monday yet. Confirm it posts once, not daily.
