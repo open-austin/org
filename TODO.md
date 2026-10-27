@@ -45,7 +45,7 @@ Getting the repo into a state where agents can work effectively and the methodol
 - [x] Update `README.md` to document tooling and workflow
 
 ## Active Spikes
-- Agent Hands cutover (slug `agent-hands-cutover`, opened 2026-10-27): [scope and ownership](docs/active-spikes/agent-hands-cutover.md), [checks and remaining limits](docs/active-spikes/agent-hands-cutover.todo.md). Generic Docs moved to Agent Hands and webhook preview hardening is implemented; final publication checks remain in progress.
+- Agent Hands cutover (slug `agent-hands-cutover`, opened 2026-10-27): [scope and ownership](docs/active-spikes/agent-hands-cutover.md), [checks and remaining limits](docs/active-spikes/agent-hands-cutover.todo.md). Generic Docs moved to Agent Hands and webhook preview hardening is implemented. Normal publication and a fresh anonymous recursive clone passed; live-client/Docs QA remains separate.
 - Policies Migration (slug `policies-migration`, opened 2026-10-14): migrated current guidance and local routing to `docs/policies/`; verification and checkpoint state in [reasoning](docs/active-spikes/policies-migration.md) and [tasks](docs/active-spikes/policies-migration.todo.md). Closure pending.
 ### Airtable Tooling → `docs/active-spikes/airtable-tooling.md` (+ `.todo.md`)
 Org-specific Airtable operations remain in `tools/airtable/`; Agent Hands currently has no Airtable capability. The owning spike records completed read tooling and guarded schema/import work. Follow its current task list and evidence rather than the superseded initial credential-setup blocker; this review does not verify current account access or authorize further data changes.

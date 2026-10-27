@@ -5,7 +5,7 @@ attention: live
 ## Background
 The public Org repository owns organization procedures; generic service mechanics should use the verified maintained tool when its behavior is covered.
 ## To Do
-- After the final pre-push check, verify the exact remote commit and a fresh recursive parent clone; report results in the publication handoff.
+No remaining implementation tasks. Live-account/client checks are listed below.
 ## Ready for Human QA
 - On the next authorized meeting operation, select the existing Agent Hands account alias and runtime-supplied document, verify a read and preview, and independently read back any approved edit. No live service or credential operation was performed here.
 ## Done
@@ -15,3 +15,4 @@ The public Org repository owns organization procedures; generic service mechanic
 - Repair contribution setup for recursive submodules, replace obsolete auth instructions with external provider ownership, ignore private scratchpad work, and correct stale index/setup claims without changing governance or scheduled workflows.
 - Harden retained webhook posting to preview by default with explicit execution, update current callers, and check it without network access. Implemented with 14 offline cases covering both payload modes, no-credential previews, explicit sends, malformed/conflicting input and transport failure. The fake curl transport makes no network calls.
 - Review the complete outgoing history and selected changes for private material before each commit and before the authorized normal push. The pre-commit review found no known credential signatures or new flagged private references; existing historical document references were already in remote history. Selected links and nine ignore probes pass. The final pre-push pass and remote verification remain distinct from these local checks.
+- After the final pre-push check, verify the exact remote commit and a fresh recursive parent clone; report results in the publication handoff. Done: normal push of implementation checkpoint `181d159` succeeded, anonymous recursive clone retrieved workflow `4352866`, both trees were clean, and all 14 webhook tests passed again in the clone. GitHub returned no check runs, statuses or Actions runs for that checkpoint; this is not a CI pass.
