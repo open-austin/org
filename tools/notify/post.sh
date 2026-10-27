@@ -1,113 +1,65 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Post a message to a Slack channel via Incoming Webhook.
-# Usage:
-#   tools/notify/post.sh <webhook_env_var> <message>
-#   cat message.txt | tools/notify/post.sh <webhook_env_var>
-#   tools/notify/post.sh <webhook_env_var> --payload payload.json
-#   tools/notify/post.sh <webhook_env_var> --payload payload.json --dry-run
-#
-# Example:
-#   tools/notify/post.sh SLACK_WEBHOOK_ENGAGEMENT "Weekly summary text here"
-#   echo "Hello" | tools/notify/post.sh SLACK_WEBHOOK_ENGAGEMENT
-#   tools/notify/post.sh SLACK_WEBHOOK_ORG --payload snapshot/weekly-summary.blocks.json
-#
-# The webhook URL is read from the environment variable name you pass.
-# Load your .env first: source .env
+# Preview an Incoming Webhook payload; send only with explicit --execute.
+# The first argument names an environment variable, never the secret URL.
+usage() {
+  printf '%s\n' \
+    'Usage: tools/notify/post.sh WEBHOOK_ENV_VAR [message] [--execute | --dry-run]' \
+    '       tools/notify/post.sh WEBHOOK_ENV_VAR --payload FILE [--execute | --dry-run]' \
+    '       cat message.txt | tools/notify/post.sh WEBHOOK_ENV_VAR [--execute]' \
+    'Preview is the default and needs no webhook. Review the destination and payload before executing.'
+}
+fail() { printf 'Error: %s\n' "$1" >&2; exit 1; }
 
-WEBHOOK_VAR="${1:-}"
-MESSAGE="${2:-}"
-PAYLOAD_FILE=""
-DRY_RUN=false
-
-if [ -z "$WEBHOOK_VAR" ]; then
-  echo "Usage: tools/notify/post.sh <WEBHOOK_ENV_VAR> [message]" >&2
-  echo "       tools/notify/post.sh <WEBHOOK_ENV_VAR> --payload <payload.json>" >&2
-  echo "       Add --dry-run to print the payload without posting." >&2
-  echo "  Or pipe message via stdin." >&2
-  exit 1
-fi
-
-if [ "$MESSAGE" = "--dry-run" ]; then
-  DRY_RUN=true
-  MESSAGE="${3:-}"
-fi
-
-if [ "$MESSAGE" = "--payload" ]; then
-  PAYLOAD_FILE="${3:-}"
-  if [ -z "$PAYLOAD_FILE" ]; then
-    echo "Error: --payload requires a JSON payload file." >&2
-    exit 1
-  fi
-  if [ ! -f "$PAYLOAD_FILE" ]; then
-    echo "Error: payload file not found: $PAYLOAD_FILE" >&2
-    exit 1
-  fi
-  if [ "${4:-}" = "--dry-run" ]; then
-    DRY_RUN=true
-  fi
-fi
-
+case "${1:-}" in -h|--help) usage; exit 0 ;; '') usage >&2; exit 1 ;; esac
+WEBHOOK_VAR="$1"; shift
+[[ "$WEBHOOK_VAR" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || fail 'Expected a webhook environment variable name, not a URL.'
+MESSAGE=''
+PAYLOAD_FILE=''
+HAS_MESSAGE=false
+EXECUTE=false
+EXPLICIT_DRY_RUN=false
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --execute) EXECUTE=true; shift ;;
+    --dry-run) EXPLICIT_DRY_RUN=true; shift ;;
+    --payload)
+      [ "$#" -ge 2 ] && [ -n "$2" ] || fail '--payload requires a JSON file.'
+      [ -z "$PAYLOAD_FILE" ] || fail 'Specify only one payload file.'
+      PAYLOAD_FILE="$2"; shift 2 ;;
+    --)
+      shift
+      [ "$#" -eq 1 ] && [ "$HAS_MESSAGE" = false ] || fail 'Provide one quoted message.'
+      MESSAGE="$1"; HAS_MESSAGE=true; shift ;;
+    --*) fail 'Unknown option; use -- before a message beginning with --.' ;;
+    *)
+      [ "$HAS_MESSAGE" = false ] || fail 'Provide one quoted message.'
+      MESSAGE="$1"; HAS_MESSAGE=true; shift ;;
+  esac
+done
+[ "$EXECUTE" = false ] || [ "$EXPLICIT_DRY_RUN" = false ] || fail 'Choose --execute or --dry-run, not both.'
 if [ -n "$PAYLOAD_FILE" ]; then
-  jq -e 'type == "object" and (.text | type == "string")' "$PAYLOAD_FILE" >/dev/null
+  [ "$HAS_MESSAGE" = false ] || fail 'Choose a message or --payload, not both.'
+  [ -f "$PAYLOAD_FILE" ] || fail 'Payload file not found.'
+  jq -e -s 'length == 1 and (.[0] | type == "object" and (.text | type == "string" and length > 0))' "$PAYLOAD_FILE" >/dev/null || fail 'Expected one JSON object with nonempty text fallback.'
+  PAYLOAD="$(cat "$PAYLOAD_FILE")"
+else
+  if [ "$HAS_MESSAGE" = false ]; then MESSAGE="$(cat)"; fi
+  [ -n "$MESSAGE" ] || fail 'No message provided.'
+  PAYLOAD="$(jq -n --arg text "$MESSAGE" '{text: $text}')"
+fi
 
-  if [ "$DRY_RUN" = true ]; then
-    cat "$PAYLOAD_FILE"
-    echo "✓ Dry run: Slack payload rendered but not posted ($WEBHOOK_VAR)" >&2
-    exit 0
-  fi
-
-  # Resolve the webhook URL from the env var name
-  WEBHOOK_URL="${!WEBHOOK_VAR:-}"
-  if [ -z "$WEBHOOK_URL" ]; then
-    echo "Error: environment variable '$WEBHOOK_VAR' is not set." >&2
-    echo "Did you source your .env file?" >&2
-    exit 1
-  fi
-
-  curl -s -X POST "$WEBHOOK_URL" \
-    -H 'Content-type: application/json' \
-    --data-binary "@$PAYLOAD_FILE" \
-    --fail
-
-  echo "" >&2
-  echo "✓ Posted Slack payload ($WEBHOOK_VAR)" >&2
+if [ "$EXECUTE" = false ]; then
+  printf '%s\n' "$PAYLOAD"
+  printf 'Dry run: no Slack message posted (%s). Add --execute only after approval.\n' "$WEBHOOK_VAR" >&2
   exit 0
 fi
 
-# Read message from arg or stdin
-if [ -z "$MESSAGE" ]; then
-  MESSAGE=$(cat)
-fi
-
-if [ -z "$MESSAGE" ]; then
-  echo "Error: no message provided." >&2
-  exit 1
-fi
-
-# Escape for JSON
-ESCAPED=$(echo "$MESSAGE" | jq -Rs .)
-PAYLOAD="{\"text\": $ESCAPED}"
-
-if [ "$DRY_RUN" = true ]; then
-  echo "$PAYLOAD" | jq .
-  echo "✓ Dry run: Slack text payload rendered but not posted ($WEBHOOK_VAR)" >&2
-  exit 0
-fi
-
-# Resolve the webhook URL from the env var name
 WEBHOOK_URL="${!WEBHOOK_VAR:-}"
-if [ -z "$WEBHOOK_URL" ]; then
-  echo "Error: environment variable '$WEBHOOK_VAR' is not set." >&2
-  echo "Did you source your .env file?" >&2
-  exit 1
-fi
-
-curl -s -X POST "$WEBHOOK_URL" \
-  -H 'Content-type: application/json' \
-  --data "$PAYLOAD" \
-  --fail
-
-echo "" >&2
-echo "✓ Posted to Slack ($WEBHOOK_VAR)" >&2
+[ -n "$WEBHOOK_URL" ] || fail "Environment variable '$WEBHOOK_VAR' is not set."
+# Never retry a send automatically: a failed response can follow a delivered message.
+curl --silent --show-error --fail --connect-timeout 10 --max-time 30 \
+  --request POST --url "$WEBHOOK_URL" \
+  --header 'Content-type: application/json' --data-binary "$PAYLOAD"
+printf '\nPosted Slack payload (%s). If delivery is uncertain, inspect before retrying.\n' "$WEBHOOK_VAR" >&2

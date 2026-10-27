@@ -74,14 +74,15 @@ gh project item-list 6 --owner open-austin --format json   # Open Roles
 `snapshot/` is still gitignored and is still where `tools/notify/` expects draft files, but nothing regenerates it from GitHub. Treat it as scratch space, never as a source of truth, and never commit it.
 
 ### Notify Tools
-Post messages to Slack via Incoming Webhooks:
+Retain Incoming Webhook and Block Kit support for explicitly approved manual use. Agent Hands user-message posting is not an equivalent transport or identity. The monthly role report posts directly from its workflow and does not call these helpers. Preview without credentials:
 
 ```bash
-source .env
 echo "Your message" | tools/notify/post.sh SLACK_WEBHOOK_ENGAGEMENT
+# After approval, with the selected webhook exported:
+echo "Your message" | tools/notify/post.sh SLACK_WEBHOOK_ENGAGEMENT --execute
 ```
 
-Webhook URLs are stored in `.env` (gitignored). See `.env.example` for the full list. The webhook var name maps to a specific channel — see `skills/weekly-org-summary/SKILL.md` for the channel table.
+The helper previews by default; `--dry-run` is also accepted. Only `--execute` sends. Keep webhook URLs in private configuration and export only the approved destination for execution. See `.env.example` and the retired `skills/weekly-org-summary/SKILL.md` routing table for historical channel mappings; verify current destination ownership before sending. Do not automatically retry an uncertain delivery.
 
 ### Google Docs Tools
 Use the installed Agent Hands `use-google-docs` skill for document reads and one exact, uniquely occurring replacement. Follow the explicit alias/document commands in [README.md](README.md#shared-google-docs); do not recreate a local OAuth wrapper. `replace-once` previews by default, re-fetches before execution, and uses a required revision ID. Follow `skills/process-weekly-meeting/SKILL.md` for the canonical record and approval rules, then independently read back approved edits.

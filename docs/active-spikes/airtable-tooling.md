@@ -31,4 +31,4 @@ OA-owned infrastructure that follows the existing `tools/` pattern in this repo:
 
 ## Relationship to other work
 - Drives: VRM prototype [open-austin/org#528](https://github.com/open-austin/org/issues/528) (People Systems epic #523).
-- Mirrors the existing `tools/google-docs/` auth+wrapper pattern.
+- The local wrapper reads `AIRTABLE_TOKEN` from the ignored `.env`. Generic Google Docs operations now use Agent Hands; the retired Docs wrapper is not a dependency of this Airtable client.

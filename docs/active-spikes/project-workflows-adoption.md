@@ -21,3 +21,6 @@ On 2026-10-26, the separately authorized capture-for-later migration retired bot
 Reconciled shared main `8f6bdcf` locally, preserving this project's adaptation. The follow-up clarifies separately authorized list migration, incomplete parent scaffolds, and private local recovery. Publication remains on hold; the public source URL does not make this new child pin available remotely.
 
 The final capture check also converted the five existing TODO Later / Ideas bullets into individual scratch notes, preserving uncertainty and ownership. Existing Docs access and the deliberate sync-tool retirement are explicitly distinguished from residual possibilities; no external action or new task is implied.
+
+## Publication review — 2026-10-27
+The earlier local-only statements record the rollout stage. The user has now published `project/org` at `4352866`; an anonymous clone retrieved that exact commit. The parent outgoing history and current integration changes were reviewed before the authorized normal push: no credential-pattern findings or newly introduced flagged private references were found. The integration follow-up lives in [Agent Hands cutover](agent-hands-cutover.md). Fresh recursive parent cloning is checked after publication; actual agent-client discovery remains separate.

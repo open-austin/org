@@ -12,7 +12,7 @@ description: "Produce the weekly Open Austin org summary, broken out per team in
 >
 > What still works if it is revived: `tools/notify/render_weekly_summary_blocks.py` and `tools/notify/post.sh` are intact and generic, and the per-team Slack webhooks exist. What does not: there is no sync tool any more, so step 1 has to be done through `gh` or your own tooling.
 >
-> `tools/notify/` is **not** retired — `.github/workflows/role-pipeline-report.yaml` still uses it on a schedule.
+> **2026-10-27 correction:** the helpers remain available for manual webhook/Block Kit use, but `.github/workflows/role-pipeline-report.yaml` posts directly with curl and does not call them. The helper now previews by default and requires `--execute`; examples below reflect that safety change. This does not reactivate the retired weekly-summary procedure.
 
 **Process, not automation.** As of 2026-09-07 this skill describes how the weekly summary is produced; it no longer wraps a sync tool. Drafting and Slack posting still have tooling here (`tools/notify/`); gathering issue state does not. A contributor can run this whole process by hand.
 
@@ -111,7 +111,7 @@ Then post each after approval:
 set -a
 source .env
 set +a
-tools/notify/post.sh SLACK_WEBHOOK_<VAR> --payload snapshot/weekly-summary-<slug>.blocks.json
+tools/notify/post.sh SLACK_WEBHOOK_<VAR> --payload snapshot/weekly-summary-<slug>.blocks.json --execute
 ```
 
 Skip posting to any channel whose webhook var isn't set in `.env` yet — report that in the conversation rather than failing silently.
@@ -119,7 +119,7 @@ Skip posting to any channel whose webhook var isn't set in `.env` yet — report
 If Block Kit rendering fails for a given draft, fall back to the plain-text message for that channel only:
 
 ```bash
-tools/notify/post.sh SLACK_WEBHOOK_<VAR> < snapshot/weekly-summary-<slug>.md
+tools/notify/post.sh SLACK_WEBHOOK_<VAR> --execute < snapshot/weekly-summary-<slug>.md
 ```
 
 If no Slack webhooks are configured yet at all, just deliver every draft in the conversation.

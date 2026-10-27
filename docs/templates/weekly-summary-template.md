@@ -32,7 +32,7 @@ Use this shape for `weekly-summary-org.md`. This channel is priority-labeled iss
 - Skip a channel's draft entirely (no file, no post) if it has zero matching issues that week — don't post an empty "nothing to report" message.
 - This markdown is both the human-review draft and the input format for `tools/notify/render_weekly_summary_blocks.py`, which is generic across all of these files — no per-channel tooling changes needed. Use `-` markers consistently so the renderer can create Block Kit `rich_text_list` blocks.
 - In the plain-text fallback path, `-` markers plus line breaks mimic lists. Do not use `*` as bullets because `*text*` is Slack bold formatting.
-- For true Slack bullet rendering, post the rendered Block Kit payload with `tools/notify/post.sh SLACK_WEBHOOK_<VAR> --payload snapshot/weekly-summary-<slug>.blocks.json`.
+- For true Slack bullet rendering, preview the rendered Block Kit payload with `tools/notify/post.sh SLACK_WEBHOOK_<VAR> --payload snapshot/weekly-summary-<slug>.blocks.json`; add `--execute` only after the destination and exact payload are approved. The weekly-summary procedure remains retired.
 - Use one bullet per issue. Do not pack multiple issue links into one semicolon-separated sentence.
 - Keep assignment status on each issue because unowned work is useful signal: `(assigned: none)`, `(assigned: name)`, or `(assigned: name; stale 123d)`.
 - Omit empty/default priority metadata such as `Priority: none`.
