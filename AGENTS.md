@@ -120,6 +120,7 @@ Use `capture-for-later` for saved possibilities or parked subjects as small indi
 | Skill | Trigger phrases / use |
 |---|---|
 | `project-workflows/commit-work/SKILL.md` | Committing completed work atomically by explicit pathspec without pushing or rewriting history |
+| `project-workflows/coordinate-project-contribution/SKILL.md` | Following human-directed contribution/review coordination across separate agent-owned spikes and shared branches; existing governance and write approvals still apply |
 | `project-workflows/run-project-spike/SKILL.md` | Starting, continuing, promoting, or archiving spike work |
 | `project-workflows/triage-project-misc/SKILL.md` | Reviewing or routing `docs/scratch/misc.md` |
 | `project-workflows/capture-for-later/SKILL.md` | Saving possibilities or deliberately parked subjects without starting work |
