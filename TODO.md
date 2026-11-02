@@ -2,6 +2,7 @@
 This is the coordination map for active work in this repo. See `project-workflows/run-project-spike/SKILL.md` for the full process.
 
 ## Active
+- **Agent policy migration** — [bounded handoff](docs/active-spikes/agent-policy-migration.md) · [tasks](docs/active-spikes/agent-policy-migration.todo.md). Migration implemented and verified: eight adopted policies, old folder removed with exact sources retained, and repeatability checks pass. Local checkpoints approved; ordinary-use QA and archival remain separate in the spike.
 - **Project Workflows adoption** — [reconciliation](docs/active-spikes/project-workflows-adoption.md) · [local validation and publication hold](docs/active-spikes/project-workflows-adoption.todo.md).
 
 ## Done
@@ -35,7 +36,7 @@ Getting the repo into a state where agents can work effectively and the methodol
 - [x] Add `.claude/` and `.env` to `.gitignore`
 - [x] Create `TODO.md`
 - [x] Create `.env.example`
-- [x] Create `docs/policies/0001-tooling-foundations.md`
+- [x] Create `docs/policies/0001-tooling-foundations.md` (original retained in [retirement records](docs/archive/legacy-agent-policies.md#legacy-0001))
 - [x] Archive `prompt-doc.md`
 - [x] Create `CONTRIBUTING.md`
 - [x] Auth setup: `gh auth login` with PAT authorized for `open-austin` org
@@ -46,7 +47,7 @@ Getting the repo into a state where agents can work effectively and the methodol
 
 ## Active Spikes
 - Agent Hands cutover (slug `agent-hands-cutover`, opened 2026-10-27): [scope and ownership](docs/active-spikes/agent-hands-cutover.md), [checks and remaining limits](docs/active-spikes/agent-hands-cutover.todo.md). Generic Docs moved to Agent Hands and webhook preview hardening is implemented. Normal publication and a fresh anonymous recursive clone passed; live-client/Docs QA remains separate.
-- Policies Migration (slug `policies-migration`, opened 2026-10-14): migrated current guidance and local routing to `docs/policies/`; verification and checkpoint state in [reasoning](docs/active-spikes/policies-migration.md) and [tasks](docs/active-spikes/policies-migration.todo.md). Closure pending.
+- Policies Migration (slug `policies-migration`, opened 2026-10-14): completed the numbered-policy phase; its exact sources are now preserved in [retirement records](docs/archive/legacy-agent-policies.md); verification and checkpoint state in [reasoning](docs/active-spikes/policies-migration.md) and [tasks](docs/active-spikes/policies-migration.todo.md). Closure pending.
 ### Airtable Tooling → `docs/active-spikes/airtable-tooling.md` (+ `.todo.md`)
 Org-specific Airtable operations remain in `tools/airtable/`; Agent Hands currently has no Airtable capability. The owning spike records completed read tooling and guarded schema/import work. Follow its current task list and evidence rather than the superseded initial credential-setup blocker; this review does not verify current account access or authorize further data changes.
 

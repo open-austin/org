@@ -7,11 +7,11 @@ This repo is the public operational layer for Open Austin. It contains tooling, 
 Agents are primary users of the tools here. This doc is your operating manual.
 
 ## Authority Ladder
-When docs conflict, use this order:
+Use this order to locate maintained authority. Report unresolved substantive contradictions for human resolution; file or loading order does not settle them:
 
 1. `AGENTS.md` (this file) and `README.md` — durable project rules
 2. `contributor-policy.md` — Open Austin governance doc; **do not edit it** through tooling or agent work
-3. Current policies in `docs/policies/` — durable rules, defaults, procedures, and useful rationale
+3. Adopted agent policies in [docs/agent-policies/policy.index.md](docs/agent-policies/policy.index.md) — durable obligations for agents
 4. Active spike docs in `docs/active-spikes/` — current thinking for a theme of work
 5. `TODO.md` — active work coordination
 6. Individual `docs/scratch/` subject notes — captured possibilities or deliberately parked questions
@@ -19,6 +19,9 @@ When docs conflict, use this order:
 8. `docs/archive/` — historical context only
 
 This repository adopts [Project Workflows](project-workflows/README.md) as a pinned Git submodule. Read [workflow.toml](project-workflows/workflow.toml), then load `project-workflows/<skill-name>/SKILL.md` before global workflow seeds. The child branch is `project/org`; the parent branch is separate. Project instructions and existing document conventions remain authoritative. Actual project documents stay here, outside the collection. Organization-specific skills remain under `skills/` and retain their own scope and status.
+
+## Agent policy routing
+Read the project-owned [agent policy index](docs/agent-policies/policy.index.md) and load applicable adopted policies with their complete prerequisite closure. Proposed policies are non-operative. Use the pinned [Create](project-workflows/create-agent-policy/SKILL.md), [Edit](project-workflows/edit-agent-policy/SKILL.md), [Review](project-workflows/review-agent-policies/SKILL.md), [Adopt](project-workflows/adopt-agent-policies/SKILL.md) and [Retire](project-workflows/retire-agent-policy/SKILL.md) Agent Policies skills for their respective tasks. Preserve the existing project authority ladder and protected contributor governance. Report unresolved substantive contradictions for human resolution; index order, filenames and prerequisite loading order do not settle them.
 
 ## What Agents May Do
 - Read and render snapshots from GitHub (issues, labels, milestones, project boards)
@@ -104,11 +107,11 @@ gh label delete <name> --repo open-austin/org --yes
 For Projects v2 board moves, use `gh project item-edit` or the GraphQL API via `gh api graphql`.
 
 ## Process
-Policies describe current rules, defaults, procedures, exceptions, and useful rationale. Revise them directly; Git preserves their evolution. Keep development chronology and abandoned alternatives in Git or archived spike notes rather than accumulating immutable ADRs. No fixed Context / Decision / Consequences format is required.
+Agent policies hold durable obligations for agents; skills hold procedures under those obligations. Prepare substantive amendments separately while the adopted body remains operative, then apply an explicit human decision through the policy-management skills. Keep tooling architecture, useful rationale and procedures with their existing owners. Keep development chronology and abandoned alternatives in Git or archived spike notes rather than accumulating immutable ADRs. No fixed Context / Decision / Consequences format is required.
 
 This repo uses a spike-based workflow. See `project-workflows/run-project-spike/SKILL.md` for the full process.
 
-Active work is tracked in `TODO.md`. Current policies live in `docs/policies/`. Saved possibilities and parked questions live in individual `docs/scratch/` notes. Raw observed friction and issue intake live in `docs/scratch/misc.md`. Finished spikes are archived in `docs/archive/`.
+Active work is tracked in `TODO.md`. Adopted agent policies live in [docs/agent-policies/policy.index.md](docs/agent-policies/policy.index.md). Retired numbered source records and their rationale remain in [the archive](docs/archive/legacy-agent-policies.md). Saved possibilities and parked questions live in individual `docs/scratch/` notes. Raw observed friction and issue intake live in `docs/scratch/misc.md`. Finished spikes are archived in `docs/archive/`.
 
 Use these holding areas carefully: captured or parked scratch notes are not a GitHub issue backlog or active roadmap, and `docs/scratch/misc.md` is not durable authority. Public-org writes still require explicit approval.
 

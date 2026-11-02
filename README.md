@@ -96,7 +96,9 @@ The per-team [`weekly-org-summary`](skills/weekly-org-summary/SKILL.md) is retir
 
 ## Documentation
 - **Active spikes:** `docs/active-spikes/` — current work with accompanying `.todo.md` files
-- **Policies:** `docs/policies/` — current rules, defaults, procedures, and useful rationale
+- **Agent policies:** [docs/agent-policies/policy.index.md](docs/agent-policies/policy.index.md) — explicitly adopted obligations for agents
+- **Human governance:** [contributor-policy.md](contributor-policy.md) — organizational governance, protected from agent edits
+- **Retired policy sources:** [legacy source records](docs/archive/legacy-agent-policies.md) — reserved numbered identities, exact originals and rationale
 - **Saved for later:** individual `docs/scratch/` subject notes — possibilities or parked questions, without a commitment to start work
 - **Misc intake:** `docs/scratch/misc.md` — raw observed friction and issue intake
 - **Scratch:** `docs/scratch/` — exploratory drafts
