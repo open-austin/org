@@ -1,15 +1,16 @@
 ---
-attention: live
+attention: historical
 reviewed: 2026-11-02
 ---
 # Agent policy migration — Open Austin Org work
+Historical record. Closed 2026-11-02. Stable slug: `agent-policy-migration`. Maintained obligations are in the [policy index](../agent-policies/policy.index.md); the independent ordinary-use check is tracked in [TODO](../../TODO.md#policy-use-follow-up). Migration implementation and structural verification are complete.
 Opened 2026-11-02. Stable slug: `agent-policy-migration`. [Concept and scope](agent-policy-migration.md).
 
 ## To Do
 No remaining migration implementation tasks. Ordinary-use QA and eventual archival are separate below.
 
-## Ready for Human QA
-- On the next ordinary authorized Org issue/board read, the receiving agent should start from AGENTS, select USE-TOOLS, load its three-kernel closure once, and retain explicit approval for any proposed write. Owner: Aslan and the agent handling that task. Actual migration checks pass; fresh-client discovery and service compliance remain unobserved. Do not perform service writes solely for QA.
+## Deferred ordinary-use check
+- On the next ordinary authorized Org issue/board read, the receiving agent should start from AGENTS, select USE-TOOLS, load its three-kernel closure once, and retain explicit approval for any proposed write. Owner: Aslan and the agent handling that task. Actual migration checks pass; fresh-client discovery and service compliance remain unobserved. Do not perform service writes solely for QA. — Deferred outside the completed migration to the current TODO follow-up; this remains unobserved, not Done.
 
 ## Done
 - Verify actual index/graph/selected closures, source preservation, links, available parser behavior, configuration and repeat no-op; report scoped final files and untouched concurrent work. — Full graph, all five actual root closures, source hashes, links, configuration and index no-op pass. Clean deterministic updater preview at child 57bd731 reports mode=unchanged, blocked=false and no asset/baseline changes.
@@ -33,3 +34,6 @@ All five actual adopted operational root closures pass (three kernel prerequisit
 
 ## Final local checkpoint — 2026-11-02
 Aslan explicitly approved both remaining messages. Child configuration commit: 57bd7310f8e9b63c2832ae8ea3c4e5df0c1719c2. The clean child updater repeat is unchanged; adopted graph and index repeat pass. The approved parent checkpoint records that exact pin and this task/evidence state (find it via Spike: agent-policy-migration). The only active policy folder is docs/agent-policies; docs/policies is absent. All eight original To Do items have been retained individually with their results. No pushes, external writes or fresh-client/service-behavior claims.
+
+## Closure — 2026-11-02
+Aslan authorized archival after the completed migration and requested normal publication. Preserved this full task history, transferred the ordinary-use check to maintained TODO, and repaired the pair’s inbound/relative links. This archive makes no fresh-client or live-service claim. Publication verification is performed separately from the historical migration checks.

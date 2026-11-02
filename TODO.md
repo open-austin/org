@@ -2,18 +2,20 @@
 This is the coordination map for active work in this repo. See `project-workflows/run-project-spike/SKILL.md` for the full process.
 
 ## Active
-- **Agent policy migration** — [bounded handoff](docs/active-spikes/agent-policy-migration.md) · [tasks](docs/active-spikes/agent-policy-migration.todo.md). Migration implemented and verified: eight adopted policies, old folder removed with exact sources retained, and repeatability checks pass. Local checkpoints approved; ordinary-use QA and archival remain separate in the spike.
 - **Project Workflows adoption** — [reconciliation](docs/active-spikes/project-workflows-adoption.md) · [local validation and publication hold](docs/active-spikes/project-workflows-adoption.todo.md).
 
 ## Done
+### Agent policy migration *(archived 2026-11-02)*
+[Concept and evidence](docs/archive/agent-policy-migration.md) · [completed tasks and limits](docs/archive/agent-policy-migration.todo.md). Adopted three kernel and five operational policies in one active directory, `docs/agent-policies/`; retired the numbered sources with exact originals and reserved identities preserved. Dependency, link, source-preservation and repeatability checks pass. Human organizational governance and existing write safeguards remain separate.
+
 ### Retire Sync Tooling *(archived: `docs/archive/retire-sync-tooling.md`)*
 Removed `tools/sync/` and `tools/issues/create.sh` — single-maintainer tooling that had no second user and split the maintainer's own workflow across two repos. The weekly org summary ran a final time to all seven team channels on 2026-09-07 and is now retired, its skill kept as the reimplementation record. What stayed at retirement: `tools/notify/`, `tools/google-docs/`, `tools/airtable/`, all thirteen Actions workflows, and both the PAT setup and Write Safety sections of CONTRIBUTING, which turned out not to be sync-specific. **2026-10-27 correction:** the scheduled role report uses inline curl, not `tools/notify/`; Google Docs is now delegated to Agent Hands. See the Agent Hands cutover below.
 
 ### Board ↔ Issue Sync Redesign *(archived: `docs/archive/board-sync-redesign.md`)*
-Re-architected board↔issue sync: native `Auto-close issue` is the single non-code exception (card→close), everything else is code, one `board-reopen-reconcile` poller (~5 min) handles card→reopen, all other native Projects workflows off. Confirmed working live 2026-07-08. Durable outcomes in `README.md` (Board Automation) and policies `0004`/`0005`. Note: GitHub scheduled runs can be badly delayed (first reopen took ~25+ min).
+Re-architected board↔issue sync: native `Auto-close issue` is the single non-code exception (card→close), everything else is code, one `board-reopen-reconcile` poller (~5 min) handles card→reopen, all other native Projects workflows off. Confirmed working live 2026-07-08. Durable outcomes are in [README Board Automation](README.md#board-automation) and adopted [DESIGN-TRIGGERS](docs/agent-policies/DESIGN-TRIGGERS-respect-board-trigger-boundaries.md) / [PRESERVE-SYNC](docs/agent-policies/PRESERVE-SYNC-preserve-reviewed-board-sync.md). Note: GitHub scheduled runs can be badly delayed (first reopen took ~25+ min).
 
 ### GitHub Automation *(archived: `docs/archive/github-automation.md`)*
-Built the full board/issue automation set — routing, issue↔board status sync, scheduled archive, Slack reporting, form labeling. Two incidents fixed en route: `role-pipeline-report` cron firing daily instead of monthly, and the `projects_v2_item` trigger being invalid so board→issue sync never fired (policy `0004`, which spawned the Board Sync Redesign). Also hardened `label-open-role-from-form` (script-injection) and `stale-role-warning` (YAML block-scalar bug that had kept it from ever running).
+Built the full board/issue automation set — routing, issue↔board status sync, scheduled archive, Slack reporting, form labeling. Two incidents fixed en route: `role-pipeline-report` cron firing daily instead of monthly, and the `projects_v2_item` trigger being invalid so board→issue sync never fired (the [retired 0004 record](docs/archive/legacy-agent-policies.md#legacy-0004), which spawned the Board Sync Redesign). Also hardened `label-open-role-from-form` (script-injection) and `stale-role-warning` (YAML block-scalar bug that had kept it from ever running).
 
 ### Backlog Triage *(archived: `docs/archive/backlog-triage.md`)*
 Restructured label taxonomy to match Refactor 2026 Teams structure. Labeled all issues, closed dead issues, retired old labels. Done column cleanup and "To Do" column review deferred to automation spike and human triage.
@@ -36,7 +38,7 @@ Getting the repo into a state where agents can work effectively and the methodol
 - [x] Add `.claude/` and `.env` to `.gitignore`
 - [x] Create `TODO.md`
 - [x] Create `.env.example`
-- [x] Create `docs/policies/0001-tooling-foundations.md` (original retained in [retirement records](docs/archive/legacy-agent-policies.md#legacy-0001))
+- [x] Create the [0001 tooling foundations record](docs/archive/legacy-agent-policies.md#legacy-0001) (original retained in retirement records)
 - [x] Archive `prompt-doc.md`
 - [x] Create `CONTRIBUTING.md`
 - [x] Auth setup: `gh auth login` with PAT authorized for `open-austin` org
@@ -50,6 +52,9 @@ Getting the repo into a state where agents can work effectively and the methodol
 - Policies Migration (slug `policies-migration`, opened 2026-10-14): completed the numbered-policy phase; its exact sources are now preserved in [retirement records](docs/archive/legacy-agent-policies.md); verification and checkpoint state in [reasoning](docs/active-spikes/policies-migration.md) and [tasks](docs/active-spikes/policies-migration.todo.md). Closure pending.
 ### Airtable Tooling → `docs/active-spikes/airtable-tooling.md` (+ `.todo.md`)
 Org-specific Airtable operations remain in `tools/airtable/`; Agent Hands currently has no Airtable capability. The owning spike records completed read tooling and guarded schema/import work. Follow its current task list and evidence rather than the superseded initial credential-setup blocker; this review does not verify current account access or authorize further data changes.
+
+## Policy use follow-up
+- On the next ordinary authorized Org issue/board read, the receiving agent should start from AGENTS, select USE-TOOLS, load its three-kernel closure once, and retain explicit approval for any proposed write. Owner: Aslan and the agent handling that task. Actual migration checks pass; fresh-client discovery and service compliance remain unobserved. Do not perform service writes solely for QA.
 
 ## Automation — residual QA / watch
 Low-priority follow-ups left after archiving the automation spikes (2026-07-08). None block anything; the automation is live and working.

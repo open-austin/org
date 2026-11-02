@@ -1,8 +1,11 @@
 ---
-attention: live
+attention: historical
 reviewed: 2026-11-02
 ---
 # Agent policy migration — Open Austin Org
+Historical record. Closed 2026-11-02 at Aslan’s request after completing the bounded migration. Stable slug: `agent-policy-migration`. Current authority is [AGENTS](../../AGENTS.md) and the [adopted policy index](../agent-policies/policy.index.md); the separate ordinary-use follow-up is maintained in [TODO](../../TODO.md#policy-use-follow-up). No successor implementation spike is required.
+
+Continues from: docs/active-spikes/policies-migration.md
 Opened 2026-11-02. Stable slug: `agent-policy-migration`. [Tasks](agent-policy-migration.todo.md). This is the bounded receiving-project migration. Aslan approved the reviewed delivery, eight-policy adoption and routing on 2026-11-02, with explicit removal of the old policy folder. The bounded migration is implemented and verified. Local checkpoint receipts appear below; ordinary-use QA and eventual archival remain separate.
 
 ## Ownership and current state
@@ -11,13 +14,13 @@ Preparation snapshot: repository `https://github.com/open-austin/org.git`; paren
 Five retired numbered source records cover tooling foundations, Python CLI, skills workflow and board-trigger/sync architecture. Their exact originals and reserved identities are preserved in [retirement records](../archive/legacy-agent-policies.md). Eight adopted policies are discoverable through the [current index](../agent-policies/policy.index.md). AGENTS/README and protected contributor-policy.md form the existing authority ladder; product/tooling architecture is not automatically human governance or agent policy.
 
 Preparation inventory (original paths; now retired and preserved in the linked record):
-- `docs/policies/0001-tooling-foundations.md`
-- `docs/policies/0002-python-cli.md`
-- `docs/policies/0003-skills-based-workflow.md`
-- `docs/policies/0004-projects-v2-automation-triggers.md`
-- `docs/policies/0005-board-sync-architecture.md`
+- [0001-tooling-foundations.md](legacy-agent-policies.md#legacy-0001)
+- [0002-python-cli.md](legacy-agent-policies.md#legacy-0002)
+- [0003-skills-based-workflow.md](legacy-agent-policies.md#legacy-0003)
+- [0004-projects-v2-automation-triggers.md](legacy-agent-policies.md#legacy-0004)
+- [0005-board-sync-architecture.md](legacy-agent-policies.md#legacy-0005)
 
-Related owners: [policies migration](policies-migration.md); [project workflows adoption](project-workflows-adoption.md). Those completed/adoption/design scopes retain their own remaining QA and closure decisions; this new receiving phase does not reopen or silently close them. Central coordination lives in Project Workflows, `docs/active-spikes/agent-policy-rollout.md` (prepared locally, not published). [Project instructions](../../AGENTS.md) remain authoritative.
+Related owners: [policies migration](../active-spikes/policies-migration.md); [project workflows adoption](../active-spikes/project-workflows-adoption.md). Those completed/adoption/design scopes retain their own remaining QA and closure decisions; this new receiving phase does not reopen or silently close them. Central coordination lives in Project Workflows, `docs/active-spikes/agent-policy-rollout.md` (prepared locally, not published). [Project instructions](../../AGENTS.md) remain authoritative.
 
 ## Project boundaries
 Do not edit contributor-policy.md, organizational governance, live issues/boards, shared Google Docs, Actions or notifications. Preserve explicit external-write approval, preview/bulk-plan/refetch bounds and the reviewed board-automation exceptions. Separate durable agent obligations from actual architecture/procedure explanations without changing runtime or grants. Existing policies-migration is implemented and waiting for closure; this is a distinct receiving phase.
@@ -71,7 +74,7 @@ Candidate structural check passes for all eight records, supported local links, 
 
 Three kernel candidates match exact selected provider bytes; validation script also matches that provider revision. Original AGENTS, README, contributor-policy and all five legacy files match HEAD bytes. Hypothetical adoption was tested only in an isolated temporary copy with explicitly simulated authority: full graph succeeds and each of five operational roots loads ADOPT-POLICIES, PRESERVE-IDENTITY, RESOLVE-DEPENDENCIES, then the root once. Hypothetical index repeat is unchanged. This is readiness evidence, not actual adoption or client compliance. Related-reference additions preserve the legacy semantic links without adding dependency cycles.
 
-At adoption, retain documents.policies=docs/policies for architecture/procedures and documents.agent_policies=docs/agent-policies for agent obligations. Route AGENTS and README explicitly to the project-owned index, retain the existing authority ladder and protected governance owner, and clarify that genuine unresolved substantive contradictions require human resolution rather than index/file/loading order. Keep numbered source identities in place and label their retained scope explicitly; no withdrawal or false retirement is needed. Actual routing and statuses remain unchanged pending the exact decision. The five policy-management skills were used for creation, candidate editing, review and adoption-readiness assessment; Retire was assessed and correctly left unapplied because no obligation or identity is being withdrawn. Parent checkpoint and final actual-tree checks follow any authorized child merge/adoption.
+Superseded pre-adoption alternative: retain a separate legacy design/procedure location alongside the agent-policy directory. Aslan instead approved one active policy directory and retirement of the numbered sources, as recorded below. Route AGENTS and README explicitly to the project-owned index, retain the existing authority ladder and protected governance owner, and clarify that genuine unresolved substantive contradictions require human resolution rather than index/file/loading order. Keep numbered source identities in place and label their retained scope explicitly; no withdrawal or false retirement is needed. Actual routing and statuses remain unchanged pending the exact decision. The five policy-management skills were used for creation, candidate editing, review and adoption-readiness assessment; Retire was assessed and correctly left unapplied because no obligation or identity is being withdrawn. Parent checkpoint and final actual-tree checks follow any authorized child merge/adoption.
 
 ## Applied adoption and old-folder retirement — 2026-11-02
 D1 applied through the deterministic updater as local child merge `f105ca88245ffc47119f39101ad1e8bac078e4b8`, incorporating exact provider `79dddf9742c282d184c65d5c5ef87a142900897f` and preserving both Open Austin customization sections. No copied assets or baselines changed. D2 applied to the eight exact reviewed policy bodies with actual Aslan adoption authority. D3 routes AGENTS and README to the project-owned index and preserves the authority ladder, write safety and protected human governance.
@@ -86,3 +89,8 @@ Actual adoption verification: complete graph and all five selected operational c
 Aslan approved D4 and D5 in this chat. D4 is child commit 57bd7310f8e9b63c2832ae8ea3c4e5df0c1719c2, containing only the compatibility locator. A clean deterministic updater preview against the exact provider now reports mode=unchanged, blocked=false, assets_changed=[] and baselines_advanced=[]; no further merge message or review path is required. Complete adopted graph and index repeat pass again. The approved D5 parent checkpoint records that exact child pin, adopted policies/routing, retired source record, five old-file deletions, navigation repairs and this evidence. Locate that parent checkpoint by the stable Spike: agent-policy-migration trailer rather than a circular self-hash.
 
 Only docs/agent-policies is an active policy folder; docs/policies has been removed. The source archive is one historical file, not a parallel policy directory. Original source blocks remain exact against preparation parent d3d4c68bd67d63c7d0bb8f025b1e0e1460ea4e5d. Human governance, existing write safeguards, unrelated project/coordination settings and prior local history are preserved. No unrelated concurrent files were encountered or absorbed. The spike remains live for the concrete ordinary-use QA item and a later human archival decision; migration implementation is complete and requires no further adoption decision. No push or other publication occurred.
+
+## Closure and durable lessons — 2026-11-02
+Aslan requested reference cleanup, archival of the completed migration, a clean committed tree and normal publication. Reviewed current AGENTS/README/index/configuration and the affected navigation; no live route requires the removed folder. Remaining literal old-path mentions are dated provenance, exact frozen source blocks or reusable legacy-compatibility examples. The five frozen originals are unchanged. TODO carries current adopted-policy links and the separate ordinary-use follow-up; this archive is history, not a source of standing instructions. The prior numbered-policy phase links to this completed receiving phase. The current policy index, five policy-management skills and retained project safeguards own ongoing work.
+
+Publication preparation refreshed the declared remotes and reviewed the outgoing parent and child ranges. Publish only project/org on the declared workflow origin before main on Open Austin, without force; all required earlier gitlinks remain ancestors of the selected child. This closure records publication intent, not a claim that a push or fresh recursive clone has already succeeded.

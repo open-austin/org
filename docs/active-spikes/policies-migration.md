@@ -17,3 +17,5 @@ Historical archive bodies retain their past layout descriptions; navigation to m
 
 ## Completion and History
 Implementation and its local checkpoint are complete as of 2026-10-14. Path, link, content-preservation, local-skill, and selected-file whitespace checks pass. This documentation migration does not establish new runtime or external-service behavior. The pair remains active until closure is authorized under the local spike workflow; migration approval does not manufacture a separate archive decision.
+
+Continues in: docs/archive/agent-policy-migration.md
