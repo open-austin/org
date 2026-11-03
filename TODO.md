@@ -2,7 +2,7 @@
 This is the coordination map for active work in this repo. See `project-workflows/run-project-spike/SKILL.md` for the full process.
 
 ## Active
-- **Org workflow refresh** — [current-scope audit and 72-issue review inventory](docs/active-spikes/org-workflow-refresh.md) · [remaining evidence, proposals and execution boundaries](docs/active-spikes/org-workflow-refresh.todo.md).
+- **Org workflow refresh** — [audit, Kanban retirement and first five closures](docs/active-spikes/org-workflow-refresh.md) · [remaining issue reconciliation](docs/active-spikes/org-workflow-refresh.todo.md). The baseline inventory has 67 issues not closed by this batch, including protected Roles/intake records.
 - **Project Workflows adoption** — [reconciliation](docs/active-spikes/project-workflows-adoption.md) · [local validation and publication hold](docs/active-spikes/project-workflows-adoption.todo.md).
 
 ## Done
@@ -13,7 +13,7 @@ This is the coordination map for active work in this repo. See `project-workflow
 Removed `tools/sync/` and `tools/issues/create.sh` — single-maintainer tooling that had no second user and split the maintainer's own workflow across two repos. The weekly org summary ran a final time to all seven team channels on 2026-09-07 and is now retired, its skill kept as the reimplementation record. What stayed at retirement: `tools/notify/`, `tools/google-docs/`, `tools/airtable/`, all thirteen Actions workflows, and both the PAT setup and Write Safety sections of CONTRIBUTING, which turned out not to be sync-specific. **2026-10-27 correction:** the scheduled role report uses inline curl, not `tools/notify/`; Google Docs is now delegated to Agent Hands. See the Agent Hands cutover below.
 
 ### Board ↔ Issue Sync Redesign *(archived: `docs/archive/board-sync-redesign.md`)*
-Re-architected board↔issue sync: native `Auto-close issue` is the single non-code exception (card→close), everything else is code, one `board-reopen-reconcile` poller (~5 min) handles card→reopen, all other native Projects workflows off. Confirmed working live 2026-07-08. Durable outcomes are in [README Board Automation](README.md#board-automation) and adopted [DESIGN-TRIGGERS](docs/agent-policies/DESIGN-TRIGGERS-respect-board-trigger-boundaries.md) / [PRESERVE-SYNC](docs/agent-policies/PRESERVE-SYNC-preserve-reviewed-board-sync.md). Note: GitHub scheduled runs can be badly delayed (first reopen took ~25+ min).
+Re-architected board↔issue sync: native `Auto-close issue` is the single non-code exception (card→close), everything else is code, one `board-reopen-reconcile` poller (~5 min) handles card→reopen, all other native Projects workflows off. Confirmed working live 2026-07-08. The retained Roles behavior is described in [README Open Roles automation](README.md#open-roles-automation) and adopted [DESIGN-TRIGGERS](docs/agent-policies/DESIGN-TRIGGERS-respect-board-trigger-boundaries.md) / [PRESERVE-SYNC](docs/agent-policies/PRESERVE-SYNC-preserve-reviewed-board-sync.md). Note: GitHub scheduled runs can be badly delayed (first reopen took ~25+ min).
 
 ### GitHub Automation *(archived: `docs/archive/github-automation.md`)*
 Built the full board/issue automation set — routing, issue↔board status sync, scheduled archive, Slack reporting, form labeling. Two incidents fixed en route: `role-pipeline-report` cron firing daily instead of monthly, and the `projects_v2_item` trigger being invalid so board→issue sync never fired (the [retired 0004 record](docs/archive/legacy-agent-policies.md#legacy-0004), which spawned the Board Sync Redesign). Also hardened `label-open-role-from-form` (script-injection) and `stale-role-warning` (YAML block-scalar bug that had kept it from ever running).
@@ -58,7 +58,7 @@ Org-specific Airtable operations remain in `tools/airtable/`; Agent Hands curren
 - On the next ordinary authorized Org issue/board read, the receiving agent should start from AGENTS, select USE-TOOLS, load its three-kernel closure once, and retain explicit approval for any proposed write. Owner: Aslan and the agent handling that task. Actual migration checks pass; fresh-client discovery and service compliance remain unobserved. Do not perform service writes solely for QA.
 
 ## Automation — residual QA / watch
-Historical QA handoff from the July 8 automation work. The [workflow refresh](docs/active-spikes/org-workflow-refresh.md) now owns Kanban retirement and retained Roles verification. Its source patch is local; do not read this older handoff as current deployment or scheduled-delivery evidence.
+Historical QA handoff from the July 8 automation work. The [workflow refresh](docs/active-spikes/org-workflow-refresh.md#execution-results--november-2) records published Kanban retirement and retained Roles verification. These older bullets are historical test requests, not instructions to run retired Kanban workflows or evidence of current scheduled delivery.
 
 - **`role-pipeline-report` next first-Monday** — the cron fix (skip unless day-of-month ≤ 7) hasn't been observed on a real first Monday yet. Confirm it posts once, not daily.
 - **`archive-old-done` / `archive-old-filled`** — implemented with dry-run defaults but never exercised. Run each once via the Actions UI with `dry_run=true` to eyeball the output when convenient.

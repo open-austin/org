@@ -2,7 +2,7 @@
 This file defines the rules and boundaries for AI agents working in this repo. Read it before taking any action.
 
 ## What This Repo Is
-This repo holds Open Austin’s repository tooling, retained Open Roles automation and public collaboration documentation. General organizational task tracking lives in Slack Lists. Preserve Engagement intake, contributor records and Open Roles until their own owners explicitly change them; their presence is not permission for bulk retirement. The [workflow refresh](docs/active-spikes/org-workflow-refresh.md) records the Kanban retirement patch and its actual deployment status.
+This repo holds Open Austin’s repository tooling, retained Open Roles automation and public collaboration documentation. General organizational task tracking lives in Slack Lists. Preserve Engagement intake, contributor records and Open Roles until their own owners explicitly change them; their presence is not permission for bulk retirement. The [workflow refresh](docs/active-spikes/org-workflow-refresh.md) records Kanban retirement, retained automation and remaining issue reconciliation.
 
 Agents are primary users of the tools here. This doc is your operating manual.
 
