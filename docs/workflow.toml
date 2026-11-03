@@ -1,0 +1,35 @@
+schema_version = 1
+
+# Read this only for the collection adopted by the current project, never to infer a project from a global skill install.
+[project]
+name = "org"
+root = ".."
+
+# Resolve document locations against the project root. Existing project instructions can override these seed defaults.
+[documents]
+readme = "README.md"
+instructions = "AGENTS.md"
+index = "TODO.md"
+active_spikes = "docs/active-spikes"
+scratch = "docs/scratch"
+archive = "docs/archive"
+policies = "docs/agent-policies" # Compatibility locator for the adopted agent policies; human governance stays in contributor-policy.md.
+agent_policies = "docs/agent-policies" # Agent-only opt-in index: policy.index.md; availability is not adoption.
+
+# Adoption fills these with public-safe source metadata. The parent gitlink, not these fields, records the adopted commit.
+[adoption]
+upstream_url = "https://github.com/jcklpe/project-workflows.git"
+upstream_branch = "main"
+mode = "shared"
+
+# Optional collaboration selection. Local use needs no forge, platform tooling or credentials.
+[coordination]
+mode = "local"
+repository = ""
+# Optional project-owned reference naming setup/use skills and source/version. Empty allows human platform steps.
+# Never store a command or secret here.
+tooling = ""
+
+# Optional documented checks; inspect them and project instructions before running commands.
+[validation]
+commands = []
