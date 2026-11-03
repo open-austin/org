@@ -21,6 +21,6 @@ Aslan authorized removal of the old policy folder. The [retired source records](
 | BUILD-CLI | [Build substantive CLI tools in Python](BUILD-CLI-build-substantive-tools-in-python.md) | operational | Agent implementation of substantive CLI tools. | adopted | 2026-11-02 |
 | DESIGN-TRIGGERS | [Respect board trigger boundaries](DESIGN-TRIGGERS-respect-board-trigger-boundaries.md) | operational | Agent design of board-reactive automation. | adopted | 2026-11-02 |
 | FOLLOW-WORKFLOWS | [Follow project-owned workflows](FOLLOW-WORKFLOWS-follow-project-owned-workflows.md) | operational | Agent selection of workflow procedures and working records. | adopted | 2026-11-02 |
-| PRESERVE-SYNC | [Preserve reviewed board synchronization](PRESERVE-SYNC-preserve-reviewed-board-sync.md) | operational | Agent maintenance of board and issue synchronization. | adopted | 2026-11-02 |
+| PRESERVE-SYNC | [Preserve reviewed Open Roles synchronization](PRESERVE-SYNC-preserve-reviewed-board-sync.md) | operational | Agent maintenance of retained Open Roles synchronization. | adopted | 2026-11-02 |
 | USE-TOOLS | [Use guarded organization tools](USE-TOOLS-use-guarded-github-tools.md) | operational | Agent development and use of organization tooling. | adopted | 2026-11-02 |
 <!-- agent-policies:end -->

@@ -2,6 +2,7 @@
 This is the coordination map for active work in this repo. See `project-workflows/run-project-spike/SKILL.md` for the full process.
 
 ## Active
+- **Org workflow refresh** — [current-scope audit and 72-issue review inventory](docs/active-spikes/org-workflow-refresh.md) · [remaining evidence, proposals and execution boundaries](docs/active-spikes/org-workflow-refresh.todo.md).
 - **Project Workflows adoption** — [reconciliation](docs/active-spikes/project-workflows-adoption.md) · [local validation and publication hold](docs/active-spikes/project-workflows-adoption.todo.md).
 
 ## Done
@@ -57,7 +58,7 @@ Org-specific Airtable operations remain in `tools/airtable/`; Agent Hands curren
 - On the next ordinary authorized Org issue/board read, the receiving agent should start from AGENTS, select USE-TOOLS, load its three-kernel closure once, and retain explicit approval for any proposed write. Owner: Aslan and the agent handling that task. Actual migration checks pass; fresh-client discovery and service compliance remain unobserved. Do not perform service writes solely for QA.
 
 ## Automation — residual QA / watch
-Low-priority follow-ups left after archiving the automation spikes (2026-07-08). None block anything; the automation is live and working.
+Historical QA handoff from the July 8 automation work. The [workflow refresh](docs/active-spikes/org-workflow-refresh.md) now owns Kanban retirement and retained Roles verification. Its source patch is local; do not read this older handoff as current deployment or scheduled-delivery evidence.
 
 - **`role-pipeline-report` next first-Monday** — the cron fix (skip unless day-of-month ≤ 7) hasn't been observed on a real first Monday yet. Confirm it posts once, not daily.
 - **`archive-old-done` / `archive-old-filled`** — implemented with dry-run defaults but never exercised. Run each once via the Actions UI with `dry_run=true` to eyeball the output when convenient.

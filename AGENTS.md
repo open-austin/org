@@ -2,7 +2,7 @@
 This file defines the rules and boundaries for AI agents working in this repo. Read it before taking any action.
 
 ## What This Repo Is
-This repo is the public operational layer for Open Austin. It contains tooling, documentation, and automation for managing GitHub issues, project boards, labels, milestones, org health, and bounded updates to shared organizational records used by its workflows.
+This repo holds Open Austin’s repository tooling, retained Open Roles automation and public collaboration documentation. General organizational task tracking lives in Slack Lists. Preserve Engagement intake, contributor records and Open Roles until their own owners explicitly change them; their presence is not permission for bulk retirement. The [workflow refresh](docs/active-spikes/org-workflow-refresh.md) records the Kanban retirement patch and its actual deployment status.
 
 Agents are primary users of the tools here. This doc is your operating manual.
 
@@ -70,7 +70,6 @@ Read current state through `gh`:
 gh issue list --limit 200 --state open --json number,title,labels,assignees,updatedAt
 gh issue view <number> --comments
 gh label list
-gh project item-list 9 --owner open-austin --format json   # Org Kanban
 gh project item-list 6 --owner open-austin --format json   # Open Roles
 ```
 
@@ -88,7 +87,7 @@ echo "Your message" | tools/notify/post.sh SLACK_WEBHOOK_ENGAGEMENT --execute
 The helper previews by default; `--dry-run` is also accepted. Only `--execute` sends. Keep webhook URLs in private configuration and export only the approved destination for execution. See `.env.example` and the retired `skills/weekly-org-summary/SKILL.md` routing table for historical channel mappings; verify current destination ownership before sending. Do not automatically retry an uncertain delivery.
 
 ### Google Docs Tools
-Use the installed Agent Hands `use-google-docs` skill for document reads and one exact, uniquely occurring replacement. Follow the explicit alias/document commands in [README.md](README.md#shared-google-docs); do not recreate a local OAuth wrapper. `replace-once` previews by default, re-fetches before execution, and uses a required revision ID. Follow `skills/process-weekly-meeting/SKILL.md` for the canonical record and approval rules, then independently read back approved edits.
+Use the installed Agent Hands `use-google-docs` skill for document reads and one exact, uniquely occurring replacement. Follow the explicit alias/document commands in [README.md](README.md#shared-google-docs); do not recreate a local OAuth wrapper. `replace-once` previews by default, re-fetches before execution, and uses a required revision ID. Use the human-selected canonical record and current task system; preserve authorship and independently read back approved edits. General meeting actions do not become GitHub issues automatically.
 
 ### Write Operations
 Use the guarded repo tools when a matching operation exists, and use `gh` CLI directly for other writes. All writes require explicit user approval first per the Write Safety Rules above.
@@ -131,7 +130,6 @@ Use `capture-for-later` for saved possibilities or parked subjects as small indi
 | `project-workflows/setup-project-workflows/SKILL.md` | Adopting or repairing the collection and documentation routing |
 | `project-workflows/draft-approval-slate/SKILL.md` | Presenting concrete changes for human review |
 | `skills/weekly-org-summary/SKILL.md` | "weekly summary", "weekly update", "org digest", "what's going on this week" |
-| `skills/process-weekly-meeting/SKILL.md` | Processing or reconciling the Open Austin weekly organizing meeting, canonical shared notes, and resulting GitHub work |
 
 Each `SKILL.md`'s frontmatter `description` is the source of truth for exact trigger phrasing — this table is a quick index.
 

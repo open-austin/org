@@ -1,14 +1,7 @@
-name: Reopen issues moved out of a terminal column (reconciliation)
+name: Reopen Open Roles issues moved out of Filled
 
-# Board -> issue "reopen" is the one behavior GitHub gives no immediate path
-# for: projects_v2_item can't trigger a repo workflow, and there is no native
-# "auto-reopen" (native only ships Auto-close). So this reconciles on a timer.
-# See docs/decisions/0004 and docs/active-spikes/board-sync-redesign.md.
+# Reconcile Open Roles card-to-reopen while retaining the native close path and ten-minute fresh-close guard. See docs/agent-policies/PRESERVE-SYNC-preserve-reviewed-board-sync.md.
 on:
-  # Baseline confirmed clean on 2026-07-08 (dry-run found no closed issues in
-  # non-terminal columns on either board), and a dry-run of this reconciler
-  # found nothing to reopen — so the schedule is enabled. If you ever need to
-  # re-baseline, run baseline-terminal-cleanup first. See board-sync-redesign.
   schedule:
     - cron: '*/5 * * * *'
   workflow_dispatch:
@@ -21,8 +14,7 @@ on:
 
 env:
   GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-  # Skip issues closed within this window — close-to-done / closed-to-filled
-  # may still be moving a freshly-closed issue into its terminal column.
+  # Skip issues closed within this window while closed-to-filled may still be moving the Open Roles card.
   FRESH_CLOSE_SECONDS: "600"
 
 jobs:
@@ -130,8 +122,7 @@ jobs:
             done
           }
 
-          # Org Kanban: terminal column is Done. Open Roles: terminal is Filled.
-          reconcile_board "PVT_kwDOAA7NZM4AqQF8" "98236657" "Org Kanban"
+          # Open Roles uses Filled as its terminal column.
           reconcile_board "PVT_kwDOAA7NZM4AmdbW" "47fc9ee4" "Open Roles"
 
           echo "---"

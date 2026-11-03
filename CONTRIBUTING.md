@@ -2,7 +2,7 @@
 This doc covers the practical mechanics of contributing to this repo. For Open Austin's policies on licensing, attribution, and open-source requirements, see [`contributor-policy.md`](contributor-policy.md).
 
 ## What This Repo Is
-This repo contains operational tooling and documentation for managing the Open Austin GitHub org — issue triage, project board automation, backlog snapshots, and agent-facing CLI/MCP tools.
+This repo contains Open Austin’s repository tooling, retained Open Roles automation and agent-facing procedures. General organizational task tracking belongs in Slack Lists. Engagement intake, contributor records and Open Roles retain their current owners. See the workflow refresh for actual Kanban retirement/deployment status.
 
 ## Getting Started
 ### Prerequisites
@@ -35,7 +35,7 @@ This repo uses a spike-based workflow. See [`project-workflows/run-project-spike
 - **`AGENTS.md`** — rules for AI agents working in this repo
 
 ## Opening Issues and PRs
-- Open an issue before starting significant work so others know what's in flight.
+- Open an issue before starting significant repository implementation so others know what is in flight. General organizational tasks use Slack Lists; intake, contributor records and Open Roles retain their current owners.
 - Keep PRs focused. One spike or feature per PR.
 - Reference the relevant spike doc or policy in your PR description if applicable.
 - Do not commit `.env` or any file containing real credentials. See `.env.example` for what's needed.

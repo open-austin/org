@@ -195,3 +195,6 @@ Temporary Items
 
 # iCloud generated files
 *.icloud
+
+# Private recovery receipts for explicitly approved GitHub operations.
+/.github/project-collaboration/
