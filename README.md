@@ -51,7 +51,7 @@ Open-role issues route to Open Roles when labeled. Code assigns initial Open sta
 | stale-role-warning | Weekly stale-role notice under its existing cadence and guards. |
 | role-pipeline-report | Monthly role-pipeline Slack report under its existing first-Monday guard. |
 
-The retired weekly-org-summary remains a historical reimplementation record. Notify helpers retain explicitly approved manual webhook/Block Kit use; the monthly role report posts directly from its workflow. The removed Kanban files and meeting procedure remain recoverable from Git history.
+Notify helpers retain explicitly approved manual webhook/Block Kit use; the monthly role report posts directly from its workflow. The retired Kanban files, weekly-summary skill and meeting procedure remain recoverable from Git history.
 
 ## Documentation
 - **Active spikes:** `docs/active-spikes/` — current work with accompanying `.todo.md` files
@@ -63,7 +63,7 @@ The retired weekly-org-summary remains a historical reimplementation record. Not
 - **Scratch:** `docs/scratch/` — exploratory drafts
 - **Archive:** `docs/archive/` — historical context
 
-See [project-workflows/run-project-spike/SKILL.md](project-workflows/run-project-spike/SKILL.md) for the full workflow, and [skills/](skills/) for the repo's other agent-assisted workflows.
+See [project-workflows/run-project-spike/SKILL.md](project-workflows/run-project-spike/SKILL.md) for the full workflow.
 
 ## Project Workflows adoption
 Use the adopted [contribution procedure](project-workflows/coordinate-project-contribution/SKILL.md) and [collaborator quick start](project-workflows/README.md#join-an-existing-project) for human-directed review across separate agent-owned spikes. A branch may carry several spikes/issues and later PRs; Commit Work retains atomic scope. Existing governance, canonical shared records and explicit external-write approval rules remain authoritative. This update enables no new forge automation.

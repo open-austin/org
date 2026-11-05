@@ -30,7 +30,6 @@ This repo uses a spike-based workflow. See [`project-workflows/run-project-spike
 - **`TODO.md`** — active work and backlog
 - **`docs/`** — policies, active spikes (`docs/active-spikes/`), scratch, archive
 - **`project-workflows/`** — pinned reusable workflow skills
-- **`skills/`** — organization-specific procedures, with retired procedures clearly marked
 - **`tools/`** — retained Airtable operations and Slack webhook/Block Kit helpers; generic Docs tooling lives in Agent Hands
 - **`AGENTS.md`** — rules for AI agents working in this repo
 

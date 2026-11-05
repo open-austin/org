@@ -30,3 +30,6 @@ The preparation checks above describe the state before publication. The complete
 - Re-read the five approved issue threads and successor comments, execute their unchanged native closure plans and verify each result. Preserve uncertain-operation recovery and do not resend blindly. — #501, #502, #535, #542 and #557 are closed / not_planned. Existing successor comments and comment counts are unchanged; independent reads confirm all five Slack records are unchanged. No uncertain sends occurred.
 
 Next: reconcile a small next issue cohort’s full threads and actual destinations, then present exact actions. The baseline inventory has 67 issues not closed by the first batch, including protected records; this is not a proposal to close all 67.
+
+## Summary-skill cleanup — November 4
+- Aslan approved deleting the retired weekly-org-summary skill and its empty skills directory. Remove obsolete skill discovery, folder guidance and live references, retain the procedure in Git history, and mark the surviving message template as historical. The reviewed local checkpoint covers this cleanup.

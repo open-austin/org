@@ -18,7 +18,7 @@ Use this order to locate maintained authority. Report unresolved substantive con
 7. `docs/scratch/misc.md` and other `docs/scratch/` files — exploratory intake, non-authoritative
 8. `docs/archive/` — historical context only
 
-This repository adopts unchanged shared [Project Workflows](project-workflows/README.md) at an exact detached submodule pin. Read the project-owned [workflow.toml](docs/workflow.toml), then load `project-workflows/<skill-name>/SKILL.md` before global workflow seeds. Keep project configuration, policies and local procedures outside the shared package. Project instructions and existing document conventions remain authoritative. Organization-specific skills remain under `skills/` and retain their own scope and status.
+This repository adopts unchanged shared [Project Workflows](project-workflows/README.md) at an exact detached submodule pin. Read the project-owned [workflow.toml](docs/workflow.toml), then load `project-workflows/<skill-name>/SKILL.md` before global workflow seeds. Keep project configuration, policies and local procedures outside the shared package. Project instructions and existing document conventions remain authoritative.
 
 ## Agent policy routing
 Read the project-owned [agent policy index](docs/agent-policies/policy.index.md) and load applicable adopted policies with their complete prerequisite closure. Proposed policies are non-operative. Use the pinned [Create](project-workflows/create-agent-policy/SKILL.md), [Edit](project-workflows/edit-agent-policy/SKILL.md), [Review](project-workflows/review-agent-policies/SKILL.md), [Adopt](project-workflows/adopt-agent-policies/SKILL.md) and [Retire](project-workflows/retire-agent-policy/SKILL.md) Agent Policies skills for their respective tasks. Preserve the existing project authority ladder and protected contributor governance. Report unresolved substantive contradictions for human resolution; index order, filenames and prerequisite loading order do not settle them.
@@ -84,7 +84,7 @@ echo "Your message" | tools/notify/post.sh SLACK_WEBHOOK_ENGAGEMENT
 echo "Your message" | tools/notify/post.sh SLACK_WEBHOOK_ENGAGEMENT --execute
 ```
 
-The helper previews by default; `--dry-run` is also accepted. Only `--execute` sends. Keep webhook URLs in private configuration and export only the approved destination for execution. See `.env.example` and the retired `skills/weekly-org-summary/SKILL.md` routing table for historical channel mappings; verify current destination ownership before sending. Do not automatically retry an uncertain delivery.
+The helper previews by default; `--dry-run` is also accepted. Only `--execute` sends. Keep webhook URLs in private configuration and export only the approved destination for execution. See `.env.example` for webhook variable names and verify current destination ownership before sending. Do not automatically retry an uncertain delivery.
 
 ### Google Docs Tools
 Use the installed Agent Hands `use-google-docs` skill for document reads and one exact, uniquely occurring replacement. Follow the explicit alias/document commands in [README.md](README.md#shared-google-docs); do not recreate a local OAuth wrapper. `replace-once` previews by default, re-fetches before execution, and uses a required revision ID. Use the human-selected canonical record and current task system; preserve authorship and independently read back approved edits. General meeting actions do not become GitHub issues automatically.
@@ -115,7 +115,7 @@ Active work is tracked in `TODO.md`. Adopted agent policies live in [docs/agent-
 Use these holding areas carefully: captured or parked scratch notes are not a GitHub issue backlog or active roadmap, and `docs/scratch/misc.md` is not durable authority. Public-org writes still require explicit approval.
 
 ## Skills
-Use the adopted collection for project workflows and `skills/` for organization-specific procedures. When the user asks for one of these by name or intent, follow the owning local procedure.
+Use the adopted Project Workflows collection. When the user asks for a workflow by name or intent, follow its owning procedure.
 
 Use `capture-for-later` for saved possibilities or parked subjects as small individual notes in `docs/scratch/`. Update an existing subject note rather than duplicating it. Capturing a subject does not create tasks or authorize external writes.
 
@@ -129,7 +129,6 @@ Use `capture-for-later` for saved possibilities or parked subjects as small indi
 | `project-workflows/update-project-workflows/SKILL.md` | Reconciling shared workflows, project customizations, and the parent pin |
 | `project-workflows/setup-project-workflows/SKILL.md` | Adopting or repairing the collection and documentation routing |
 | `project-workflows/draft-approval-slate/SKILL.md` | Presenting concrete changes for human review |
-| `skills/weekly-org-summary/SKILL.md` | "weekly summary", "weekly update", "org digest", "what's going on this week" |
 
 Each `SKILL.md`'s frontmatter `description` is the source of truth for exact trigger phrasing — this table is a quick index.
 

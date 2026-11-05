@@ -1,6 +1,6 @@
 # Weekly Org Summary Templates
 
-Use these templates when drafting `snapshot/weekly-summary-<slug>.md` files for the weekly summary breakout. See `skills/weekly-org-summary/SKILL.md` for the full routing table and process. The body inside each fenced block is the Slack-ready shape.
+Historical message shapes for the weekly summary, retired 2026-09-07. See the [archived channel design](../archive/weekly-summary-channels.md) for routing context. The body inside each fenced block is the Slack-ready shape.
 
 ## Per-Team Channel Template
 
